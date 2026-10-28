@@ -1,0 +1,787 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Процессы команды — Эльвира Галиева</title>
+  <meta name="description" content="Кейс «Процессы команды»: как за год я выстроила три связанных процесса — ведение клиента, фидбек в разработку и стык продаж с дизайном — в растущем стартапе Ида.Лайт.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* =========================================================
+       Доп. стили только для страницы кейса «Процессы команды».
+       Ничего не переопределяет — только новые компоненты поверх
+       токенов и типографики из style.css.
+       ========================================================= */
+
+    /* акцентный цвет — только для этого кейса (на сайте --accent остаётся прежним) */
+    :root { --case-accent: #245BF3; }
+
+    /* кнопки по умолчанию не наследуют шрифт страницы (брали системный Arial) */
+    button { font-family: inherit; letter-spacing: inherit; }
+
+    /* ---------- шапка кейса ---------- */
+    .case-topbar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 33px; padding-bottom: 33px;
+    }
+    .case-topbar__back { color: var(--gray); transition: color .15s; }
+    .case-topbar__back:hover { color: var(--case-accent); }
+    .case-topbar__name { text-transform: lowercase; font-weight: var(--text-w-medium); }
+
+    /* ---------- заголовок кейса ----------
+       Заголовок — ровно .t-h1 (та же переменная, что у имени на главной).
+       Интро — обычный текст тела, тот же размер, что в «Контексте»
+       (никакого своего размера не вводим). */
+    .case-hero { padding-top: 24px; }
+    .case-hero__eyebrow { color: var(--gray-label); margin-bottom: 20px; }
+    .case-hero__title { max-width: 15ch; }
+    .case-hero__intro { margin-top: 24px; max-width: 640px; color: var(--text); }
+    .case-meta {
+      display: flex; flex-wrap: wrap; gap: 48px;
+      margin-top: 56px;
+    }
+    .case-meta__item .label { margin-bottom: 8px; }
+    .case-meta__item .value { font-size: var(--h4-size); line-height: var(--h4-lh); font-weight: var(--h4-w); letter-spacing: var(--h4-ls); color: var(--black); }
+
+    /* ---------- общий грид раздела (контекст, финал) ---------- */
+    .section-grid { display: grid; grid-template-columns: 240px 1fr; gap: 16px 120px; padding-top: 104px; }
+    .section-grid .side h2 { margin-top: 0; }
+    .section-grid .body p { color: var(--text); max-width: 62ch; margin-bottom: 16px; }
+    .section-grid .body p:last-child { margin-bottom: 0; }
+
+    /* ---------- вкладки актов ----------
+       Подложка активной вкладки (.tab-plate) — того же цвета, что и серая
+       панель под ней; снизу у неё «ушки» с вогнутым скруглением, которые
+       перетекают в панель. При смене вкладки подложка плавно переезжает
+       под новую, остальные вкладки остаются на месте. Вкладки стоят
+       в левом краю той же сетки .wrap, что и весь текст. */
+    .tabs-row {
+      --tab-w: calc((100% - var(--gutter) * 2) / 3);
+      --tab-r: 28px; --ear: 18px; --tab-h: 54px;
+      position: relative; z-index: 1; display: flex; align-items: stretch;
+      height: var(--tab-h); margin: 104px auto 0; padding: 0 var(--gutter);
+      max-width: calc(var(--max) + var(--gutter) * 2);
+    }
+    .tab-bgs { position: absolute; left: var(--gutter); right: var(--gutter); top: 6px; bottom: 0; display: flex; }
+    .tab-bgs span { flex: 1; background: var(--placeholder); border-radius: var(--tab-r) var(--tab-r) 0 0; }
+    .tab-plate {
+      position: absolute; left: var(--gutter); top: 0; bottom: 0; width: var(--tab-w);
+      background: var(--row-bg); border-radius: var(--tab-r) var(--tab-r) 0 0;
+      transform: translateX(calc(var(--i, 0) * 100%));
+      transition: transform .45s cubic-bezier(.65, 0, .25, 1);
+    }
+    .tab-plate::before, .tab-plate::after { content: ""; position: absolute; bottom: 0; width: var(--ear); height: var(--ear); }
+    .tab-plate::before { right: 100%; background: radial-gradient(circle at 0 0, transparent calc(var(--ear) - .5px), var(--row-bg) var(--ear)); }
+    .tab-plate::after  { left: 100%;  background: radial-gradient(circle at 100% 0, transparent calc(var(--ear) - .5px), var(--row-bg) var(--ear)); }
+    /* акцентная обводка: линия по верху серой панели на всю ширину окна,
+       на активной вкладке она поднимается по ушку, огибает вкладку и опускается обратно */
+    .tabs-clip { overflow-x: clip; }
+    /* обводка вкладки: стенки и верх, заканчиваются там, где начинается дуга ушка */
+    .tab-stroke {
+      position: absolute; left: 0; right: 0; top: 0; bottom: var(--ear); z-index: 1; pointer-events: none;
+      border: 2px solid var(--case-accent); border-bottom: 0; border-radius: var(--tab-r) var(--tab-r) 0 0;
+    }
+    /* дуга ушка (то же скругление, что у подложки) + линия по верху панели до края окна */
+    .tab-stroke i { position: absolute; top: 100%; width: calc(var(--ear) + 2px); height: calc(var(--ear) + 2px); }
+    .tab-stroke i::after { content: ""; position: absolute; bottom: 0; width: 100vw; height: 2px; background: var(--case-accent); }
+    .tab-stroke i:first-child {
+      right: 100%;
+      background: radial-gradient(circle at 0 0, transparent var(--ear), var(--case-accent) var(--ear), var(--case-accent) calc(var(--ear) + 2px), transparent calc(var(--ear) + 2px));
+    }
+    .tab-stroke i:first-child::after { right: 100%; }
+    .tab-stroke i:last-child {
+      left: 100%;
+      background: radial-gradient(circle at 100% 0, transparent var(--ear), var(--case-accent) var(--ear), var(--case-accent) calc(var(--ear) + 2px), transparent calc(var(--ear) + 2px));
+    }
+    .tab-stroke i:last-child::after { left: 100%; }
+    .tab-btn {
+      position: relative; z-index: 2; flex: 1 1 0; min-width: 0;
+      display: flex; align-items: center; justify-content: center; text-align: center;
+      padding: 6px 12px 0; border: none; background: none; color: var(--gray);
+      font-weight: var(--text-w-medium); font-size: var(--normal-size); line-height: var(--normal-lh); letter-spacing: 0;
+      cursor: pointer; transition: color .2s, padding .45s cubic-bezier(.65, 0, .25, 1);
+    }
+    .tab-btn:hover { color: var(--black); }
+    .tab-btn[aria-selected="true"] { color: var(--black); padding-top: 0; }
+    #act-anchor { scroll-margin-top: 20px; }
+
+    .tabs-band { position: relative; z-index: 0; }
+    .intro-band { background: var(--row-bg); }
+    .intro-card { padding-top: 48px; padding-bottom: 72px; }
+    .results-card { padding-top: 96px; padding-bottom: 72px; }
+    .results-card .chapter--major { padding-top: 0; }
+    .solution { padding-top: 96px; padding-bottom: 64px; }
+    /* крупные заголовки разделов: Зачем переделывать / Решение / Что получилось */
+    /* как .about__text на главной: H3 × 1.3 */
+    .chapter--major .side h3 { font-size: calc(var(--h3-size) * 1.3); line-height: 1.05; font-weight: var(--h3-w); letter-spacing: var(--h3-ls); }
+    .chapter--major { padding-top: 136px; }
+    .solution > .chapter--major:first-child { padding-top: 0; }
+    .intro-card .act-head + .chapter--major { padding-top: 104px; }
+    .chapter--major + .chapter { padding-top: 40px; }
+
+    .act-head { padding-top: 8px; }
+    .act-head h2 {
+      font-size: calc(var(--h2-size) * 1.3); line-height: var(--h2-lh);
+      font-weight: var(--h2-w); letter-spacing: var(--h2-ls); color: var(--black); max-width: 18ch;
+    }
+
+    /* ---------- «Понимание задачи»: подпись + текст столбиком внутри главы ---------- */
+    .intro-list { display: flex; flex-direction: column; gap: 24px; }
+    .chapter .text .intro-list .label { margin: 0 0 6px; color: var(--gray-label); }
+
+    /* ---------- глава внутри акта (без номеров — прогресс сбоку) ---------- */
+    .chapter { padding-top: 104px; }
+    .chapter:first-of-type { padding-top: 0; }
+    .chapter-grid { display: grid; grid-template-columns: 240px 1fr; gap: 16px 120px; }
+    /* h3 не входит в базовый сброс (h1,h2,p{margin:0}) в style.css —
+       обнуляем сами, иначе у заголовка главы «уезжает» верх. */
+    .chapter h3 { margin: 0; color: var(--black); }
+    .chapter .text p { color: var(--text); max-width: 66ch; margin-bottom: 0; }
+    .chapter .text strong { font-weight: var(--text-w-medium); color: var(--black); }
+
+    ul.goals { list-style: none; margin: 20px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; max-width: 64ch; }
+    ul.goals li {
+      /* display:block, не flex — иначе текст с <strong> внутри разбивается
+         на отдельные flex-item'ы и переносится вразнобой (была графическая
+         ошибка). Стрелка — через padding-left + абсолютный ::before. */
+      position: relative; display: block; padding: 14px 16px 14px 36px;
+      background: var(--white); border-radius: var(--r-m);
+      color: rgba(17, 17, 17, .8);
+      font-size: var(--h4-size); line-height: var(--h4-lh); font-weight: var(--h4-w); letter-spacing: var(--h4-ls);
+    }
+    ul.goals li::before { content: "→"; position: absolute; left: 14px; top: 14px; color: var(--case-accent); font-weight: 700; }
+    ul.goals li strong { font-weight: var(--text-w-medium); color: var(--black); }
+
+    /* ---------- плейсхолдер под визуал: серый блок + подпись ---------- */
+    .visual-ph {
+      margin-top: 24px; max-width: 720px; min-height: 150px;
+      background: var(--placeholder); border-radius: var(--r-m);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 4px; text-align: center; padding: 28px; color: #9A9A9A;
+      font-size: var(--small-size); line-height: var(--small-lh); font-weight: var(--text-w); letter-spacing: 0;
+    }
+    .visual-ph b { color: #7A7A7A; font-weight: var(--text-w-medium); font-size: var(--normal-size); line-height: var(--normal-lh); }
+    .visual-ph.key { background: var(--white); border: 1.5px dashed var(--case-accent); color: var(--gray); }
+    .visual-ph.key b { color: var(--case-accent); }
+    .visual-ph.hero { min-height: 220px; max-width: none; border-radius: var(--r-l); margin-top: 48px; }
+
+    /* ---------- «Что получилось»: число → подпись → график, повтором ----------
+       Заголовок (число) и подпись должны держаться близко друг к другу,
+       а перед графиком — заметный, более широкий отступ. */
+    .results { display: flex; flex-direction: column; gap: 44px; margin-top: 8px; max-width: 640px; }
+    .result-item__num { color: var(--black); margin-bottom: 2px; }
+    .result-item__cap { color: var(--gray); max-width: 50ch; }
+    .result-item .visual-ph { margin-top: 36px; }
+
+    .stat-note { margin-top: 24px; color: var(--gray); font-size: var(--small-size); line-height: var(--small-lh); font-weight: var(--text-w); letter-spacing: 0; max-width: 64ch; }
+
+    /* ---------- переход к следующему отделу: текстовая ссылка, без заливки ---------- */
+    .next-dept { margin-top: 56px; display: flex; justify-content: flex-end; }
+    .next-link {
+      background: none; border: none; padding: 0; cursor: pointer;
+      color: var(--case-accent); font-size: var(--normal-size); line-height: var(--normal-lh); font-weight: var(--text-w-medium); letter-spacing: 0;
+      transition: opacity .15s;
+    }
+    .next-link:hover { opacity: .55; }
+
+    /* ---------- финал ---------- */
+    .final-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; padding-top: 24px; }
+    .final-card h3 { margin: 0 0 12px; color: var(--black); }
+    .final-card p { color: var(--text); margin: 0; }
+
+    /* ---------- прогресс по главам акта: закреплённая полоска справа ---------- */
+    .progress-ticks {
+      position: fixed; right: 28px; top: 50%; transform: translateY(-50%);
+      display: flex; flex-direction: column; gap: 10px; z-index: 15;
+    }
+    .progress-ticks .tick { width: 18px; height: 2px; border-radius: 2px; background: var(--placeholder); transition: width .2s, background .2s; }
+    .progress-ticks .tick.is-active { width: 30px; background: var(--case-accent); }
+
+    @media (max-width: 1300px) { .progress-ticks { display: none; } }
+
+    @media (max-width: 900px) {
+      .section-grid, .chapter-grid { grid-template-columns: 1fr; gap: 14px; }
+      .final-grid { grid-template-columns: 1fr; gap: 24px; }
+      .case-meta { gap: 28px; }
+      .tabs-row { --tab-r: 22px; --ear: 14px; --tab-h: 48px; }
+      .tab-btn { font-size: var(--small-size); line-height: var(--small-lh); padding-left: 6px; padding-right: 6px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="case-topbar wrap">
+    <a class="case-topbar__back t-normal" href="index.html">← портфолио</a>
+    <a class="case-topbar__name t-normal" href="index.html#contacts">эльвира галиева</a>
+  </header>
+
+  <main>
+    <section class="case-hero wrap">
+      <p class="label case-hero__eyebrow">Кейс</p>
+      <h1 class="t-h1 case-hero__title">Процессы команды</h1>
+      <p class="case-hero__intro">Пришла в растущий стартап линейным дизайнером и за год выросла до дизайн-лида — а вместе с этим выстроила с нуля три связанных процесса, которые провели команду через путь от операционного хаоса к системе, выдержавшей масштабирование компании, смену состава и мой собственный уход.</p>
+      <div class="case-meta">
+        <div class="case-meta__item"><p class="label">Годы</p><p class="value">2025–2026</p></div>
+        <div class="case-meta__item"><p class="label">Сфера</p><p class="value">Платформа-конструктор сайтов для застройщиков</p></div>
+        <div class="case-meta__item"><p class="label">Роль</p><p class="value">Дизайн-лид</p></div>
+      </div>
+      <div class="visual-ph hero">
+        <b>Hero-визуал</b>
+        Крупная обобщающая схема «путь клиента через три отдела»: продажи → дизайн → разработка → продажи (сопровождение)
+      </div>
+    </section>
+
+    <section class="section-grid wrap">
+      <div class="side"><p class="label">Контекст</p><h2 class="t-h2">Ида.Лайт</h2></div>
+      <div class="body">
+        <p>Платформа-конструктор, на которой дизайнеры собирают сайты для застройщиков из блоков. Я работала в Сексесс-отделе: аккаунт-менеджеры ведут клиента, дизайн — собирает ему сайт.</p>
+        <p>Пришла в компанию линейным дизайнером без формального пути роста; роли дизайн-лида тогда не существовало — её пришлось создать самой, показав руководителю, что команде, которая выросла в несколько раз, она уже необходима.</p>
+      </div>
+    </section>
+  </main>
+
+  <div id="act-anchor"></div>
+  <div class="tabs-clip"><nav class="tabs-row" aria-label="Акты кейса" style="--i:0">
+    <div class="tab-bgs" aria-hidden="true"><span></span><span></span><span></span></div>
+    <div class="tab-plate" aria-hidden="true"><span class="tab-stroke"><i></i><i></i></span></div>
+    <button class="tab-btn" data-tab="act1" aria-selected="true">Отдел дизайна</button>
+    <button class="tab-btn" data-tab="act2" aria-selected="false">Отдел разработки</button>
+    <button class="tab-btn" data-tab="act3" aria-selected="false">Отдел продаж</button>
+  </nav></div>
+
+  <div class="tabs-band">
+    <div>
+
+      <!-- ============ АКТ 1 ============ -->
+      <section class="tab-panel" id="act1">
+        <div class="intro-band"><div class="wrap intro-card">
+        <div class="act-head">
+          <h2>Ведение клиента: от продаж до сдачи сайта</h2>
+        </div>
+
+        <div class="chapter chapter--major">
+          <div class="chapter-grid">
+            <div class="side"><h3 class="t-h3">Зачем переделывать</h3></div>
+            <div class="text">
+              <p>Когда я начала разбираться, как у нас ведётся клиент, процесса передачи, по сути, не нашла. Сделка закрывалась, создавался общий чат — и дальше всё держалось на памяти аккаунт-менеджера. Дизайнер получал обрывки вводных и неделю в тишине собирал сразу <strong>финальную версию сайта</strong>, без черновика и без согласования направления.</p>
+              <p>Это било по всему: <strong>50–60% показов</strong> не попадали в ожидания клиента с первого раза, запуск растягивался на <strong>20–25 рабочих дней</strong>, а параллельно можно было вести не больше 2–3 клиентов — дизайнеры переделывали одни и те же сайты заново по два-три раза.</p>
+              <div class="visual-ph">
+              <b>Иллюстрация «было»</b>
+              Разрозненные стрелки: продажи → общий чат → дизайнер, без этапов — контраст с регламентом ниже
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-grid">
+            <div class="side"><h3 class="t-h3">Понимание задачи</h3></div>
+            <div class="text">
+              <div class="intro-list">
+              <div><p class="label">Потребности пользователя</p><p>Получить сайт, который сходится с ожиданиями с первого раза, видеть, на каком этапе работа, и иметь возможность поправить направление по ходу — а не получать готовый финал в тишине.</p></div>
+              <div><p class="label">Задачи бизнеса</p><p>Сократить срок запуска сайта, нарастить пропускную способность команды без расширения штата и снизить долю полных переделок первого захода.</p></div>
+              <div><p class="label">Аудитория</p><p>Клиенты платформы — застройщики, которые заказывают сайт, и команда Сексесс-отдела: аккаунт-менеджеры и дизайнеры, которые их ведут.</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-grid">
+            <div class="side"><h3 class="t-h3">Критерии успеха после запуска</h3></div>
+            <div class="text">
+              <ul class="goals">
+              <li>Сократить запуск сайта с 20–25 до <strong>10–14 рабочих дней</strong></li>
+              <li>Нарастить пропускную способность команды — <strong>без расширения штата</strong></li>
+              <li>Снизить долю полных переделок первого захода с ~60% до <strong>10–15%</strong></li>
+              <li>Сделать процесс прозрачным для клиента — снизить долю тех, кто сам спрашивает «на каком мы этапе», с 70–80% до <strong>20%</strong></li>
+              </ul>
+              <p class="stat-note" style="margin-top:12px">На всё — два-три месяца на саму систему и буферный месяц, чтобы раскатать её на всю клиентскую базу.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-grid">
+            <div class="side"><h3 class="t-h3">Моя роль</h3></div>
+            <div class="text">
+              <p>Приняла отдел, где процесс ведения клиента нигде не был описан, и выстроила его с нуля: от формата брифа и черновиков с вариантами до регламента с ролями и сроками на каждом шаге — спроектировала систему и провела её через команду.</p>
+            </div>
+          </div>
+        </div>
+      </div></div>
+
+      <div class="wrap solution">
+        <div class="chapter chapter--major">
+          <div class="chapter-grid"><div class="side"><h3 class="t-h3">Решение</h3></div></div>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-grid">
+            <div class="side"><h3 class="t-h3">Нашла формат брифа, который клиенты реально заполняли</h3></div>
+            <div class="text">
+              <p>Готовые форматы брифа не работали ни в одном виде: обычную Google-форму клиенты игнорировали и присылали файлы в чат со словами «делайте что хотите», совместное заполнение на встрече съедало часы, а тяжёлые Figma-макеты заранее дизайнер готовил неделями — и упирался в то, что клиент не мог ответить на глубокие вопросы о дизайне.</p>
+              <p>Предположила, что сработает то, что у клиента и так перед глазами каждый день, — привычный, не дизайнерский формат без лишних шагов и терминов.</p>
+              <p>Собрала простую Google-таблицу со ссылками на материалы, добавила лёгкий визуальный бриф — «что вам откликается / что нет» по тону, цвету, композиции — и вкладку с правками, куда перенесла весь поток, раньше живший только в переписке.</p>
+              <div class="visual-ph">
+                <b>Мокап брифа</b>
+                Google-таблица: вкладки «Материалы», «Дизайн-бриф», «Правки», «Важные вопросы» — оригинал закрытый, нужно собрать заново
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-grid">
+            <div class="side"><h3 class="t-h3">Дала клиенту выбор вместо одной попытки</h3></div>
+            <div class="text">
+              <p>Дизайнеры по инерции делали сразу готовый сайт — ресурс уходил в никуда, а показать клиенту выбор было нечем. Предложила обратное: к показу готовить не одну версию, а три коротких варианта по 3–5 экранов, вместе с продуманной структурой сайта. Это оказалось простым и при этом самым весомым решением из всех — именно оно сильнее всего сдвинуло процент непопаданий вниз.</p>
+              <div class="visual-ph">
+                <b>Три драфта</b>
+                3 коротких варианта главной страницы side-by-side — в противовес «было» (одна готовая версия)
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-grid">
+            <div class="side"><h3 class="t-h3">Прокачала команду и добавила ей глубины</h3></div>
+            <div class="text">
+              <p>Три версии вместо одной обнажили то, что было скрыто раньше: команде физически не хватало квалификации, чтобы предлагать разные решения, а сами решения часто брались «из головы», без аргументации.</p>
+              <p>Предположила, что системное обучение и привычка опираться не только на референсы клиента, но и на его конкурентов, поднимут глубину решений и снимут часть вопросов от клиентов.</p>
+              <p>Подключила менторов и курсы, завела еженедельный разбор работ — дизайнеры начали с присутствия на первых двух встречах с клиентом и постепенно дошли до того, что сами отстаивают свои решения. Добавила в подготовку к драфтам ещё один шаг: смотреть не только на референсы клиента, но и на его прямых конкурентов.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-grid">
+            <div class="side"><h3 class="t-h3">Прописала правила игры</h3></div>
+            <div class="text">
+              <p>Собрала полный регламент — от передачи клиента из продаж до публикации сайта, с ролями аккаунт-менеджера, дизайн-инженера и контент-менеджера на каждом шаге и сроком в 10 рабочих дней на сборку. Внутри того же регламента пересобрала и то, как клиенты распределяются между людьми команды: вместо «кто свободен» — по сильным сторонам каждого, с балансом загрузки и осознанной защитой от выгорания, где каждый пятый проект — намеренно другой.</p>
+              <div class="visual-ph key">
+                <b>Ключевой визуал кейса</b>
+                Схема регламента по шагам 1–7 с ролями-эмодзи: 💰 продажи, 🐸 аккаунт-менеджер, 🐰 дизайн-инженер, 🐥 контент-менеджер, 🏠 клиент
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-grid">
+            <div class="side"><h3 class="t-h3">Не отпустила клиента после сдачи — и превратила заботу в доход</h3></div>
+            <div class="text">
+              <p>Внимание к клиенту обрывалось вместе с публикацией сайта. Часть клиентов этим пользовалась — перекладывала на команду бесплатную ответственность за сайт, жаловалась «что-то сломалось» там, где просто не соблюдали заложенные принципы дизайна.</p>
+              <p>Предположила, что если формализовать заботу о клиенте после сдачи и сделать её платной, утечка ресурса превратится в источник дохода, а отношения с клиентом не оборвутся вместе с запуском сайта.</p>
+              <p>Ввела встречу-онбординг сразу после запуска и ретроспективу через месяц, а также новую услугу — расширенную поддержку: клиент платит ежемесячно, а взамен получает обновления, редизайн, новые блоки и страницы.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-grid">
+            <div class="side"><h3 class="t-h3">Сделала путь клиента видимым</h3></div>
+            <div class="text">
+              <p>Для каждого клиента теперь строится персональный календарь — наглядный таймлайн от даты создания чата: по неделям видно, что происходит на каждом этапе, когда ждём материалы, где заложен буфер на правки. Клиент видит не абстрактное «скоро», а конкретную картину своего проекта — и перестаёт переспрашивать, на каком мы сейчас этапе.</p>
+              <div class="visual-ph">
+                <b>Мокап таймлайна</b>
+                Персональный календарь клиента по неделям — оригинал закрытый, внутренний документ компании
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="intro-band"><div class="wrap results-card">
+        <div class="chapter chapter--major">
+          <div class="chapter-grid">
+            <div class="side"><h3 class="t-h3">Что получилось</h3></div>
+            <div class="text">
+              <div class="results">
+                <div class="result-item">
+                  <p class="stat__num result-item__num">24.5 → 13.7 дня</p>
+                  <p class="stat__cap result-item__cap">Time-to-market за 4 месяца — продолжил снижаться до 12 дней уже после завершения акта</p>
+                  <div class="visual-ph"><b>График</b>Line-график динамики time-to-market по месяцам</div>
+                </div>
+                <div class="result-item">
+                  <p class="stat__num result-item__num">6 → 15–19</p>
+                  <p class="stat__cap result-item__cap">запусков в месяц, той же командой, без расширения штата</p>
+                  <div class="visual-ph"><b>График</b>Line-график динамики запусков в месяц</div>
+                </div>
+                <div class="result-item">
+                  <p class="stat__num result-item__num">60% → 18%</p>
+                  <p class="stat__cap result-item__cap">непопаданий с первого показа — почти точное попадание в цель 10–15%</p>
+                  <div class="visual-ph"><b>График</b>Line-график динамики непопаданий</div>
+                </div>
+              </div>
+              <ul class="goals" style="margin-top:28px">
+                <li>Прозрачность для клиента снизилась до <strong>32%</strong> — не долетела до целевых 20% в рамках этого акта, доработала её позже через синхронизацию с продажами (см. Акт 3)</li>
+                <li>Сроки по разработке самой системы — <strong>соблюдены</strong></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="next-dept"><button class="next-link" data-goto="act2">Следующий отдел: Разработка →</button></div>
+      </div></div>
+      </section>
+
+      <!-- ============ АКТ 2 ============ -->
+      <section class="tab-panel" id="act2" hidden>
+        <div class="intro-band"><div class="wrap intro-card">
+        <div class="act-head">
+          <h2>Фидбек клиента → разработка</h2>
+        </div>
+
+        <div class="chapter chapter--major">
+          <div class="chapter-grid">
+            <div class="side"><h3 class="t-h3">Зачем переделывать</h3></div>
+            <div class="text">
+              <p>Запросы от клиентов на новый функционал раньше решались по одному сценарию: либо клиент сам ставил ультиматум — «не будет этого, уйду», — либо начальница Сексесс-отдела врывалась с «все бросаем всё, иначе потеряем клиента». Backlog разработки жил своей жизнью, приоритеты в нём решал продакт-менеджер, а клиентские запросы в него почти не попадали.</p>
+              <p>Технически это выглядело так: в Яндекс.Трекере была очередь «запросы от клиентов», куда аккаунт-менеджеры после встреч просто писали в свободной форме — «клиент хочет что-то типа такого». Проджект-менеджер время от времени просматривал её и шёл уточнять, что это вообще за задача. Дальше постановки дело почти никогда не доходило: <strong>только 6–7% запросов реализовывались в тот же месяц</strong>, даже самые критичные.</p>
+              <div class="visual-ph">
+              <b>Иллюстрация «было»</b>
+              Хаотичная очередь задач в трекере без структуры — контраст с ботом-контуром ниже
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-grid">
+            <div class="side"><h3 class="t-h3">Понимание задачи</h3></div>
+            <div class="text">
+              <div class="intro-list">
+              <div><p class="label">Потребности пользователя</p><p>Получать по своему запросу не тишину, а понятный статус или срок — и видеть, что платформа его действительно услышала.</p></div>
+              <div><p class="label">Задачи бизнеса</p><p>Увеличить долю реализованных запросов, сократить время ответа до суток и повысить доверие и лояльность клиентов к платформе.</p></div>
+              <div><p class="label">Аудитория</p><p>Клиенты платформы, которые присылают запросы на новый функционал, и команда разработки с проджект-менеджером, которые их обрабатывают.</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-grid">
+            <div class="side"><h3 class="t-h3">Критерии успеха после запуска</h3></div>
+            <div class="text">
+              <ul class="goals">
+              <li>Сократить <strong>время ответа на запрос до 1 суток</strong> — не реализацию, а именно ответ со статусом или сроком</li>
+              <li>Увеличить <strong>долю реализованных запросов</strong> от базовых ~6–7%</li>
+              <li>Добиться, чтобы <strong>бо́льшая часть клиентской базы</strong> каждый месяц получала хотя бы один закрытый запрос</li>
+              <li>Увеличить <strong>доверие и лояльность</strong> клиентов к платформе</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-grid">
+            <div class="side"><h3 class="t-h3">Моя роль</h3></div>
+            <div class="text">
+              <p>Выстроила процесс сбора и приоритизации клиентских запросов — от формата заявки и кастомной формулы приоритета до Telegram-бота с алертами, синхронизируя работу аккаунт-менеджеров, проджект-менеджера и разработки.</p>
+            </div>
+          </div>
+        </div>
+      </div></div>
+
+      <div class="wrap solution">
+        <div class="chapter chapter--major">
+          <div class="chapter-grid"><div class="side"><h3 class="t-h3">Решение</h3></div></div>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-grid">
+            <div class="side"><h3 class="t-h3">Расчистила бэклог и научила команду спрашивать правильно</h3></div>
+            <div class="text">
+              <p>Начала с того, что подняла всю ветку запросов, объединила повторяющиеся и убрала уже решённые — чтобы увидеть, что их вообще объединяет. Дальше сделала сбор запросов не случайным, а системным: в уже существующую ежемесячную встречу-ретроспективу с клиентом добавила обязательный вопрос — какого функционала не хватило. Для клиентов на первом месяце самостоятельной работы это оказался особенно точный вопрос: он разом давал и список пожеланий, и аналитику слабых мест платформы.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-grid">
+            <div class="side"><h3 class="t-h3">Нашла формат заявки, который реально помогал разработке</h3></div>
+            <div class="text">
+              <p>Посмотрела, какие задачи обычно ставит продакт-менеджер, обсудила с проджект-менеджером, что ему важно знать на входе, и изучила прошлые случаи недопонимания с разработкой. Делала шаблон вместе с проджект-менеджером — его первая версия оказалась настолько большой, что я сразу поняла: «это никто никогда не заполнит». Нашли золотую середину, сверяясь с аккаунт-менеджерами, сколько времени они реально готовы на это тратить. В итоге шаблон свёлся к пяти полям — даже поверхностно заполненный, он уже ощутимо улучшал передачу задачи.</p>
+              <div class="visual-ph">
+                <b>Мокап заявки</b>
+                Карточка с 5 полями: проблема, зачем клиенту, решение клиента, решение аккаунт-менеджера, материалы/референсы
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-grid">
+            <div class="side"><h3 class="t-h3">Разложила время разработки по полочкам</h3></div>
+            <div class="text">
+              <p>Чтобы понять, сколько разработка реально может взять на себя, оценила её текущую загрузку — и заложила процент на неизбежные форс-мажоры. Предложила делить время разработки так: 15% — срочные задачи, 30% — фичи от продакт-менеджера, 40% — запросы клиентов, 15% — менеджерская работа. В процентах это звучало красиво, но чтобы заработало на практике, перевела их в реальные часы — посчитала доступное время, вычла буфер на отвлечения, остаток распределила понедельно. Ввела еженедельный большой созвон с проджект-менеджером в начале недели и сама вела передачу задач в разработку.</p>
+              <div class="visual-ph">
+                <b>Диаграмма-пирог</b>
+                Распределение времени разработки: 15% срочные задачи / 30% фичи продакта / 40% запросы клиентов / 15% менеджерская работа
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-grid">
+            <div class="side"><h3 class="t-h3">Нашла свою формулу приоритета</h3></div>
+            <div class="text">
+              <p>Протестировала Value vs Effort matrix и MoSCoW — не прижились. Остановились на кастомной версии RICE: вместо классического Impact — показатель, который ближе к ценности конкретного клиента для компании. Формула складывала: насколько приоритетен клиент, насколько трудозатратна задача и скольким клиентам она даст пользу.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-grid">
+            <div class="side"><h3 class="t-h3">Собрала процесс в единый контур с ботом-будильником</h3></div>
+            <div class="text">
+              <p>Чтобы уложиться в сутки на ответ, завела Telegram-бота, который присылает алерт на любое изменение задачи в общий чат — аккаунт-менеджеры, разработчики, отвечающие за оценку, и проджект-менеджер. Как только появляется новая задача, проджект-менеджер смотрит её RICE-скор: если он ниже порога — к разработке за оценкой не идёт, просто фиксирует «ниже приоритета, в ближайший месяц вряд ли» и возвращается к ней на еженедельном разборе; если выше — идёт за оценкой сроков, уточняет критерии, и клиент уже получает не отписку, а реальный срок.</p>
+              <div class="visual-ph">
+                <b>Мокап Telegram-бота</b>
+                Чат с алертами об изменении задачи — вводная и статусные сообщения
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="intro-band"><div class="wrap results-card">
+        <div class="chapter chapter--major">
+          <div class="chapter-grid">
+            <div class="side"><h3 class="t-h3">Что получилось</h3></div>
+            <div class="text">
+              <div class="results">
+                <div class="result-item">
+                  <p class="stat__num result-item__num">≤ 24 ч</p>
+                  <p class="stat__cap result-item__cap">время ответа на запрос (было — дни)</p>
+                  <div class="visual-ph"><b>График</b>Before/after-бар: время ответа на запрос</div>
+                </div>
+                <div class="result-item">
+                  <p class="stat__num result-item__num">6–7% → ~30–40%</p>
+                  <p class="stat__cap result-item__cap">доля реализованных запросов в тот же месяц (до 30 рабочих часов трудозатрат)</p>
+                  <div class="visual-ph"><b>График</b>Before/after-бар: доля реализованных запросов</div>
+                </div>
+              </div>
+              <ul class="goals" style="margin-top:28px">
+                <li>Крупные запросы компания называет уже не «запросами», а «фичами», и в метрику реализации они не входят</li>
+                <li><strong>Вовлечённость клиентов</strong> выросла заметно — запросы стали приходить системно, клиенты ждали ежемесячных встреч или сами писали в чат с идеями. Отношения сместились ближе к партнёрству, чем к обслуживанию</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="next-dept"><button class="next-link" data-goto="act3">Следующий отдел: Продажи →</button></div>
+      </div></div>
+      </section>
+
+      <!-- ============ АКТ 3 ============ -->
+      <section class="tab-panel" id="act3" hidden>
+        <div class="intro-band"><div class="wrap intro-card">
+        <div class="act-head">
+          <h2>Дизайн на стыке отделов</h2>
+        </div>
+
+        <div class="chapter chapter--major">
+          <div class="chapter-grid">
+            <div class="side"><h3 class="t-h3">Зачем переделывать</h3></div>
+            <div class="text">
+              <p>Эта история — прямое продолжение первого акта. При передаче клиента из продаж в Сексесс-отдел многое просто не проговаривалось: либо информация о клиенте расходилась между отделами, либо продажи обещали клиенту одно, а в Сексесс-отделе он встречался с другим. Добавляло проблем и то, что у многих входящих клиентов был низкий визуальный язык — и материалы, с которыми продажи выходили к клиенту на входе, не совпадали с тем, что он получал по факту. По сути, моей задачей здесь было состыковать два отдела, которые говорили на разных языках, — своей инициативой, не входившей в прямые обязанности.</p>
+              <div class="visual-ph">
+              <b>Иллюстрация «было»</b>
+              Два отдела с расходящимися контекстами о клиенте — два разных «пузыря» информации
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-grid">
+            <div class="side"><h3 class="t-h3">Понимание задачи</h3></div>
+            <div class="text">
+              <div class="intro-list">
+              <div><p class="label">Потребности пользователя</p><p>Чтобы ожидания, с которыми клиент пришёл через продажи, совпадали с тем, что он получает дальше — без сюрпризов по срокам, материалам и визуальному языку.</p></div>
+              <div><p class="label">Задачи бизнеса</p><p>Снизить отток клиентов и сделать процесс прозрачным для клиента уже на этапе продаж, а не только после передачи в Сексесс-отдел.</p></div>
+              <div><p class="label">Аудитория</p><p>Входящие клиенты на этапе продаж и два отдела — продажи и Сексесс-отдел, — которым нужно сверить контекст о клиенте.</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-grid">
+            <div class="side"><h3 class="t-h3">Критерии успеха после запуска</h3></div>
+            <div class="text">
+              <ul class="goals">
+              <li>Клиент видит картину своего проекта уже на этапе продаж, а не только после передачи в Сексесс-отдел</li>
+              <li>Меньше «холодных» клиентов доходит до стадии сборки — ранний бриф, чек-лист материалов и демо-сайт работают естественным фильтром</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-grid">
+            <div class="side"><h3 class="t-h3">Моя роль</h3></div>
+            <div class="text">
+              <p>Своей инициативой, не входившей в прямые обязанности, состыковала два отдела, которые говорили на разных языках: синхронизировала таймлайн и бриф с продажами, подготовила референсы под типажи клиентов и демо-сайт, наладила передачу контекста между отделами.</p>
+            </div>
+          </div>
+        </div>
+      </div></div>
+
+      <div class="wrap solution">
+        <div class="chapter chapter--major">
+          <div class="chapter-grid"><div class="side"><h3 class="t-h3">Решение</h3></div></div>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-grid">
+            <div class="side"><h3 class="t-h3">Подготовила клиента заранее</h3></div>
+            <div class="text">
+              <p>Тот же визуальный таймлайн, что я собрала для Сексесс-отдела в первом акте, синхронизировала и с продажами — только без точных дат, приблизительным графиком, который продажи могут показать клиенту ещё на входе. Бриф с материалами теперь уходит клиенту уже на этапе оплаты, а не когда он доходит до Сексесс-отдела. А чтобы клиент не удивлялся позже объёму запрашиваемых материалов, подготовила с продажами чек-лист: что ожидается и чем грозит отсутствие тех или иных файлов.</p>
+              <div class="visual-ph">
+                <b>Мокап таймлайна + чек-листа</b>
+                Приблизительный график для продаж (без дат) и чек-лист ожидаемых материалов
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-grid">
+            <div class="side"><h3 class="t-h3">Говорила с каждым типом клиента на его языке</h3></div>
+            <div class="text">
+              <p>Разделила целевую аудиторию на типажи и под каждый подготовила подборку референсов — сайты других наших клиентов, которые лучше всего резонируют именно с этим типом. Протестировали и более смелую гипотезу: готовить дизайнерам один экран заранее для клиента, который только начал общаться с нами, — выстрелило не всё, но полезные паттерны сохранили: для крупных клиентов продажи теперь могут «удивить» на второй встрече несколькими готовыми экранами. Отдельно вместе с продажами собрали демо-сайт — вымышленного клиента, в который поместили вообще весь функционал конструктора, и обновляли его каждый месяц вслед за платформой, чтобы показывать реальные возможности, а не рассказывать на словах.</p>
+              <div class="visual-ph">
+                <b>Скриншот демо-сайта</b>
+                Демо-сайт «полного фарша», вымышленный клиент — лучше всего подойдёт реальный скриншот, если его можно показать (внутренний проект, не клиентские данные)
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-grid">
+            <div class="side"><h3 class="t-h3">Передала контекст между отделами</h3></div>
+            <div class="text">
+              <p>Последним штрихом стало то, что продажи при передаче клиента в Сексесс-отдел теперь садятся и дают короткую сводку: «этот клиент не требователен, много времени не нужно» или «этот — очень дотошный, нужен особый подход». То, что раньше терялось между отделами, стало просто ещё одной строчкой в передаче.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="intro-band"><div class="wrap results-card">
+        <div class="chapter chapter--major">
+          <div class="chapter-grid">
+            <div class="side"><h3 class="t-h3">Что получилось</h3></div>
+            <div class="text">
+              <div class="results">
+                <div class="result-item">
+                  <p class="stat__num result-item__num">32% → ~10%</p>
+                  <p class="stat__cap result-item__cap">прозрачность для клиента — метрика тянется из Акта 1, добита здесь</p>
+                  <div class="visual-ph"><b>График</b>Before/after-бар: прозрачность для клиента</div>
+                </div>
+                <div class="result-item">
+                  <p class="stat__num result-item__num">1 из 60</p>
+                  <p class="stat__cap result-item__cap">отток клиентов</p>
+                  <div class="visual-ph"><b>График</b>Before/after-бар: отток клиентов</div>
+                </div>
+              </div>
+              <ul class="goals" style="margin-top:28px">
+                <li><strong>Прозрачность для клиента</strong> — клиент видит картину своего проекта уже на этапе продаж, а не только после передачи в Сексесс-отдел</li>
+                <li><strong>Отток клиентов</strong> снизился — ранний бриф, чек-лист материалов и демо-сайт стали естественным фильтром: меньше «холодных» клиентов доходит до стадии сборки</li>
+              </ul>
+              <p class="stat-note">Жёстких метрик по самому отделу продаж нет — это была скорее работа на стыковку двух отделов, чем история с измеримым результатом. На ощущениях: заметно меньше клиентов, возмущавшихся задержками сборки из-за нехватки материалов; подготовленность клиентов, доходящих из продаж в Сексесс-отдел, ощутимо выросла; вовлечённость клиентов в работу с компанией выросла кратно.</p>
+            </div>
+          </div>
+        </div>
+      </div></div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- ============ ФИНАЛ ============ -->
+  <section class="section-grid wrap">
+    <div class="side"><h2 class="t-h2">Три акта, одна система</h2></div>
+    <div class="body">
+      <p>Вся эта операционная работа была подчинена одному: помочь стартапу вырасти в настоящую компанию — не остаться растущим хаосом, а стать системой, которая выдерживает масштаб.</p>
+      <div class="final-grid">
+        <div class="final-card">
+          <h3 class="t-h3">Что объединяет все три акта</h3>
+          <p class="t-big">Каждый следующий акт вырастал из слепого пятна предыдущего: регламент ведения клиента обнажил разрыв с разработкой, а он — разрыв с продажами на входе.</p>
+        </div>
+        <div class="final-card">
+          <h3 class="t-h3">Что сделала бы<br>иначе</h3>
+          <p class="t-big">Начинала бы не последовательно, отдел за отделом, а параллельно — с самого начала работая с Сексесс-отделом и продажами вместе. Разбитая на части работа не давала видеть все проблемы в совокупности.</p>
+        </div>
+        <div class="final-card">
+          <h3 class="t-h3">Чем горжусь больше всего</h3>
+          <p class="t-big">Тем, что процессы выдержали испытание временем — масштабирование компании, смену состава команды и даже уход самого автора. Значит, это были не костыли под конкретного человека, а настоящая система.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer wrap">
+    <span>Процессы команды · Ида.Лайт · 2025–2026</span>
+    <a class="t-small" href="index.html">← на главную</a>
+  </footer>
+
+  <div class="progress-ticks" id="progress-ticks" aria-hidden="true"></div>
+
+  <script>
+    (function(){
+      var btns = Array.prototype.slice.call(document.querySelectorAll('.tab-btn'));
+      var panels = { act1: document.getElementById('act1'), act2: document.getElementById('act2'), act3: document.getElementById('act3') };
+      var anchor = document.getElementById('act-anchor');
+      var ticksEl = document.getElementById('progress-ticks');
+      var observer = null;
+
+      function buildTicks(id){
+        var panel = panels[id];
+        var chapters = Array.prototype.slice.call(panel.querySelectorAll('.chapter'));
+        ticksEl.innerHTML = '';
+        chapters.forEach(function(){
+          var t = document.createElement('div');
+          t.className = 'tick';
+          ticksEl.appendChild(t);
+        });
+        var ticks = Array.prototype.slice.call(ticksEl.querySelectorAll('.tick'));
+        if (ticks.length) ticks[0].classList.add('is-active');
+        if (observer) observer.disconnect();
+        if ('IntersectionObserver' in window) {
+          observer = new IntersectionObserver(function(entries){
+            entries.forEach(function(entry){
+              if (!entry.isIntersecting) return;
+              var idx = chapters.indexOf(entry.target);
+              if (idx < 0) return;
+              ticks.forEach(function(t, i){ t.classList.toggle('is-active', i === idx); });
+            });
+          }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+          chapters.forEach(function(ch){ observer.observe(ch); });
+        }
+      }
+
+      function goto(id){
+        Object.keys(panels).forEach(function(k){ panels[k].hidden = (k !== id); });
+        btns.forEach(function(b, i){ var on = b.getAttribute('data-tab') === id; b.setAttribute('aria-selected', on ? 'true' : 'false'); if (on) b.parentNode.style.setProperty('--i', i); });
+        try{ anchor.scrollIntoView({behavior:'smooth', block:'start'}); }catch(e){ anchor.scrollIntoView(); }
+        buildTicks(id);
+      }
+      btns.forEach(function(b){ b.addEventListener('click', function(){ goto(b.getAttribute('data-tab')); }); });
+      Array.prototype.slice.call(document.querySelectorAll('[data-goto]')).forEach(function(b){
+        b.addEventListener('click', function(){ goto(b.getAttribute('data-goto')); });
+      });
+
+      buildTicks('act1');
+    })();
+  </script>
+</body>
+</html>

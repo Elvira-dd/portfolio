@@ -1,0 +1,533 @@
+/* =========================================================
+   Портфолио — Эльвира Галиева
+   Дизайн-система: CoFo Sans, серый #6B6B6B, скругления 10 / 16 / 20 px
+   ========================================================= */
+
+/* ---------- Шрифт CoFo Sans ----------
+   Файлы лежат в папке fonts/. Есть начертания Regular 400, Medium 500, Bold 700.
+   Если файлы не загрузились — запасной Inter. */
+@font-face {
+  font-family: "CoFo Sans";
+  src: url("fonts/CoFoSans-Regular.woff") format("woff");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "CoFo Sans";
+  src: url("fonts/CoFoSans-Medium.woff") format("woff");
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "CoFo Sans";
+  src: url("fonts/CoFoSans-Bold.woff") format("woff");
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+
+:root {
+  --black: #000;
+  --text: #111;
+  --gray: #6B6B6B;          /* вторичный текст */
+  --gray-label: #A8A8A8;    /* подписи разделов */
+  --placeholder: #E5E5E5;   /* серые плейсхолдеры */
+  --row-bg: #F9F9F9;        /* фон строк опыта/обучения */
+  --tag-bg: #F0F0F0;
+  --accent: #FF0000;        /* навык при наведении */
+  --white: #fff;
+
+  --r-s: 10px;   /* кнопки, теги */
+  --r-m: 16px;   /* строки, логотипы, тултип */
+  --r-l: 20px;   /* большие обложки */
+
+  --max: 1120px;
+  --gutter: 80px;
+
+  /* ---------- Типографическая шкала ----------
+     размер / межстрочный / насыщенность / трекинг */
+  --h1-size: 73px;  --h1-lh: 0.97; --h1-w: 500; --h1-ls: -0.02em;
+  --h2-size: 32px;  --h2-lh: 1.2;  --h2-w: 700; --h2-ls: -0.02em;
+  --h3-size: 22px;  --h3-lh: 1.05; --h3-w: 600; --h3-ls: -0.02em;
+  --h4-size: 18px;  --h4-lh: 1.35; --h4-w: 500; --h4-ls: -0.02em;
+
+  --big-size:    16px; --big-lh:    1.05; --big-w: 500; --big-ls: -0.02em;
+  --normal-size: 16px; --normal-lh: 1.4;
+  --small-size:  14px; --small-lh:  1.35;
+  --label-size:  14px; --label-lh:  1.35;
+  --text-w: 400;          /* обычный текст */
+  --text-w-medium: 500;   /* кнопки, теги, акценты */
+  --label-ls: -0.01em;     /* подписи разделов */
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--white);
+  color: var(--text);
+  font-family: "CoFo Sans", "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-wrap: break-word;
+}
+
+h1, h2, p { margin: 0; }
+a { color: inherit; text-decoration: none; }
+
+/* =========================================================
+   ТИПОГРАФИКА — единственное место, где задаются шрифты.
+   Классы .t-* можно вешать на новые элементы.
+   ========================================================= */
+
+/* H1 — имя и роль в шапке */
+.t-h1 {
+  font-size: var(--h1-size); line-height: var(--h1-lh);
+  font-weight: var(--h1-w); letter-spacing: var(--h1-ls);
+}
+/* H2 — заголовки кейсов, цифры итогов */
+.t-h2, .case__title, .stat__num {
+  font-size: var(--h2-size); line-height: var(--h2-lh);
+  font-weight: var(--h2-w); letter-spacing: var(--h2-ls);
+}
+/* H3 — компании, вузы, список навыков, текст контактов */
+.t-h3, .job__company, .edu__name, .skills, .contacts__text {
+  font-size: var(--h3-size); line-height: var(--h3-lh);
+  font-weight: var(--h3-w); letter-spacing: var(--h3-ls);
+}
+/* Блок «Кратко» — крупнее H3 в ~1.5 раза, часть текста затемнена, часть серая */
+.about__text {
+  font-size: calc(var(--h3-size) * 1.3); line-height: 1.05;
+  font-weight: var(--h3-w); letter-spacing: var(--h3-ls);
+}
+.about__text--strong { color: var(--black); }
+.about__text--muted { color: #B3B3B3; }
+/* H4 — должности и даты, программы обучения */
+.t-h4, .job__main, .edu__main {
+  font-size: var(--h4-size); line-height: var(--h4-lh);
+  font-weight: var(--h4-w); letter-spacing: var(--h4-ls);
+}
+/* Big text — основной текст, описания кейсов */
+body, .t-big, .case__desc {
+  font-size: var(--big-size); line-height: var(--big-lh);
+  font-weight: var(--big-w); letter-spacing: var(--big-ls);
+}
+/* Normal text — шапка, кнопки, теги, подписи в обучении */
+.t-normal, .topbar__meta, .btn, .tag, .edu__sub {
+  font-size: var(--normal-size); line-height: var(--normal-lh);
+  font-weight: var(--text-w); letter-spacing: 0;
+}
+.btn, .tag { font-weight: var(--text-w-medium); }
+/* Small text — подписи под цифрами, детали опыта, годы, футер */
+.t-small, .stat__cap, .job__sub, .edu__sub--sm, .footer, .media__hint, .skill-tip__title {
+  font-size: var(--small-size); line-height: var(--small-lh);
+  font-weight: var(--text-w); letter-spacing: 0;
+}
+.skill-tip__title, .media__hint b { font-weight: var(--text-w-medium); }
+/* Label — Small строчными: «Кратко», «Итоги», «Опыт работы»… */
+.t-label, .label {
+  font-size: var(--label-size); line-height: var(--label-lh);
+  font-weight: 600; letter-spacing: var(--label-ls); text-transform: lowercase;
+}
+
+/* =========================================================
+   Компоненты (без шрифтовых свойств)
+   ========================================================= */
+
+.wrap {
+  width: 100%;
+  max-width: calc(var(--max) + var(--gutter) * 2);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.label { color: var(--gray-label); margin-bottom: 16px; }
+
+/* ---------- Кнопки и теги ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 37px;
+  padding: 0 20px;
+  border-radius: var(--r-s);
+  white-space: nowrap;
+  transition: opacity .15s, background .15s, color .15s;
+}
+.btn--dark { background: var(--black); color: var(--white); border: 1px solid var(--black); }
+.btn--dark:hover { opacity: .8; }
+.btn--outline { background: var(--white); color: var(--black); border: 1px solid var(--black); }
+.btn--outline:hover { background: var(--black); color: var(--white); }
+
+.tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.tag {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 20px;
+  border-radius: var(--r-s);
+  background: var(--tag-bg);
+  white-space: nowrap;
+}
+
+/* ---------- Плейсхолдеры под фото ---------- */
+.media {
+  position: relative;
+  overflow: hidden;
+  background: var(--placeholder);
+}
+.media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.media.has-image { background: transparent; }
+/* подсказка с именем файла — видна, пока картинки нет */
+.media__hint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 12px;
+  text-align: center;
+  color: #9A9A9A;
+  pointer-events: none;
+}
+.media__hint b { color: #7A7A7A; }
+.media--circle { border-radius: 50%; }
+
+/* ---------- Первый экран (hero-full) ---------- */
+.hero-full {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  min-height: 560px;
+  max-height: 980px;
+  overflow: hidden;
+  background: var(--placeholder);
+  /* «штора», которая поднимается снизу вверх при загрузке страницы */
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path .7s cubic-bezier(.22,1,.36,1);
+}
+.hero-full.is-revealed { clip-path: inset(0 0 0 0); }
+
+.hero-full__media {
+  position: absolute;
+  inset: 0;
+  border-radius: 0;
+}
+.hero-full__media img {
+  object-position: center 20%;
+  opacity: 0;
+  transform: scale(1.04) translateY(22px);
+  transition: opacity .9s ease, transform 1s cubic-bezier(.22,1,.36,1);
+  transition-delay: .15s;
+}
+.hero-full.is-revealed .hero-full__media img {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+.hero-full__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(to top, rgba(0,0,0,.82) 0%, rgba(0,0,0,.4) 30%, rgba(0,0,0,0) 58%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1s ease;
+  transition-delay: .2s;
+}
+.hero-full.is-revealed .hero-full__overlay { opacity: 1; }
+.hero-full__top {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 33px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity .6s ease, transform .6s ease;
+  transition-delay: .45s;
+}
+.hero-full.is-revealed .hero-full__top {
+  opacity: 1;
+  transform: translateY(0);
+}
+.hero-full__name,
+.hero-full__cv {
+  color: var(--black);
+  font-size: var(--normal-size);
+  font-weight: var(--text-w-medium);
+  text-transform: lowercase;
+  transition: opacity .15s;
+}
+.hero-full__name:hover,
+.hero-full__cv:hover { opacity: .55; }
+.hero-full__title-wrap {
+  position: absolute;
+  left: 0; right: 0; bottom: 40px;
+  z-index: 2;
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity .7s ease, transform .8s cubic-bezier(.22,1,.36,1);
+  transition-delay: .55s;
+}
+.hero-full.is-revealed .hero-full__title-wrap {
+  opacity: 1;
+  transform: translateY(0);
+}
+.hero-full__title {
+  margin: 0;
+  color: var(--white);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: .98;
+  text-transform: lowercase;
+  white-space: nowrap;
+  /* точный размер высчитывается в script.js (fitHeroTitle), чтобы строка занимала всю ширину */
+  font-size: 104px;
+}
+
+/* ---------- Прелоадер ---------- */
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--white);
+  transition: opacity .45s ease;
+}
+.preloader.is-hidden { opacity: 0; pointer-events: none; }
+.preloader__text {
+  position: relative;
+  margin: 0;
+  font-size: var(--normal-size);
+  font-weight: var(--text-w-medium);
+  letter-spacing: 0;
+  text-transform: lowercase;
+  white-space: nowrap;
+}
+.preloader__text-base { color: #D9D9D9; }
+.preloader__text-fill {
+  position: absolute;
+  left: 0; top: 0;
+  color: var(--black);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 1.1s cubic-bezier(.65,0,.35,1);
+}
+.preloader__text-fill.is-filled { clip-path: inset(0 0 0 0); }
+
+/* страница не скроллится, пока открыт прелоадер */
+body.intro-locked { overflow: hidden; }
+
+/* без анимации для тех, кто попросил её не показывать */
+@media (prefers-reduced-motion: reduce) {
+  .preloader { display: none; }
+  .hero-full,
+  .hero-full__media img,
+  .hero-full__overlay,
+  .hero-full__top,
+  .hero-full__title-wrap {
+    clip-path: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ---------- Кратко ---------- */
+.about { padding-top: 120px; }
+.about__grid {
+  display: grid;
+  grid-template-columns: 512px 1fr;
+  gap: 60px;
+}
+
+/* ---------- Кейсы ---------- */
+.cases {
+  display: flex;
+  flex-direction: column;
+  gap: 102px;
+  padding-top: 188px;
+}
+.case {
+  display: grid;
+  grid-template-columns: 512px 1fr;
+  gap: 60px;
+  align-items: stretch;
+}
+.case__info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 40px;
+  padding-top: 18px;
+}
+.case__title { color: var(--black); margin-bottom: 18px; }
+.case__desc { max-width: 470px; color: var(--text); }
+.case__media {
+  min-height: 465px;
+  border-radius: var(--r-l);
+}
+.stats {
+  display: grid;
+  grid-template-columns: 236px 1fr;
+  gap: 2px;
+  margin-bottom: 30px;
+}
+.stat__num { color: var(--black); margin-bottom: 4px; }
+.stat__cap { color: var(--gray); max-width: 190px; }
+.case__foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+/* ---------- Блоки опыт / навыки / обучение ---------- */
+.block { padding-top: 88px; }
+.rows { display: flex; flex-direction: column; gap: 16px; }
+
+.job {
+  display: grid;
+  grid-template-columns: 90px 1fr 284px 388px;
+  align-items: center;
+  gap: 0 34px;
+  min-height: 92px;
+  margin: 0 8px;
+  background: var(--row-bg);
+  border-radius: var(--r-m);
+  padding-right: 20px;
+}
+.job__logo {
+  width: 90px;
+  height: 90px;
+  border-radius: var(--r-m);
+  background: #E0E0E0;
+}
+.job__company, .job__main { color: var(--black); }
+.job__sub { color: var(--gray); margin-top: 6px; }
+
+.block:has(.skills) { padding-top: 150px; }
+.skills { color: var(--black); }
+.skill { transition: color .15s; white-space: nowrap; }
+.skill--case { cursor: pointer; }
+.skill--case:hover,
+.skill--case:focus-visible { color: var(--accent); outline: none; text-decoration: underline; text-underline-offset: 3px; }
+
+.edu {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 0 30px;
+  min-height: 92px;
+  margin-left: 7px;
+  padding: 18px 30px;
+  background: var(--row-bg);
+  border-radius: var(--r-m);
+}
+.edu > div:last-child { padding-left: 5px; }
+.edu__name, .edu__main { color: var(--black); }
+.edu__sub { color: var(--gray); margin-top: 2px; }
+.edu__sub--sm { margin-top: 8px; }
+
+/* ---------- Контакты ---------- */
+.contacts { padding-top: 180px; }
+.contacts__grid {
+  display: grid;
+  grid-template-columns: 512px 1fr;
+  gap: 60px;
+}
+.contacts__text { color: #1A1A1A; max-width: 440px; }
+.contacts__btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  max-width: 380px;
+  padding-top: 6px;
+}
+
+/* ---------- Футер ---------- */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 200px;
+  padding-bottom: 40px;
+  color: var(--gray-label);
+}
+
+/* ---------- Превью кейса у навыка ---------- */
+.skill-tip {
+  position: absolute;
+  z-index: 50;
+  width: 306px;
+  padding: 12px;
+  background: var(--white);
+  border: 1px solid #E2E2E2;
+  border-radius: var(--r-m);
+  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+  opacity: 0;
+  transform: translateY(4px);
+  pointer-events: none;
+  transition: opacity .15s, transform .15s;
+}
+.skill-tip.is-visible { opacity: 1; transform: none; }
+.skill-tip__img { height: 140px; border-radius: var(--r-s); }
+.skill-tip__title { margin-top: 10px; color: var(--black); }
+
+/* =========================================================
+   Адаптив (шрифты меняются только через переменные шкалы)
+   ========================================================= */
+@media (max-width: 1200px) {
+  :root { --gutter: 48px; }
+  .case, .about__grid, .contacts__grid { grid-template-columns: 1fr 1fr; gap: 48px; }
+  .job { grid-template-columns: 90px 1fr 1fr 1fr; gap: 0 24px; }
+}
+
+@media (max-width: 900px) {
+  :root { --gutter: 32px; --h1-size: 44px; }
+  .hero-full { min-height: 460px; }
+  .about { padding-top: 96px; }
+  .about__grid, .contacts__grid { grid-template-columns: 1fr; gap: 24px; }
+  .cases { padding-top: 96px; gap: 72px; }
+  .case { grid-template-columns: 1fr; gap: 24px; }
+  .case__info { padding-top: 0; }
+  .case__media { min-height: 0; aspect-ratio: 548 / 465; grid-row: 1; }
+  .block, .block:has(.skills), .contacts { padding-top: 88px; }
+  .job { grid-template-columns: 72px 1fr; gap: 6px 20px; padding: 0 16px 0 0; margin: 0; }
+  .job__logo { width: 72px; height: 72px; grid-row: 1 / span 3; align-self: start; margin: 10px 0; }
+  .job__company { padding-top: 14px; }
+  .job__col:last-child { padding-bottom: 14px; }
+  .edu { grid-template-columns: 1fr; gap: 12px; margin-left: 0; padding: 18px 20px; }
+  .edu > div:last-child { padding-left: 0; }
+  .footer { padding-top: 120px; }
+}
+
+@media (max-width: 560px) {
+  :root {
+    --gutter: 16px;
+    --h1-size: 34px;
+    --h2-size: 26px;
+    --h3-size: 18px;
+    --h4-size: 16px;
+    --normal-size: 14px;
+    --small-size: 12px;
+    --label-size: 12px;
+  }
+  .topbar { flex-direction: column; gap: 16px; padding-top: 20px; }
+  .topbar__actions { gap: 12px; }
+  .hero__photo { width: 160px; height: 160px; }
+  .stats { grid-template-columns: 1fr 1fr; gap: 16px; }
+  .case__foot { flex-wrap: wrap; }
+  .contacts__btns { gap: 12px; }
+  .footer { flex-direction: column; gap: 6px; }
+  .skill-tip { display: none; }
+}
