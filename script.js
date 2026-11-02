@@ -12,7 +12,7 @@ const LINKS = {
 
   // кнопки «кейс →» — страницы или ссылки на подробные кейсы
   "case-process": "case-protsessy-komandy.html",
-  "case-sites":   "#",
+  "case-sites":   "case-sajty-dlya-zastrojshhikov.html",
   "case-ab":      "#",
   "case-myolimp": "#",
 };
@@ -181,7 +181,10 @@ function fitHeroTitle() {
 
   const probe = 100; // пробный размер в px, чтобы измерить пропорции текста
   heroTitle.style.fontSize = probe + "px";
-  const natural = heroTitle.scrollWidth;
+  // меряем ширину самого текста, а не блока (иначе широкий блок «съедает» разницу)
+  heroTitle.style.width = "max-content";
+  const natural = heroTitle.getBoundingClientRect().width;
+  heroTitle.style.width = "";
   if (!natural) return;
 
   const size = (available / natural) * probe;
@@ -241,4 +244,136 @@ window.addEventListener("load", fitHeroTitle);
 
   // страховка на случай ошибки — анимация точно не заблокирует сайт
   setTimeout(finish, 4000);
+})();
+
+// --- появление элементов при прокрутке: снизу вверх
+(function initReveal() {
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const STEP = 80; // задержка между элементами, которые появляются вместе, мс
+
+  // что анимируем (первый экран не трогаем — у него своя интро-анимация)
+  const SELECTORS = [
+    "main .label",
+    ".case__title", ".case__desc", ".stat", ".case__foot", ".case__media",
+    ".job", ".skills", ".edu",
+    ".contacts__text", ".contacts__btns",
+    ".footer > *",
+  ];
+  const items = document.querySelectorAll(SELECTORS.join(","));
+  const aboutTexts = document.querySelectorAll(".about__text");
+
+  if (reduced || !("IntersectionObserver" in window)) return;
+
+  items.forEach((el) => el.classList.add("reveal"));
+
+  const io = new IntersectionObserver((entries) => {
+    const visible = entries
+      .filter((e) => e.isIntersecting)
+      .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top || a.boundingClientRect.left - b.boundingClientRect.left);
+    visible.forEach((e, i) => {
+      const el = e.target;
+      io.unobserve(el);
+      if (el.classList.contains("about__text")) return showAbout(el, i);
+      el.style.transitionDelay = `${i * STEP}ms`;
+      el.classList.add("is-in");
+      el.addEventListener("transitionend", () => (el.style.transitionDelay = ""), { once: true });
+    });
+  }, { rootMargin: "0px 0px -8% 0px", threshold: 0.01 });
+
+  items.forEach((el) => io.observe(el));
+
+  // у самого низа страницы показываем всё, что ещё не появилось (например, футер)
+  function revealRest() {
+    if (window.innerHeight + window.scrollY < document.documentElement.scrollHeight - 4) return;
+    document.querySelectorAll(".reveal:not(.is-in)").forEach((el, i) => {
+      io.unobserve(el);
+      el.style.transitionDelay = `${i * STEP}ms`;
+      el.classList.add("is-in");
+    });
+  }
+  window.addEventListener("scroll", revealRest, { passive: true });
+
+  // ----- «Кратко»: разбиваем текст на строки
+  const originals = new Map();
+  aboutTexts.forEach((p) => originals.set(p, p.innerHTML));
+
+  function splitLines(p) {
+    p.innerHTML = originals.get(p);
+    // каждое слово — в свой span с тем же цветом, что и у родителя;
+    // слова через дефис режем после дефиса, чтобы перенос остался как в обычном тексте
+    const pieces = []; // { el, space } — space: был ли пробел перед кусочком
+    p.querySelectorAll("span").forEach((part) => {
+      const cls = part.className;
+      part.textContent.trim().split(/\s+/).forEach((word) => {
+        word.split(/(?<=-)(?=.)/).forEach((chunk, i) => {
+          const el = document.createElement("span");
+          el.className = cls;
+          el.textContent = chunk;
+          pieces.push({ el, space: i === 0 });
+        });
+      });
+    });
+    const build = (target, list) => {
+      list.forEach((pc, i) => {
+        if (i > 0 && pc.space) target.appendChild(document.createTextNode(" "));
+        target.appendChild(pc.el);
+      });
+    };
+    // 1) раскладываем кусочки в абзац, чтобы браузер сам расставил переносы
+    p.innerHTML = "";
+    build(p, pieces);
+    // 2) группируем по вертикальной позиции
+    const lines = [];
+    let top = null;
+    pieces.forEach((pc) => {
+      const t = pc.el.offsetTop;
+      if (top === null || Math.abs(t - top) > 2) { lines.push([]); top = t; }
+      lines[lines.length - 1].push(pc);
+    });
+    // 3) каждая строка — отдельный блок с маской
+    p.innerHTML = "";
+    lines.forEach((list, li) => {
+      const line = document.createElement("span");
+      line.className = "about__line";
+      const inner = document.createElement("span");
+      inner.className = "about__line-in";
+      build(inner, list);
+      line.appendChild(inner);
+      p.appendChild(line);
+      // пробел между строками — чтобы текст корректно копировался
+      if (li < lines.length - 1 && lines[li + 1][0].space) p.appendChild(document.createTextNode(" "));
+    });
+    p.classList.add("is-split");
+  }
+
+  function showAbout(p, order) {
+    const base = order * STEP;
+    p.querySelectorAll(".about__line-in").forEach((l, i) => {
+      l.style.transitionDelay = `${base + i * 110}ms`;
+    });
+    p.classList.add("is-in");
+  }
+
+  function splitAll() { aboutTexts.forEach(splitLines); }
+
+  const fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+  fontsReady.then(() => {
+    splitAll();
+    aboutTexts.forEach((p) => io.observe(p));
+  });
+
+  // при смене ширины строки пересобираются заново (уже показанный текст остаётся видимым)
+  let w = window.innerWidth, timer;
+  window.addEventListener("resize", () => {
+    if (window.innerWidth === w) return;
+    w = window.innerWidth;
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      aboutTexts.forEach((p) => {
+        const shown = p.classList.contains("is-in");
+        splitLines(p);
+        if (shown) p.querySelectorAll(".about__line-in").forEach((l) => (l.style.transitionDelay = "0ms"));
+      });
+    }, 150);
+  });
 })();

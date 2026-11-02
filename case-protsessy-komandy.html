@@ -47,7 +47,7 @@
     .case-meta__item .value { font-size: var(--h4-size); line-height: var(--h4-lh); font-weight: var(--h4-w); letter-spacing: var(--h4-ls); color: var(--black); }
 
     /* ---------- общий грид раздела (контекст, финал) ---------- */
-    .section-grid { display: grid; grid-template-columns: 240px 1fr; gap: 16px 120px; padding-top: 104px; }
+    .section-grid { display: grid; grid-template-columns: 360px 1fr; gap: 16px 120px; padding-top: 104px; }
     .section-grid .side h2 { margin-top: 0; }
     .section-grid .body p { color: var(--text); max-width: 62ch; margin-bottom: 16px; }
     .section-grid .body p:last-child { margin-bottom: 0; }
@@ -135,7 +135,7 @@
     /* ---------- глава внутри акта (без номеров — прогресс сбоку) ---------- */
     .chapter { padding-top: 104px; }
     .chapter:first-of-type { padding-top: 0; }
-    .chapter-grid { display: grid; grid-template-columns: 240px 1fr; gap: 16px 120px; }
+    .chapter-grid { display: grid; grid-template-columns: 360px 1fr; gap: 16px 120px; }
     /* h3 не входит в базовый сброс (h1,h2,p{margin:0}) в style.css —
        обнуляем сами, иначе у заголовка главы «уезжает» верх. */
     .chapter h3 { margin: 0; color: var(--black); }
@@ -166,7 +166,7 @@
     .visual-ph b { color: #7A7A7A; font-weight: var(--text-w-medium); font-size: var(--normal-size); line-height: var(--normal-lh); }
     .visual-ph.key { background: var(--white); border: 1.5px dashed var(--case-accent); color: var(--gray); }
     .visual-ph.key b { color: var(--case-accent); }
-    .visual-ph.hero { min-height: 220px; max-width: none; border-radius: var(--r-l); margin-top: 48px; }
+    .visual-ph.hero { min-height: 380px; max-width: none; border-radius: var(--r-l); margin-top: 48px; }
 
     /* ---------- «Что получилось»: число → подпись → график, повтором ----------
        Заголовок (число) и подпись должны держаться близко друг к другу,
@@ -197,6 +197,9 @@
       position: fixed; right: 28px; top: 50%; transform: translateY(-50%);
       display: flex; flex-direction: column; gap: 10px; z-index: 15;
     }
+    /* прогресс виден только после «Контекста» — с начала вкладок актов */
+    .progress-ticks { opacity: 0; visibility: hidden; transition: opacity .3s ease, visibility 0s linear .3s; }
+    .progress-ticks.is-visible { opacity: 1; visibility: visible; transition: opacity .3s ease; }
     .progress-ticks .tick { width: 18px; height: 2px; border-radius: 2px; background: var(--placeholder); transition: width .2s, background .2s; }
     .progress-ticks .tick.is-active { width: 30px; background: var(--case-accent); }
 
@@ -220,12 +223,11 @@
 
   <main>
     <section class="case-hero wrap">
-      <p class="label case-hero__eyebrow">Кейс</p>
       <h1 class="t-h1 case-hero__title">Процессы команды</h1>
       <p class="case-hero__intro">Пришла в растущий стартап линейным дизайнером и за год выросла до дизайн-лида — а вместе с этим выстроила с нуля три связанных процесса, которые провели команду через путь от операционного хаоса к системе, выдержавшей масштабирование компании, смену состава и мой собственный уход.</p>
       <div class="case-meta">
         <div class="case-meta__item"><p class="label">Годы</p><p class="value">2025–2026</p></div>
-        <div class="case-meta__item"><p class="label">Сфера</p><p class="value">Платформа-конструктор сайтов для застройщиков</p></div>
+        <div class="case-meta__item"><p class="label">Сфера</p><p class="value">PropTech</p></div>
         <div class="case-meta__item"><p class="label">Роль</p><p class="value">Дизайн-лид</p></div>
       </div>
       <div class="visual-ph hero">
@@ -781,6 +783,15 @@
       });
 
       buildTicks('act1');
+
+      // показываем прогресс, только когда вкладки актов дошли до середины экрана
+      function toggleTicks(){
+        var top = anchor.getBoundingClientRect().top;
+        ticksEl.classList.toggle('is-visible', top < window.innerHeight * 0.5);
+      }
+      window.addEventListener('scroll', toggleTicks, { passive: true });
+      window.addEventListener('resize', toggleTicks);
+      toggleTicks();
     })();
   </script>
 </body>

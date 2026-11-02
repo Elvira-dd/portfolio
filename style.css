@@ -37,14 +37,16 @@
   --r-m: 16px;   /* строки, логотипы, тултип */
   --r-l: 20px;   /* большие обложки */
 
-  --max: 1120px;
-  --gutter: 80px;
+  /* Сетка резиновая: контент тянется на всю ширину окна,
+     по бокам только поля --gutter (40 / 32 / 16 px). */
+  --max: 100%;
+  --gutter: 40px;
 
   /* ---------- Типографическая шкала ----------
      размер / межстрочный / насыщенность / трекинг */
   --h1-size: 73px;  --h1-lh: 0.97; --h1-w: 500; --h1-ls: -0.02em;
   --h2-size: 32px;  --h2-lh: 1.2;  --h2-w: 700; --h2-ls: -0.02em;
-  --h3-size: 22px;  --h3-lh: 1.05; --h3-w: 600; --h3-ls: -0.02em;
+  --h3-size: 22px;  --h3-lh: 1.05; --h3-w: 700; --h3-ls: -0.02em;
   --h4-size: 18px;  --h4-lh: 1.35; --h4-w: 500; --h4-ls: -0.02em;
 
   --big-size:    16px; --big-lh:    1.05; --big-w: 500; --big-ls: -0.02em;
@@ -124,12 +126,15 @@ body, .t-big, .case__desc {
 /* Label — Small строчными: «Кратко», «Итоги», «Опыт работы»… */
 .t-label, .label {
   font-size: var(--label-size); line-height: var(--label-lh);
-  font-weight: 600; letter-spacing: var(--label-ls); text-transform: lowercase;
+  font-weight: 700; letter-spacing: var(--label-ls); text-transform: lowercase;
 }
 
 /* =========================================================
    Компоненты (без шрифтовых свойств)
    ========================================================= */
+
+/* Две колонки «текст + обложка» в пропорции исходного макета 512 : 548 */
+:root { --cols-2: minmax(0, 512fr) minmax(0, 548fr); }
 
 .wrap {
   width: 100%;
@@ -342,11 +347,56 @@ body.intro-locked { overflow: hidden; }
   }
 }
 
+/* ---------- Появление при прокрутке ----------
+   Класс .reveal ставит script.js. Элемент плавно поднимается снизу вверх.
+   Если JS не запустился, всё видно сразу (класс .js на <html> не появится). */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(32px);
+}
+.js .reveal.is-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity .8s ease, transform .9s cubic-bezier(.22,1,.36,1);
+}
+
+/* «Кратко» — исключение: текст появляется построчно.
+   Строки собирает script.js; отступы .1em сверху и снизу — чтобы маска
+   не обрезала диакритику (й, Ё) и хвосты букв (р, у, д). */
+.about__text.is-split { display: flow-root; }
+.about__line {
+  display: block;
+  overflow: hidden;
+  padding: .1em 0;
+  margin-bottom: -.2em; /* компенсирует отступы, межстрочный остаётся как был */
+}
+.about__line:first-child { margin-top: -.1em; }
+.about__line:last-child { margin-bottom: -.1em; }
+.about__line-in { display: block; }
+.js .about__text.is-split .about__line-in {
+  opacity: 0;
+  transform: translateY(120%);
+}
+.js .about__text.is-split.is-in .about__line-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity .7s ease, transform 1s cubic-bezier(.22,1,.36,1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .reveal,
+  .js .about__text.is-split .about__line-in {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
 /* ---------- Кратко ---------- */
 .about { padding-top: 120px; }
 .about__grid {
   display: grid;
-  grid-template-columns: 512px 1fr;
+  grid-template-columns: var(--cols-2);
   gap: 60px;
 }
 
@@ -359,7 +409,7 @@ body.intro-locked { overflow: hidden; }
 }
 .case {
   display: grid;
-  grid-template-columns: 512px 1fr;
+  grid-template-columns: var(--cols-2);
   gap: 60px;
   align-items: stretch;
 }
@@ -442,7 +492,7 @@ body.intro-locked { overflow: hidden; }
 .contacts { padding-top: 180px; }
 .contacts__grid {
   display: grid;
-  grid-template-columns: 512px 1fr;
+  grid-template-columns: var(--cols-2);
   gap: 60px;
 }
 .contacts__text { color: #1A1A1A; max-width: 440px; }
@@ -487,7 +537,6 @@ body.intro-locked { overflow: hidden; }
    Адаптив (шрифты меняются только через переменные шкалы)
    ========================================================= */
 @media (max-width: 1200px) {
-  :root { --gutter: 48px; }
   .case, .about__grid, .contacts__grid { grid-template-columns: 1fr 1fr; gap: 48px; }
   .job { grid-template-columns: 90px 1fr 1fr 1fr; gap: 0 24px; }
 }

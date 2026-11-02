@@ -1,0 +1,1345 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Сайты для застройщиков — Эльвира Галиева</title>
+    <meta
+      name="description"
+      content="Кейс «Сайты для застройщиков»: как я делаю сайты для крупных клиентов платформы Ида.Лайт — от брендинга и структуры до кастомной вёрстки."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      /* =========================================================
+       Доп. стили только для страницы кейса «Сайты для застройщиков».
+       Общие компоненты (топбар, hero, сетка глав, goals, плейсхолдер,
+       финал) — те же, что в case-protsessy-komandy.html.
+       Новые: блок клиента (.site), экран (.screen), кнопка «Смотреть»
+       за курсором (.look), попап-галерея (.gallery), бегущая лента (.more).
+       ========================================================= */
+
+      :root {
+        --case-accent: #245bf3;
+        /* пропорции экрана = окно браузера, в котором сняты скринкасты (1510 × 822),
+         чтобы скрины и видео вставали целиком, без обрезки по бокам */
+        --screen-ratio: 1510 / 822;
+      }
+      button {
+        font-family: inherit;
+        letter-spacing: inherit;
+      }
+
+      /* ---------- шапка кейса (как в эталоне) ---------- */
+      .case-topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 33px;
+        padding-bottom: 33px;
+      }
+      .case-topbar__back {
+        color: var(--gray);
+        transition: color 0.15s;
+      }
+      .case-topbar__back:hover {
+        color: var(--case-accent);
+      }
+      .case-topbar__name {
+        text-transform: lowercase;
+        font-weight: var(--text-w-medium);
+      }
+
+      .case-hero {
+        padding-top: 24px;
+      }
+      .case-hero__eyebrow {
+        color: var(--gray-label);
+        margin-bottom: 20px;
+      }
+      .case-hero__title {
+        max-width: none;
+      } /* заголовок в одну строку */
+      .case-hero__intro {
+        margin-top: 24px;
+        max-width: 640px;
+        color: var(--text);
+      }
+      .case-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 48px;
+        margin-top: 56px;
+      }
+      .case-meta__item .label {
+        margin-bottom: 8px;
+      }
+      .case-meta__item .value {
+        font-size: var(--h4-size);
+        line-height: var(--h4-lh);
+        font-weight: var(--h4-w);
+        letter-spacing: var(--h4-ls);
+        color: var(--black);
+      }
+
+      /* ---------- общий грид раздела ---------- */
+      .section-grid {
+        display: grid;
+        grid-template-columns: 360px 1fr;
+        gap: 16px 120px;
+        padding-top: 104px;
+      }
+      .section-grid .side h2 {
+        margin-top: 0;
+      }
+      .section-grid .body p {
+        color: var(--text);
+        max-width: 62ch;
+        margin-bottom: 16px;
+      }
+      .section-grid .body p:last-child {
+        margin-bottom: 0;
+      }
+
+      /* шаги процесса: номер, тёмное действие + серое пояснение тем же размером */
+      .steps {
+        margin: 0;
+        padding: 0 0 0 1.6em;
+        max-width: 64ch;
+        color: var(--gray);
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        font-size: var(--h4-size);
+        line-height: var(--h4-lh);
+        font-weight: var(--h4-w);
+        letter-spacing: var(--h4-ls);
+      }
+      .steps li {
+        padding-left: 0.3em;
+      }
+      .steps li::marker {
+        color: var(--black);
+        font-variant-numeric: tabular-nums;
+      }
+      .steps strong {
+        color: var(--black);
+        font-weight: var(--h4-w);
+      }
+
+      ul.goals {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-width: 64ch;
+      }
+      ul.goals li {
+        position: relative;
+        display: block;
+        padding: 14px 16px 14px 36px;
+        background: var(--row-bg);
+        border-radius: var(--r-m);
+        color: rgba(17, 17, 17, 0.8);
+        font-size: var(--h4-size);
+        line-height: var(--h4-lh);
+        font-weight: var(--h4-w);
+        letter-spacing: var(--h4-ls);
+      }
+      ul.goals li::before {
+        content: '→';
+        position: absolute;
+        left: 14px;
+        top: 14px;
+        color: var(--case-accent);
+        font-weight: 700;
+      }
+      ul.goals li strong {
+        font-weight: var(--text-w-medium);
+        color: var(--black);
+      }
+
+      /* ---------- цифры ---------- */
+      /* ширина как у списка goals выше (у обоих 64ch от шрифта тела) */
+      .numbers {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 32px;
+        max-width: 64ch;
+      }
+      .numbers .stat__cap {
+        max-width: 22ch;
+      }
+      .stat-note {
+        margin-top: 32px;
+        color: var(--gray);
+        font-size: var(--small-size);
+        line-height: var(--small-lh);
+        font-weight: var(--text-w);
+        letter-spacing: 0;
+        max-width: 64ch;
+      }
+
+      /* ---------- плейсхолдер под визуал (как в эталоне) ---------- */
+      .visual-ph {
+        background: var(--placeholder);
+        border-radius: var(--r-m);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        text-align: center;
+        padding: 28px;
+        color: #9a9a9a;
+        font-size: var(--small-size);
+        line-height: var(--small-lh);
+        font-weight: var(--text-w);
+        letter-spacing: 0;
+      }
+      .visual-ph b {
+        color: #7a7a7a;
+        font-weight: var(--text-w-medium);
+        font-size: var(--normal-size);
+        line-height: var(--normal-lh);
+      }
+      .visual-ph.hero {
+        min-height: 380px;
+        border-radius: var(--r-l);
+        margin-top: 48px;
+      }
+
+      /* ---------- блок клиента: экраны слева, «липкая» карточка справа ---------- */
+      .site {
+        display: grid;
+        grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+        gap: 60px;
+        padding-top: 104px;
+        scroll-margin-top: 24px;
+      }
+      .site:first-of-type {
+        padding-top: 136px;
+      }
+      .site__screens {
+        display: flex;
+        flex-direction: column;
+        gap: 64px;
+      }
+      .site__info {
+        position: sticky;
+        top: 40px;
+        align-self: start;
+      }
+      .site__title {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 10px;
+        color: var(--black);
+      }
+      a.site__title:hover {
+        color: var(--case-accent);
+      }
+      .site__desc {
+        margin-top: 16px;
+        color: var(--text);
+      }
+      .site__meta {
+        margin: 28px 0 0;
+        padding: 0;
+      }
+      .site__meta div {
+        display: grid;
+        grid-template-columns: 96px 1fr;
+        gap: 16px;
+        padding: 14px 0;
+        border-bottom: 1px solid #e2e2e2;
+      }
+      .site__meta dt {
+        color: var(--gray-label);
+      }
+      .site__meta dd {
+        margin: 0;
+        color: var(--black);
+        text-align: right;
+      }
+
+      /* экран: картинка + подпись-достижение под ней */
+      .screen {
+        margin: 0;
+      }
+      .screen__media {
+        position: relative;
+        display: block;
+        width: 100%;
+        aspect-ratio: var(--screen-ratio);
+        overflow: hidden;
+        border-radius: var(--r-l);
+        background: var(--placeholder);
+      }
+      .screen__media.visual-ph {
+        display: flex;
+        border-radius: var(--r-l);
+      }
+      /* лёгкая серая обводка у экранов кейсов — белые шапки сайтов не сливаются с фоном */
+      .site .screen__media {
+        border: 1px solid #e2e2e2;
+      }
+      button.screen__media {
+        border: 0;
+        margin: 0;
+        padding: 0;
+      }
+      .screen__media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top center;
+        display: block;
+      }
+      .screen__media[data-href],
+      .screen__media[data-gallery] {
+        cursor: none;
+      }
+      .screen__cap {
+        margin-top: 16px;
+        color: var(--black);
+      }
+      .screen__tag {
+        display: inline-block;
+        margin-bottom: 8px;
+        color: var(--gray-label);
+      }
+      /* строка над экраном: метка слева, ссылка «как было до» справа */
+      .screen__head {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 16px;
+        margin-bottom: 8px;
+      }
+      .screen__head .screen__tag {
+        margin-bottom: 0;
+      }
+      .screen__more {
+        padding: 0;
+        border: none;
+        background: none;
+        cursor: pointer;
+        color: var(--case-accent);
+        transition: opacity 0.15s;
+      }
+      .screen__more:hover {
+        opacity: 0.55;
+      }
+
+      /* кнопка «Смотреть», которая едет за курсором */
+      .look {
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 40;
+        width: 96px;
+        height: 96px;
+        margin: -48px 0 0 -48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--case-accent);
+        color: var(--white);
+        font-size: var(--normal-size);
+        line-height: 1;
+        font-weight: var(--text-w-medium);
+        pointer-events: none;
+        opacity: 0;
+        transform: scale(0.4);
+        transition:
+          opacity 0.2s ease,
+          transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .look.is-on {
+        opacity: 1;
+        transform: scale(1);
+      }
+      /* на тач-экранах курсора нет — кнопка стоит в углу экрана */
+      .look-static {
+        display: none;
+      }
+      @media (hover: none) {
+        .look {
+          display: none;
+        }
+        .screen__media[data-href],
+        .screen__media[data-gallery] {
+          cursor: pointer;
+        }
+        .look-static {
+          display: flex;
+          position: absolute;
+          right: 16px;
+          bottom: 16px;
+          width: 72px;
+          height: 72px;
+          border-radius: 50%;
+          align-items: center;
+          justify-content: center;
+          background: var(--case-accent);
+          color: var(--white);
+          font-size: var(--small-size);
+          font-weight: var(--text-w-medium);
+        }
+      }
+
+      /* ---------- попап-галерея (страницы сайта из PDF листаются вниз) ---------- */
+      .gallery {
+        position: fixed;
+        inset: 0;
+        z-index: 60;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        flex-direction: column;
+        opacity: 0;
+        visibility: hidden;
+        transition:
+          opacity 0.25s ease,
+          visibility 0s linear 0.25s;
+      }
+      .gallery.is-open {
+        opacity: 1;
+        visibility: visible;
+        transition: opacity 0.25s ease;
+      }
+      .gallery__bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        padding: 16px var(--gutter);
+        background: var(--white);
+        color: var(--black);
+      }
+      .gallery__close {
+        border: none;
+        background: var(--tag-bg);
+        border-radius: var(--r-s);
+        padding: 8px 16px;
+        cursor: pointer;
+        color: var(--black);
+        font-size: var(--normal-size);
+        line-height: var(--normal-lh);
+        font-weight: var(--text-w-medium);
+      }
+      .gallery__close:hover {
+        background: var(--placeholder);
+      }
+      .gallery__scroll {
+        flex: 1;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        padding: 24px var(--gutter) 64px;
+      }
+      .gallery__pages {
+        max-width: 1280px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .gallery__pages img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: var(--r-m);
+        background: var(--white);
+      }
+      .gallery__pages .visual-ph {
+        min-height: 60vh;
+        background: var(--white);
+      }
+      .gallery__pages video {
+        display: block;
+        width: auto;
+        max-width: 100%;
+        height: auto;
+        margin: 0 auto;
+        max-height: calc(
+          100svh - 150px
+        ); /* шапка попапа + отступы — видео целиком в экране */
+        border-radius: var(--r-m);
+        background: var(--black);
+      }
+      body.is-locked {
+        overflow: hidden;
+      }
+
+      /* ---------- карусель «Другие проекты» ---------- */
+      .more {
+        padding-top: 136px;
+      }
+      .more__head h2 {
+        font-size: calc(var(--h3-size) * 1.3);
+        line-height: 1.05;
+        font-weight: var(--h3-w);
+        letter-spacing: var(--h3-ls);
+        color: var(--black);
+      }
+      /* бесконечная лента: набор карточек повторён дважды и едет на −50%,
+       поэтому шов не виден. По ховеру лента останавливается. */
+      .marquee {
+        margin-top: 24px;
+        overflow: hidden;
+      }
+      .marquee__row {
+        display: flex;
+        gap: 16px;
+        width: max-content;
+        animation: marquee var(--marquee-time, 60s) linear infinite;
+      }
+      .marquee:hover .marquee__row,
+      .marquee:focus-within .marquee__row {
+        animation-play-state: paused;
+      }
+      @keyframes marquee {
+        to {
+          transform: translateX(calc(-50% - 8px));
+        }
+      }
+      .more__card {
+        position: relative;
+        display: block;
+        flex: 0 0 auto;
+        width: 640px;
+        color: var(--black);
+      }
+      .more__card .screen__media {
+        aspect-ratio: var(--screen-ratio);
+      }
+      /* тег с названием и переходом.
+       На компьютере один общий тег едет за курсором (#more-tag),
+       на тач-экранах тег стоит в углу каждой карточки. */
+      .more__tag {
+        position: absolute;
+        left: 12px;
+        bottom: 12px;
+        z-index: 1;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        max-width: calc(100% - 24px);
+        padding: 8px 14px;
+        border-radius: var(--r-s);
+        background: var(--white);
+        color: var(--black);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        opacity: 0;
+        transform: translateY(8px);
+        transition:
+          opacity 0.2s ease,
+          transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .more__tag span {
+        color: var(--case-accent);
+      }
+      .more__card .more__tag {
+        display: none;
+      }
+      .more__card:focus-visible .more__tag {
+        display: inline-flex;
+        opacity: 1;
+        transform: none;
+      }
+      .more-cursor-tag {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: auto;
+        z-index: 40;
+        pointer-events: none;
+        white-space: nowrap;
+        margin: 14px 0 0 14px; /* чуть правее и ниже кончика курсора */
+      }
+      .more-cursor-tag.is-on {
+        opacity: 1;
+        transform: none;
+      }
+      .marquee .more__card {
+        cursor: pointer;
+      }
+      .more__card:focus-visible {
+        outline: 2px solid var(--case-accent);
+        outline-offset: 4px;
+        border-radius: var(--r-l);
+      }
+      @media (hover: none) {
+        .more__card .more__tag {
+          display: inline-flex;
+          opacity: 1;
+          transform: none;
+        }
+        .more-cursor-tag {
+          display: none;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .marquee {
+          overflow-x: auto;
+        }
+        .marquee__row {
+          animation: none;
+        }
+      }
+
+      /* ---------- финал ---------- */
+      .final-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 32px;
+        padding-top: 24px;
+      }
+      .final-card h3 {
+        margin: 0 0 12px;
+        color: var(--black);
+      }
+      .final-card p {
+        color: var(--text);
+        margin: 0;
+      }
+
+      @media (max-width: 1200px) {
+        .numbers {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+      @media (max-width: 900px) {
+        .section-grid {
+          grid-template-columns: 1fr;
+          gap: 14px;
+        }
+        .case-meta {
+          gap: 28px;
+        }
+        .site {
+          grid-template-columns: 1fr;
+          gap: 28px;
+        }
+        .site__info {
+          position: static;
+          order: -1;
+        }
+        .site__screens {
+          gap: 40px;
+        }
+        .final-grid {
+          grid-template-columns: 1fr;
+          gap: 24px;
+        }
+        .more__card {
+          width: 82vw;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="case-topbar wrap">
+      <a class="case-topbar__back t-normal" href="index.html">← портфолио</a>
+      <a class="case-topbar__name t-normal" href="index.html#contacts"
+        >эльвира галиева</a
+      >
+    </header>
+
+    <main>
+      <!-- ============ HERO ============ -->
+      <section class="case-hero wrap">
+        <h1 class="t-h1 case-hero__title">Сайты для застройщиков</h1>
+        <p class="case-hero__intro">
+          С августа 2024 года я делаю сайты для застройщиков на платформе
+          Ида.Лайт — сначала как UX/UI-дизайнер, потом как дизайн-лид, который
+          продолжает вести проекты сам. Здесь — четыре клиента, на которых
+          видно, как я работаю руками: брендинг, структура, сторителлинг и
+          кастомная вёрстка.
+        </p>
+        <div class="case-meta">
+          <div class="case-meta__item">
+            <p class="label">Годы</p>
+            <p class="value">2024–2026</p>
+          </div>
+          <div class="case-meta__item">
+            <p class="label">Сфера</p>
+            <p class="value">PropTech</p>
+          </div>
+          <div class="case-meta__item">
+            <p class="label">Роль</p>
+            <p class="value">UX/UI-дизайнер → дизайн-лид</p>
+          </div>
+        </div>
+        <div class="visual-ph hero">
+          <b>Hero-визуал</b>
+          Коллаж из экранов сайтов клиентов
+        </div>
+      </section>
+
+      <!-- ============ КОНТЕКСТ ============ -->
+      <section class="section-grid wrap">
+        <div class="side">
+          <p class="label">Контекст</p>
+          <h2 class="t-h2">Ида.Лайт</h2>
+        </div>
+        <div class="body">
+          <p>
+            Платформа даёт только набор блоков, на которых собирается сайт. Всё
+            остальное — на дизайнере. От застройщика обычно приходят наработки
+            по брендингу, рендеры и тексты. У многих клиентов дизайн-компетенция
+            невысокая, поэтому брендинг часто приходилось прорабатывать с нуля
+            или пересобирать.
+          </p>
+          <p>
+            Я делала весь веб-дизайн: структуру, смысловую нагрузку и
+            сторителлинг страницы, UX, графику. Аккаунт-менеджеры вели проекты,
+            контент-менеджеры заполняли информацию и типовые страницы. С людьми,
+            которые принимали решения на стороне клиента, я общалась напрямую на
+            встречах.
+          </p>
+        </div>
+      </section>
+
+      <!-- ============ ПРОЦЕСС ============ -->
+      <section class="section-grid wrap">
+        <div class="side"><h2 class="t-h2">Как я делаю сайт</h2></div>
+        <div class="body">
+          <ol class="steps">
+            <li>
+              <strong>Собираю структуру.</strong> Продумываю в Figma структуру,
+              смысловую нагрузку и сторителлинг сайта — так, чтобы всё уложилось
+              в блоки, которые есть на платформе.
+            </li>
+            <li>
+              <strong>Рисую графику.</strong> Отрисовываю все графические
+              элементы и решаю, как расставить рендеры.
+            </li>
+            <li>
+              <strong>Дорабатываю блоки кодом.</strong> Раньше я работала
+              разработчиком на небольших проектах, поэтому правлю блоки под
+              задачу — от мелких доработок до полностью кастомных сайтов.
+            </li>
+            <li>
+              <strong>Делаю шаблоны для команды.</strong> Типовые страницы
+              верстаю как шаблон: по моей странице ипотеки контент-менеджеры
+              собирали рассрочку, трейд-ин и другие способы покупки.
+            </li>
+            <li>
+              <strong>Слежу за сайтом после запуска.</strong> Каждый месяц
+              собираем аналитику, а в первые три месяца приходим к клиенту с
+              улучшениями, если видим просадку конверсии или что пользователь
+              путается.
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- ============ КРИТЕРИИ УСПЕХА ============ -->
+      <section class="section-grid wrap">
+        <div class="side">
+          <h2 class="t-h2">Как я понимаю, что получилось</h2>
+        </div>
+        <div class="body">
+          <ul class="goals">
+            <li><strong>Клиент доволен</strong> результатом</li>
+            <li>
+              <strong>Показатели сайта</strong> через 2–3 месяца после запуска
+            </li>
+            <li>
+              <strong>Клиент забирает мои решения в свой бренд</strong> —
+              переносит стилистику сайта в рекламу и другие носители на
+              постоянной основе, хотя мы для него только подрядчик
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ============ ЦИФРЫ ============ -->
+      <section class="section-grid wrap">
+        <div class="side"></div>
+        <div class="body">
+          <div class="numbers">
+            <div class="stat">
+              <div class="stat__num t-h2">60</div>
+              <div class="stat__cap">сайтов запустила как UX/UI-дизайнер</div>
+            </div>
+            <div class="stat">
+              <div class="stat__num t-h2">1/60</div>
+              <div class="stat__cap">клиентов ушли за этот период</div>
+            </div>
+            <div class="stat">
+              <div class="stat__num t-h2">40</div>
+              <div class="stat__cap">сайтов запустила уже как дизайн-лид</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ САЙТЫ ============ -->
+
+      <!-- Клиент 1: опубликованный сайт. data-href — ссылка на живой сайт -->
+      <article class="site wrap" id="site-1">
+        <div class="site__screens">
+          <figure class="screen">
+            <a
+              class="screen__media"
+              data-href="https://prbereg.ru/"
+              href="https://prbereg.ru/"
+              target="_blank"
+              rel="noopener"
+            >
+              <img
+                src="images/case-sites/prbereg.webp"
+                alt="«Правый берег», первый экран сайта"
+                loading="lazy"
+              />
+            </a>
+            <figcaption class="screen__cap t-h4">
+              ?? Подпись-достижение: что я сделала на этом сайте
+            </figcaption>
+          </figure>
+        </div>
+        <aside class="site__info">
+          <a
+            class="site__title t-h2"
+            href="https://prbereg.ru/"
+            target="_blank"
+            rel="noopener"
+            >«Правый берег» <span aria-hidden="true">↗</span></a
+          >
+          <p class="site__desc t-big">
+            ?? Короткое описание: кто клиент и что за сайт.
+          </p>
+          <dl class="site__meta t-small">
+            <div>
+              <dt>Годы</dt>
+              <dd>??</dd>
+            </div>
+            <div>
+              <dt>Формат</dt>
+              <dd>Сайт с нуля</dd>
+            </div>
+            <div>
+              <dt>Задачи</dt>
+              <dd>??</dd>
+            </div>
+          </dl>
+        </aside>
+      </article>
+
+      <!-- Клиент 2: «Север» — две страницы -->
+      <article class="site wrap" id="site-sever">
+        <div class="site__screens">
+          <figure class="screen">
+            <p class="screen__tag label">ЖК «Литературный»</p>
+            <a
+              class="screen__media"
+              data-href="https://literaturny.ru/"
+              href="https://literaturny.ru/"
+              target="_blank"
+              rel="noopener"
+            >
+              <img
+                src="images/case-sites/literaturny.webp"
+                alt="ЖК «Литературный», первый экран сайта"
+                loading="lazy"
+              />
+            </a>
+            <figcaption class="screen__cap t-h4">
+              ?? Подпись-достижение
+            </figcaption>
+          </figure>
+          <figure class="screen">
+            <p class="screen__tag label">МФК «Диус»</p>
+            <a
+              class="screen__media"
+              data-href="https://dius-mfk.ru/"
+              href="https://dius-mfk.ru/"
+              target="_blank"
+              rel="noopener"
+            >
+              <img
+                src="images/case-sites/dius.webp"
+                alt="МФК «Диус», первый экран сайта"
+                loading="lazy"
+              />
+            </a>
+            <figcaption class="screen__cap t-h4">
+              ?? Подпись-достижение
+            </figcaption>
+          </figure>
+        </div>
+        <aside class="site__info">
+          <a
+            class="site__title t-h2"
+            href="https://sever-group.ru/"
+            target="_blank"
+            rel="noopener"
+            >«Север» <span aria-hidden="true">↗</span></a
+          >
+          <p class="site__desc t-big">
+            ?? Короткое описание застройщика и двух проектов: ЖК «Литературный»
+            и МФК «Диус».
+          </p>
+          <dl class="site__meta t-small">
+            <div>
+              <dt>Годы</dt>
+              <dd>??</dd>
+            </div>
+            <div>
+              <dt>Формат</dt>
+              <dd>??</dd>
+            </div>
+            <div>
+              <dt>Задачи</dt>
+              <dd>??</dd>
+            </div>
+          </dl>
+        </aside>
+      </article>
+
+      <!-- Клиент 3: один застройщик, два экрана — сайт, снятый до публикации (галерея из PDF), и переделка -->
+      <article class="site wrap" id="site-3">
+        <div class="site__screens">
+          <figure class="screen">
+            <p class="screen__tag label">«Антоново» · не опубликован</p>
+            <button
+              class="screen__media"
+              data-gallery="g3-antonovo"
+              type="button"
+              aria-label="Смотреть сайт «Антоново»"
+            >
+              <img
+                src="images/case-sites/g3-antonovo-poster.webp"
+                alt="Сайт «Антоново», первый экран"
+                loading="lazy"
+              />
+              <span class="look-static">Смотреть</span>
+            </button>
+            <figcaption class="screen__cap t-h4">
+              ?? Подпись-достижение
+            </figcaption>
+          </figure>
+          <figure class="screen">
+            <div class="screen__head">
+              <p class="screen__tag label">«Орнамент» · переделка</p>
+              <button
+                class="screen__more label"
+                type="button"
+                data-gallery="g3-ornament-do"
+              >
+                как было до переделки →
+              </button>
+            </div>
+            <a
+              class="screen__media"
+              data-href="https://g3.group/complexes/ornament"
+              href="https://g3.group/complexes/ornament"
+              target="_blank"
+              rel="noopener"
+            >
+              <img
+                src="images/case-sites/ornament.webp"
+                alt="«Орнамент» после переделки, первый экран сайта"
+                loading="lazy"
+              />
+            </a>
+            <figcaption class="screen__cap t-h4">
+              ?? Подпись-достижение
+            </figcaption>
+          </figure>
+        </div>
+        <aside class="site__info">
+          <a
+            class="site__title t-h2"
+            href="https://g3.group/"
+            target="_blank"
+            rel="noopener"
+            >G3 Group <span aria-hidden="true">↗</span></a
+          >
+          <p class="site__desc t-big">
+            ?? Короткое описание застройщика и двух проектов: «Антоново» (клиент
+            снял сайт до публикации) и переделка «Орнамента».
+          </p>
+          <dl class="site__meta t-small">
+            <div>
+              <dt>Годы</dt>
+              <dd>??</dd>
+            </div>
+            <div>
+              <dt>Формат</dt>
+              <dd>Сайт с нуля и переделка</dd>
+            </div>
+            <div>
+              <dt>Задачи</dt>
+              <dd>??</dd>
+            </div>
+          </dl>
+        </aside>
+      </article>
+
+      <!-- Клиент 4: лендинг, только PDF -->
+      <article class="site wrap" id="site-landing">
+        <div class="site__screens">
+          <figure class="screen">
+            <a
+              class="screen__media"
+              data-href="https://yndyc.dev-lite.ru/"
+              href="https://yndyc.dev-lite.ru/"
+              target="_blank"
+              rel="noopener"
+            >
+              <img
+                src="images/case-sites/landing.webp"
+                alt="«ЗИМ Галерея», первый экран лендинга"
+                loading="lazy"
+              />
+            </a>
+            <figcaption class="screen__cap t-h4">
+              ?? Подпись-достижение
+            </figcaption>
+          </figure>
+        </div>
+        <aside class="site__info">
+          <a
+            class="site__title t-h2"
+            href="https://yndyc.dev-lite.ru/"
+            target="_blank"
+            rel="noopener"
+            >«ЗИМ Галерея» <span aria-hidden="true">↗</span></a
+          >
+          <p class="site__desc t-big">?? Короткое описание.</p>
+          <dl class="site__meta t-small">
+            <div>
+              <dt>Годы</dt>
+              <dd>??</dd>
+            </div>
+            <div>
+              <dt>Формат</dt>
+              <dd>Лендинг</dd>
+            </div>
+            <div>
+              <dt>Задачи</dt>
+              <dd>??</dd>
+            </div>
+          </dl>
+        </aside>
+      </article>
+
+      <!-- ============ ДРУГИЕ ПРОЕКТЫ ============ -->
+      <section class="more">
+        <div class="more__head wrap">
+          <h2>Другие проекты</h2>
+        </div>
+        <!-- карточки собираются из списка PROJECTS в конце файла -->
+        <div class="marquee" id="marquee">
+          <div class="marquee__row" id="marquee-row"></div>
+        </div>
+      </section>
+
+      <!-- ============ ФИНАЛ ============ -->
+      <section class="section-grid wrap">
+        <div class="side"><h2 class="t-h2">Итог</h2></div>
+        <div class="body">
+          <div class="final-grid">
+            <div class="final-card">
+              <h3 class="t-h3">Что объединяет все сайты</h3>
+              <p class="t-big">??</p>
+            </div>
+            <div class="final-card">
+              <h3 class="t-h3">Что сделала бы иначе</h3>
+              <p class="t-big">??</p>
+            </div>
+            <div class="final-card">
+              <h3 class="t-h3">Чем горжусь больше всего</h3>
+              <p class="t-big">??</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer wrap">
+      <span>Сайты для застройщиков · Ида.Лайт · 2024–2026</span>
+      <a class="t-small" href="index.html">← на главную</a>
+    </footer>
+
+    <!-- кнопка «Смотреть» за курсором -->
+    <div class="look" id="look" aria-hidden="true">Смотреть</div>
+    <!-- тег проекта за курсором в ленте «Другие проекты» -->
+    <span
+      class="more__tag more-cursor-tag t-normal"
+      id="more-tag"
+      aria-hidden="true"
+    ></span>
+
+    <!-- попап-галерея -->
+    <div
+      class="gallery"
+      id="gallery"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="gallery-title"
+    >
+      <div class="gallery__bar">
+        <span class="t-h4" id="gallery-title"></span>
+        <button class="gallery__close" type="button" id="gallery-close">
+          Закрыть ✕
+        </button>
+      </div>
+      <div class="gallery__scroll" id="gallery-scroll">
+        <div class="gallery__pages" id="gallery-pages"></div>
+      </div>
+    </div>
+
+    <script>
+      /* =========================================================
+       ГАЛЕРЕИ — страницы сайтов из PDF.
+       Положи картинки в images/case-sites/ и перечисли их здесь по порядку.
+       ========================================================= */
+      /* =========================================================
+       ДРУГИЕ ПРОЕКТЫ — лента внизу страницы.
+       name — подпись в теге, url — куда ведёт, img — скриншот 1510×822 (как экраны кейсов)
+       в images/case-sites/more/ (пока нет — серый плейсхолдер).
+       ========================================================= */
+      var PROJECTS = [
+        { name: '?? Проект 1', url: '', img: '' },
+        { name: '?? Проект 2', url: '', img: '' },
+        { name: '?? Проект 3', url: '', img: '' },
+        { name: '?? Проект 4', url: '', img: '' },
+        { name: '?? Проект 5', url: '', img: '' },
+        { name: '?? Проект 6', url: '', img: '' }
+      ]
+
+      // pages — картинки по порядку; video — видео-скринкаст (тогда pages не нужны)
+      var GALLERIES = {
+        'g3-antonovo': {
+          title: '«Антоново» — сайт, который клиент снял до публикации',
+          video: 'images/case-sites/g3-antonovo.mp4',
+          poster: 'images/case-sites/g3-antonovo-poster.webp',
+          pages: []
+        },
+        'g3-ornament-do': {
+          title: '«Орнамент» — до переделки',
+          pages: ['images/case-sites/g3-ornament-do.webp']
+        }
+      }
+
+      ;(function () {
+        // --- кнопка «Смотреть» за курсором
+        var look = document.getElementById('look')
+        var targets = document.querySelectorAll(
+          '.screen__media[data-href], .screen__media[data-gallery]'
+        )
+        var x = 0,
+          y = 0,
+          cx = 0,
+          cy = 0,
+          raf = null
+        function loop() {
+          cx += (x - cx) * 0.25
+          cy += (y - cy) * 0.25
+          look.style.left = cx + 'px'
+          look.style.top = cy + 'px'
+          raf =
+            Math.abs(x - cx) + Math.abs(y - cy) > 0.5
+              ? requestAnimationFrame(loop)
+              : null
+        }
+        targets.forEach(function (el) {
+          el.addEventListener('mouseenter', function (e) {
+            x = cx = e.clientX
+            y = cy = e.clientY
+            loop()
+            look.textContent = el.hasAttribute('data-href')
+              ? 'Смотреть ↗'
+              : 'Смотреть'
+            look.classList.add('is-on')
+          })
+          el.addEventListener('mousemove', function (e) {
+            x = e.clientX
+            y = e.clientY
+            if (!raf) raf = requestAnimationFrame(loop)
+          })
+          el.addEventListener('mouseleave', function () {
+            look.classList.remove('is-on')
+          })
+        })
+        // при прокрутке колесом мышь стоит на месте, а экран уезжает —
+        // проверяем, что под курсором, и прячем кнопку, если это уже не экран
+        var hasPointer = false
+        document.addEventListener(
+          'mousemove',
+          function (e) {
+            hasPointer = true
+            x = e.clientX
+            y = e.clientY
+          },
+          { passive: true }
+        )
+        window.addEventListener(
+          'scroll',
+          function () {
+            if (!hasPointer) return
+            var el = document.elementFromPoint(x, y)
+            var over =
+              el &&
+              el.closest(
+                '.screen__media[data-href], .screen__media[data-gallery]'
+              )
+            if (over)
+              look.textContent = over.hasAttribute('data-href')
+                ? 'Смотреть ↗'
+                : 'Смотреть'
+            look.classList.toggle('is-on', !!over)
+          },
+          { passive: true }
+        )
+
+        // --- попап-галерея
+        var gallery = document.getElementById('gallery')
+        var title = document.getElementById('gallery-title')
+        var pages = document.getElementById('gallery-pages')
+        var scroller = document.getElementById('gallery-scroll')
+        var closeBtn = document.getElementById('gallery-close')
+        var lastFocus = null
+
+        function openGallery(id) {
+          var g = GALLERIES[id]
+          if (!g) return
+          title.textContent = g.title
+          pages.innerHTML = ''
+          if (g.video) {
+            var v = document.createElement('video')
+            v.src = g.video
+            if (g.poster) v.poster = g.poster
+            v.controls = true
+            v.muted = true
+            v.playsInline = true
+            v.autoplay = true
+            v.loop = true
+            pages.appendChild(v)
+          } else if (g.pages.length) {
+            g.pages.forEach(function (src, i) {
+              var img = document.createElement('img')
+              img.src = src
+              img.alt = g.title + ' — страница ' + (i + 1)
+              img.loading = i < 2 ? 'eager' : 'lazy'
+              pages.appendChild(img)
+            })
+          } else {
+            pages.innerHTML =
+              '<div class="visual-ph"><b>Здесь будут страницы сайта</b>Картинки из PDF добавляются в GALLERIES в конце файла</div>'
+          }
+          lastFocus = document.activeElement
+          look.classList.remove('is-on')
+          scroller.scrollTop = 0
+          gallery.classList.add('is-open')
+          document.body.classList.add('is-locked')
+          closeBtn.focus()
+        }
+        function closeGallery() {
+          pages.querySelectorAll('video').forEach(function (v) {
+            v.pause()
+          })
+          gallery.classList.remove('is-open')
+          document.body.classList.remove('is-locked')
+          if (lastFocus) lastFocus.focus()
+        }
+        document.querySelectorAll('[data-gallery]').forEach(function (el) {
+          el.addEventListener('click', function () {
+            openGallery(el.getAttribute('data-gallery'))
+          })
+        })
+        closeBtn.addEventListener('click', closeGallery)
+        gallery.addEventListener('click', function (e) {
+          if (e.target === gallery || e.target === scroller) closeGallery()
+        })
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && gallery.classList.contains('is-open'))
+            closeGallery()
+        })
+
+        // --- бегущая лента «Другие проекты»
+        var row = document.getElementById('marquee-row')
+        function card(p) {
+          var a = document.createElement(p.url ? 'a' : 'div')
+          a.className = 'more__card'
+          if (p.url) {
+            a.href = p.url
+            a.target = '_blank'
+            a.rel = 'noopener'
+          }
+          var media = p.img
+            ? '<div class="screen__media"><img src="' +
+              p.img +
+              '" alt="' +
+              p.name +
+              '" loading="lazy"></div>'
+            : '<div class="screen__media visual-ph"><b>' +
+              p.name +
+              '</b>Скриншот, 1510×822</div>'
+          a.innerHTML =
+            media +
+            '<span class="more__tag t-normal">' +
+            p.name +
+            (p.url ? ' <span aria-hidden="true">↗</span>' : '') +
+            '</span>'
+          return a
+        }
+        // два одинаковых набора подряд — лента бесшовная
+        ;[0, 1].forEach(function (copy) {
+          PROJECTS.forEach(function (p) {
+            var c = card(p)
+            if (copy) {
+              c.setAttribute('aria-hidden', 'true')
+              c.tabIndex = -1
+            }
+            row.appendChild(c)
+          })
+        })
+        // тег за курсором: название проекта под мышью
+        var tag = document.getElementById('more-tag')
+        var marquee = document.getElementById('marquee')
+        function moveTag(e) {
+          var c = e.target.closest('.more__card')
+          if (!c) {
+            tag.classList.remove('is-on')
+            return
+          }
+          tag.innerHTML = c.querySelector('.more__tag').innerHTML
+          tag.style.left = e.clientX + 'px'
+          tag.style.top = e.clientY + 'px'
+          tag.classList.add('is-on')
+        }
+        marquee.addEventListener('mousemove', moveTag)
+        marquee.addEventListener('mouseover', moveTag)
+        marquee.addEventListener('mouseleave', function () {
+          tag.classList.remove('is-on')
+        })
+        window.addEventListener(
+          'scroll',
+          function () {
+            tag.classList.remove('is-on')
+          },
+          { passive: true }
+        )
+
+        // скорость не зависит от числа проектов: ~10 секунд на карточку
+        row.style.setProperty(
+          '--marquee-time',
+          Math.max(PROJECTS.length * 10, 30) + 's'
+        )
+      })()
+    </script>
+  </body>
+</html>
