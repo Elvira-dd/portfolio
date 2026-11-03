@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>XPLORATION — Эльвира Галиева</title>
+    <meta
+      name="description"
+      content="Кейс XPLORATION: дизайн сайта яхт-клуба — новый визуальный стиль, единый образ сайта и коммуникаций, сезонные и контентные страницы."
+    />
+    <link rel="icon" type="image/png" href="images/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      /* =========================================================
+       Доп. стили только для страницы кейса XPLORATION.
+       Компоненты те же, что в кейсе «Сайты для застройщиков»:
+       топбар, hero, сетка глав (.section-grid), goals, steps.
+       Новое: широкий кадр (.shot) — картинка на всю сетку.
+       ========================================================= */
+      :root {
+        --case-accent: #245bf3;
+      }
+
+      .case-topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 33px;
+        padding-bottom: 33px;
+      }
+      .case-topbar__back {
+        color: var(--gray);
+        transition: color 0.15s;
+      }
+      .case-topbar__back:hover {
+        color: var(--case-accent);
+      }
+      .case-topbar__name {
+        text-transform: lowercase;
+        font-weight: var(--text-w-medium);
+      }
+
+      .case-hero {
+        padding-top: 24px;
+      }
+      .case-hero__title {
+        max-width: none;
+      }
+      .case-hero__intro {
+        margin-top: 24px;
+        max-width: 640px;
+        color: var(--text);
+      }
+      .case-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 48px;
+        margin-top: 56px;
+      }
+      .case-meta__item .label {
+        margin-bottom: 8px;
+      }
+      .case-meta__item .value {
+        font-size: var(--h4-size);
+        line-height: var(--h4-lh);
+        font-weight: var(--h4-w);
+        letter-spacing: var(--h4-ls);
+        color: var(--black);
+      }
+      a.value:hover {
+        color: var(--case-accent);
+      }
+
+      .section-grid {
+        display: grid;
+        grid-template-columns: 360px 1fr;
+        gap: 16px 120px;
+        padding-top: 104px;
+      }
+      .section-grid .side h2 {
+        margin-top: 0;
+      }
+      .section-grid .body p {
+        color: var(--text);
+        max-width: 62ch;
+        margin-bottom: 16px;
+      }
+      .section-grid .body p:last-child {
+        margin-bottom: 0;
+      }
+
+      .steps {
+        margin: 0;
+        padding: 0 0 0 1.6em;
+        max-width: 64ch;
+        color: var(--gray);
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        font-size: var(--h4-size);
+        line-height: var(--h4-lh);
+        font-weight: var(--h4-w);
+        letter-spacing: var(--h4-ls);
+      }
+      .steps li {
+        padding-left: 0.3em;
+      }
+      .steps li::marker {
+        color: var(--black);
+        font-variant-numeric: tabular-nums;
+      }
+      .steps strong {
+        color: var(--black);
+        font-weight: var(--h4-w);
+      }
+
+      ul.goals {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-width: 64ch;
+      }
+      ul.goals li {
+        position: relative;
+        display: block;
+        padding: 14px 16px 14px 36px;
+        background: var(--row-bg);
+        border-radius: var(--r-m);
+        color: rgba(17, 17, 17, 0.5);
+        font-size: var(--h4-size);
+        line-height: var(--h4-lh);
+        font-weight: var(--h4-w);
+        letter-spacing: var(--h4-ls);
+      }
+      ul.goals li::before {
+        content: '→';
+        position: absolute;
+        left: 14px;
+        top: 14px;
+        color: var(--case-accent);
+        font-weight: 700;
+      }
+      ul.goals li strong {
+        font-weight: var(--text-w-medium);
+        color: var(--black);
+      }
+
+      /* ---------- широкий кадр: картинка на всю сетку ---------- */
+      .shot {
+        margin: 0;
+        padding-top: 48px;
+      }
+      .shot--first {
+        padding-top: 56px;
+      }
+      .shot img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: var(--r-l);
+        background: var(--placeholder);
+      }
+      .shot--line img {
+        border: 1px solid #e2e2e2;
+      }
+      .shot__cap {
+        margin-top: 16px;
+        color: var(--black);
+        max-width: 64ch;
+      }
+      /* видео-скринкаст: пропорции 16:9, без элементов управления */
+      .video {
+        position: relative;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+        border-radius: var(--r-l);
+        background: var(--placeholder);
+      }
+      .video iframe {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        pointer-events: none;
+      }
+      .video--wide {
+        aspect-ratio: 1280 / 556;
+      }
+      /* два кадра в ряд */
+      .shots-2 {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        padding-top: 16px;
+      }
+      .shots-2 .shot {
+        padding-top: 0;
+      }
+      /* карта переходов: длинная картинка, не растягиваем на всю ширину */
+      .shot--flow img {
+        border: 1px solid #e2e2e2;
+      }
+
+      /* ---------- финал ---------- */
+      .outro {
+        padding-top: 136px;
+        padding-bottom: 104px;
+      }
+      .outro__link {
+        color: var(--gray);
+        transition: color 0.15s;
+      }
+      .outro__link:hover {
+        color: var(--case-accent);
+      }
+
+      @media (max-width: 900px) {
+        .section-grid {
+          grid-template-columns: 1fr;
+          gap: 14px;
+          padding-top: 72px;
+        }
+        .case-meta {
+          gap: 28px;
+        }
+        .shots-2 {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="case-topbar wrap">
+      <a class="case-topbar__back t-normal" href="index.html">← портфолио</a>
+      <a class="case-topbar__name t-normal" href="index.html#contacts"
+        >эльвира галиева</a
+      >
+    </header>
+
+    <main>
+      <!-- ============ HERO ============ -->
+      <section class="case-hero wrap">
+        <h1 class="t-h1 case-hero__title">XPLORATION</h1>
+        <p class="case-hero__intro">
+          Дизайн сайта испанского яхт-клуба, который организует долгие камерные
+          поездки по европейскому и африканскому побережью. Я обновила
+          визуальный стиль, привела сайт и коммуникации к единому образу и
+          переработала навигацию и структуру.
+        </p>
+        <div class="case-meta">
+          <div class="case-meta__item">
+            <p class="label">Год</p>
+            <p class="value">2024</p>
+          </div>
+          <div class="case-meta__item">
+            <p class="label">Сфера</p>
+            <p class="value">Яхтенные путешествия</p>
+          </div>
+          <div class="case-meta__item">
+            <p class="label">Роль</p>
+            <p class="value">Веб-дизайнер</p>
+          </div>
+          <div class="case-meta__item">
+            <p class="label">Сайт</p>
+            <a
+              class="value"
+              href="https://xploration.club"
+              target="_blank"
+              rel="noopener"
+              >xploration.club ↗</a
+            >
+          </div>
+        </div>
+        <figure class="shot shot--first">
+          <img
+            src="images/case-xploration/mobile-hero.webp"
+            alt="Сайт XPLORATION на телефоне: первый экран главной страницы"
+          />
+        </figure>
+      </section>
+
+      <!-- ============ КОНТЕКСТ ============ -->
+      <section class="section-grid wrap">
+        <div class="side">
+          <p class="label">О проекте</p>
+          <h2 class="t-h2">Клуб, где путешествие&nbsp;— это исследование</h2>
+        </div>
+        <div class="body">
+          <p>
+            XPLORATION — испанский яхт-клуб. Он собирает небольшие экипажи на
+            долгие камерные походы: у каждого сезона свой маршрут, свой
+            настрой и свои этапы, на которые можно записаться отдельно.
+          </p>
+          <p>
+            Прежнее оформление не отражало характер клуба и терялось среди
+            конкурентов, а сайт и соцсети жили каждый своей жизнью.
+          </p>
+        </div>
+      </section>
+
+      <!-- ============ ЗАДАЧИ ============ -->
+      <section class="section-grid wrap">
+        <div class="side"><h2 class="t-h2">Три задачи</h2></div>
+        <div class="body">
+          <ul class="goals">
+            <li>
+              <strong>Обновить визуальный стиль</strong> — прежнее оформление не
+              отражало характер клуба и терялось среди конкурентов
+            </li>
+            <li>
+              <strong>Привести сайт и коммуникации к единому образу</strong> —
+              чтобы укрепить узнаваемость бренда
+            </li>
+            <li>
+              <strong>Обеспечить комфортный пользовательский опыт</strong> —
+              переработать навигацию и структуру для лёгкости и вовлечения
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ============ ЭТАПЫ ============ -->
+      <section class="section-grid wrap">
+        <div class="side"><h2 class="t-h2">Как шла работа</h2></div>
+        <div class="body">
+          <ol class="steps">
+            <li>
+              <strong>Исследование и поиски.</strong> Разбираю, чем клуб
+              отличается от конкурентов, и ищу визуальный
+              язык, в котором это читается без подписей.
+            </li>
+            <li>
+              <strong>Страницы сезонов.</strong> Самый объёмный и важный
+              шаблон: у каждого сезона свой маршрут, этапы, яхта и команда,
+              а структура должна быть одинаковой, чтобы сезоны можно было
+              сравнивать.
+            </li>
+            <li>
+              <strong>Оформление соцсетей.</strong> Переношу тот же образ в
+              коммуникации, чтобы сайт и соцсети работали как одна система, а
+              не как разные площадки.
+            </li>
+            <li>
+              <strong>Контентные страницы.</strong> Условия путешествий,
+              атмосфера на борту и техническое состояние яхты — материал,
+              который снимает у человека сомнения перед заявкой.
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- ============ ПОЛЬЗОВАТЕЛЬСКИЙ ПУТЬ ============ -->
+      <section class="section-grid wrap">
+        <div class="side"><h2 class="t-h2">Структура и навигация</h2></div>
+        <div class="body">
+          <p>
+            Прежде чем рисовать экраны, я собрала карту переходов и
+            выстроила иерархию контента. С главной человек попадает в
+            разделы «Что мы делаем», «Кто мы», «Яхта» и на страницы сезонов, а
+            форма заявки доступна и с главной, и со страницы сезона.
+          </p>
+          <p>
+            Внутри сезона порядок блоков повторяет вопросы, которые задаёт
+            себе человек, решая, ехать ли: о чём этот сезон, какой маршрут,
+            на чём мы пойдём, с кем, как присоединиться и какие есть другие
+            сезоны. Каждый ответ стоит на своём месте и не заставляет
+            возвращаться назад.
+          </p>
+        </div>
+      </section>
+      <figure class="shot shot--flow wrap">
+        <img
+          src="images/case-xploration/flow.webp"
+          alt="User flow сайта XPLORATION: главная, разделы, страница сезона, FAQ и форма заявки"
+          loading="lazy"
+        />
+        <figcaption class="shot__cap t-h4">
+          User flow: главная, разделы, страница сезона и форма заявки
+        </figcaption>
+      </figure>
+
+      <!-- ============ ПРИНЦИПЫ ============ -->
+      <section class="section-grid wrap">
+        <div class="side"><h2 class="t-h2">Принципы, на которых держится сайт</h2></div>
+        <div class="body">
+          <ul class="goals">
+            <li>
+              <strong>Одна главная цель на экран.</strong> Кнопка заявки
+              всегда под рукой в шапке, остальные элементы её не перебивают
+            </li>
+            <li>
+              <strong>Постепенное раскрытие информации.</strong> Этапы
+              маршрута показаны карточками с датой, длительностью и ценой, а
+              подробности спрятаны за кнопкой «More» — страница остаётся
+              обозримой
+            </li>
+            <li>
+              <strong>Единый шаблон для всех сезонов.</strong> Структура
+              одинаковая, меняется только контент — так сезоны легко
+              сравнивать, а новые добавлять проще
+            </li>
+            <li>
+              <strong>Карта рядом с этапами.</strong> Маршрут читается и
+              текстом, и графикой: человек сразу видит, куда и как далеко идти
+            </li>
+            <li>
+              <strong>Ритм вместо сплошной ленты.</strong> Крупные
+              заголовки, фото, короткие блоки и воздух чередуются, поэтому
+              длинная страница не утомляет
+            </li>
+            <li>
+              <strong>Мобильная версия — не уменьшенная копия.</strong>
+              Блоки «Яхта» и «Команда» на телефоне превращаются в карусели,
+              а шаги «Как присоединиться» нумерованы
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ============ ГЛАВНАЯ ============ -->
+      <section class="section-grid wrap">
+        <div class="side"><h2 class="t-h2">Главная страница</h2></div>
+        <div class="body">
+          <p>
+            Главная через плавный ритм и образы задаёт тон проекту: это
+            исследование мира и себя, а не туристическое приключение. Дизайн
+            фокусируется на лёгкости восприятия и передаче настроения клуба.
+          </p>
+        </div>
+      </section>
+      <figure class="shot wrap">
+        <div class="video">
+          <iframe
+            src="https://player.vimeo.com/video/1079475437?h=fa995773c8&amp;badge=0&amp;autopause=0&amp;autoplay=1&amp;loop=1&amp;title=0&amp;controls=0&amp;player_id=0&amp;app_id=58479&amp;muted=1"
+            title="Главная страница XPLORATION: скринкаст"
+            allow="autoplay; fullscreen; picture-in-picture"
+            loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin"
+          ></iframe>
+        </div>
+      </figure>
+
+      <!-- ============ СЕЗОНЫ ============ -->
+      <section class="section-grid wrap">
+        <div class="side"><h2 class="t-h2">Страницы сезонов</h2></div>
+        <div class="body">
+          <p>
+            Каждый сезон — это приключение с уникальным настроением. Чтобы
+            передать дух исследования, я использую ключевой графический приём —
+            лёгкое размытие, напоминающее эффект приближения в подзорную трубу.
+          </p>
+          <p>
+            Структура и ритм контента на сезонных страницах продуманы так,
+            чтобы даже при большом объёме информации пользователь не уставал
+            при скролле — за счёт смены темпа, визуальных разгрузок и
+            акцентов.
+          </p>
+        </div>
+      </section>
+      <figure class="shot wrap">
+        <img
+          src="images/case-xploration/seasons.webp"
+          alt="Выбор сезона: круглые карточки с размытием «подзорной трубы»"
+          loading="lazy"
+        />
+      </figure>
+      <figure class="shot wrap">
+        <div class="video video--wide">
+          <iframe
+            src="https://player.vimeo.com/video/1079483355?h=fa995773c8&amp;badge=0&amp;autopause=0&amp;autoplay=1&amp;loop=1&amp;title=0&amp;controls=0&amp;player_id=0&amp;app_id=58479&amp;muted=1"
+            title="Страница сезона XPLORATION: маршрут на карте, скринкаст"
+            allow="autoplay; fullscreen; picture-in-picture"
+            loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin"
+          ></iframe>
+        </div>
+      </figure>
+      <figure class="shot wrap">
+        <img
+          src="images/case-xploration/yacht-history.webp"
+          alt="Страница «История и ремонт яхты» на телефоне"
+          loading="lazy"
+        />
+      </figure>
+      <figure class="shot wrap">
+        <img
+          src="images/case-xploration/arctic.webp"
+          alt="Страница сезона Arctic: первый экран, описание сезона и маршрут по этапам"
+          loading="lazy"
+        />
+      </figure>
+
+      <figure class="shot wrap">
+        <img
+          src="images/case-xploration/route.webp"
+          alt="Страница сезона: маршрут на карте и этапы с датой, длительностью и ценой"
+          loading="lazy"
+        />
+      </figure>
+
+      <!-- ============ ДОВЕРИЕ ============ -->
+      <section class="section-grid wrap">
+        <div class="side"><h2 class="t-h2">Доверие и атмосфера</h2></div>
+        <div class="body">
+          <p>
+            Помимо удобства взаимодействия, важно было выстроить эмоциональный
+            контакт с пользователем: вызвать доверие к яхте и команде, а также
+            передать атмосферу жизни на борту.
+          </p>
+        </div>
+      </section>
+      <figure class="shot wrap">
+        <img
+          src="images/case-xploration/yacht-crew.webp"
+          alt="Блоки «О яхте», «Команда» и «Как присоединиться» на телефоне"
+          loading="lazy"
+        />
+      </figure>
+
+      <!-- ============ КОНТЕНТНЫЕ СТРАНИЦЫ ============ -->
+      <section class="section-grid wrap">
+        <div class="side"><h2 class="t-h2">Контентные страницы</h2></div>
+        <div class="body">
+          <p>
+            Помимо сезонных направлений, нужно было разработать серию
+            контентных страниц — для подробного рассказа об условиях
+            путешествий, атмосфере на борту и техническом состоянии яхты. Эти
+            разделы помогают создать полное и доверительное представление о
+            проекте.
+          </p>
+        </div>
+      </section>
+      <figure class="shot wrap">
+        <img
+          src="images/case-xploration/laptop.webp"
+          alt="Контентная страница Route highlights на ноутбуке"
+          loading="lazy"
+        />
+      </figure>
+      <!-- ============ ИТОГ ============ -->
+      <section class="section-grid wrap">
+        <div class="side"><h2 class="t-h2">Итог</h2></div>
+        <div class="body">
+          <p>
+            Я спроектировала более 20 страниц. Вот как результат ложится на
+            три исходные задачи.
+          </p>
+          <ul class="goals">
+            <li>
+              <strong>Визуальный стиль обновлён.</strong> Сайт получил
+              узнаваемый образ с лёгкими воздушными экранами и фирменным
+              приёмом размытия «подзорной трубы», который выделяет клуб среди
+              конкурентов
+            </li>
+            <li>
+              <strong>Сайт и коммуникации говорят одним языком.</strong>
+              Единый образ перенесён в оформление соцсетей, поэтому бренд
+              узнаётся на любой площадке
+            </li>
+            <li>
+              <strong>Опыт стал комфортным.</strong> Переработанные навигация
+              и структура ведут от главной к сезону и заявке без лишних
+              переходов, а ритм страниц сохраняет вовлечённость на всём пути
+              пользователя
+            </li>
+          </ul>
+        </div>
+      </section>
+      <figure class="shot wrap">
+        <img
+          src="images/case-xploration/hand.webp"
+          alt="Сайт XPLORATION на телефоне в руке"
+          loading="lazy"
+        />
+      </figure>
+
+      <section class="outro wrap">
+        <a class="outro__link t-normal" href="index.html"
+          >← вернуться к кейсам</a
+        >
+      </section>
+    </main>
+  </body>
+</html>

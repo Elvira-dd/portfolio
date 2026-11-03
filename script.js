@@ -13,7 +13,7 @@ const LINKS = {
   // кнопки «кейс →» — страницы или ссылки на подробные кейсы
   "case-process": "case-protsessy-komandy.html",
   "case-sites":   "case-sajty-dlya-zastrojshhikov.html",
-  "case-ab":      "#",
+  "case-xploration": "case-xploration.html",
   "case-myolimp": "#",
 };
 
@@ -24,7 +24,7 @@ const IMAGES = {
   "hero":            "images/hero",            // фото на первом экране (горизонтальное, широкое)
   "case-process":    "images/case-process",    // обложка кейса «Процессы команды» (от 1100×930)
   "case-sites":      "images/case-sites",      // обложка «Сайты для застройщиков»
-  "case-ab":         "images/case-ab",         // обложка «A/B-тесты и продукт»
+  "case-xploration": "images/case-xploration", // обложка «XPLORATION»
   "case-myolimp":    "images/case-myolimp",    // обложка «MyOlimp: дизайн с нуля»
   "logo-idalite":    "images/logo-idalite",    // логотипы в «Опыте работы» (квадрат, от 180×180)
   "logo-xploration": "images/logo-xploration",
@@ -36,17 +36,17 @@ const EXTENSIONS = ["jpg", "jpeg", "png", "webp"];
 /* 3. Навыки. case — id кейса, превью которого всплывает при наведении.
       Если превью не нужно, поставь case: null. */
 const SKILLS = [
-  { name: "Team Leadership",                case: "case-process" },
+  { name: "Design Leadership",              case: "case-process" },
   { name: "Design Ops",                     case: "case-process" },
   { name: "Mentorship",                     case: "case-process" },
-  { name: "Дизайн-ревью",                   case: "case-ab" },
-  { name: "Cross-functional Collaboration", case: "case-ab" },
+  { name: "Дизайн-ревью",                   case: null },
+  { name: "Cross-functional Collaboration", case: null },
   { name: "Brand Identity & Strategy",      case: "case-sites" },
   { name: "Visual Design",                  case: "case-sites" },
   { name: "Web & App UI",                   case: "case-sites" },
   { name: "Design Systems",                 case: "case-myolimp" },
   { name: "UX-исследования",                case: null },
-  { name: "A/B-тестирование",               case: "case-ab" },
+  { name: "A/B-тестирование",               case: null },
   { name: "AI-ассистированный дизайн",      case: null },
   { name: "Figma",                          case: null },
   { name: "Adobe Creative Suite",           case: null },
