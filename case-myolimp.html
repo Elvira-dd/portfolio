@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MyOlimp — Эльвира Галиева</title>
+    <meta
+      name="description"
+      content="Кейс MyOlimp: дизайн мобильного приложения для подготовки к олимпиадам с нуля — UI-kit, гайдлайны и дизайн-система."
+    />
+    <link rel="icon" type="image/png" href="images/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      /* =========================================================
+       Доп. стили только для страницы кейса MyOlimp.
+       Компоненты те же, что в кейсе «Сайты для застройщиков»:
+       топбар, hero, сетка глав (.section-grid), goals, steps.
+       Новое: широкий кадр (.shot) — картинка на всю сетку.
+       ========================================================= */
+      :root {
+        --case-accent: #3579f8;
+      }
+
+      .case-topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 33px;
+        padding-bottom: 33px;
+      }
+      .case-topbar__back {
+        color: var(--gray);
+        transition: color 0.15s;
+      }
+      .case-topbar__back:hover {
+        color: var(--case-accent);
+      }
+      .case-topbar__name {
+        text-transform: lowercase;
+        font-weight: var(--text-w-medium);
+      }
+
+      .case-hero {
+        padding-top: 24px;
+      }
+      .case-hero__title {
+        max-width: none;
+      }
+      .case-hero__intro {
+        margin-top: 24px;
+        max-width: 640px;
+        color: var(--text);
+      }
+      .case-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 48px;
+        margin-top: 56px;
+      }
+      .case-meta__item .label {
+        margin-bottom: 8px;
+      }
+      .case-meta__item .value {
+        font-size: var(--h4-size);
+        line-height: var(--h4-lh);
+        font-weight: var(--h4-w);
+        letter-spacing: var(--h4-ls);
+        color: var(--black);
+      }
+      a.value:hover {
+        color: var(--case-accent);
+      }
+
+      .section-grid {
+        display: grid;
+        grid-template-columns: 360px 1fr;
+        gap: 16px 120px;
+        padding-top: 104px;
+      }
+      .section-grid .side h2 {
+        margin-top: 0;
+      }
+      .section-grid .body p {
+        color: var(--text);
+        max-width: 62ch;
+        margin-bottom: 16px;
+      }
+      .section-grid .body p:last-child {
+        margin-bottom: 0;
+      }
+
+      .steps {
+        margin: 0;
+        padding: 0 0 0 1.6em;
+        max-width: 64ch;
+        color: var(--gray);
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        font-size: var(--h4-size);
+        line-height: var(--h4-lh);
+        font-weight: var(--h4-w);
+        letter-spacing: var(--h4-ls);
+      }
+      .steps li {
+        padding-left: 0.3em;
+      }
+      .steps li::marker {
+        color: var(--black);
+        font-variant-numeric: tabular-nums;
+      }
+      .steps strong {
+        color: var(--black);
+        font-weight: var(--h4-w);
+      }
+
+      ul.goals {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-width: 64ch;
+      }
+      ul.goals li {
+        position: relative;
+        display: block;
+        padding: 14px 16px 14px 36px;
+        background: var(--row-bg);
+        border-radius: var(--r-m);
+        color: rgba(17, 17, 17, 0.5);
+        font-size: var(--h4-size);
+        line-height: var(--h4-lh);
+        font-weight: var(--h4-w);
+        letter-spacing: var(--h4-ls);
+      }
+      ul.goals li::before {
+        content: '→';
+        position: absolute;
+        left: 14px;
+        top: 14px;
+        color: var(--case-accent);
+        font-weight: 700;
+      }
+      ul.goals li strong {
+        font-weight: var(--text-w-medium);
+        color: var(--black);
+      }
+
+      /* ---------- широкий кадр: картинка на всю сетку ---------- */
+      .shot {
+        margin: 0;
+        padding-top: 48px;
+      }
+      .shot--first {
+        padding-top: 56px;
+      }
+      .shot img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: var(--r-l);
+        background: var(--placeholder);
+      }
+      .shot--line img {
+        border: 1px solid #e2e2e2;
+      }
+      .shot__cap {
+        margin-top: 16px;
+        color: var(--black);
+        max-width: 64ch;
+      }
+      /* видео-скринкаст: пропорции 16:9, без элементов управления */
+      .video {
+        position: relative;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+        border-radius: var(--r-l);
+        background: var(--placeholder);
+      }
+      .video iframe {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        pointer-events: none;
+      }
+      .video--wide {
+        aspect-ratio: 1280 / 556;
+      }
+      /* два кадра в ряд */
+      .shots-2 {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        padding-top: 16px;
+      }
+      .shots-2 .shot {
+        padding-top: 0;
+      }
+      /* карта переходов: длинная картинка, не растягиваем на всю ширину */
+      .shot--flow img {
+        border: 1px solid #e2e2e2;
+      }
+
+      @media (max-width: 900px) {
+        .section-grid {
+          grid-template-columns: 1fr;
+          gap: 14px;
+          padding-top: 72px;
+        }
+        .case-meta {
+          gap: 28px;
+        }
+        .shots-2 {
+          grid-template-columns: 1fr;
+        }
+      }
+    
+      /* ---------- серый плейсхолдер под визуал (как в кейсе №1) ---------- */
+      .visual-ph {
+        background: var(--placeholder);
+        border-radius: var(--r-m);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        text-align: center;
+        padding: 28px;
+        color: #9a9a9a;
+        font-size: var(--small-size);
+        line-height: var(--small-lh);
+        font-weight: var(--text-w);
+        letter-spacing: 0;
+      }
+      .visual-ph b {
+        color: #7a7a7a;
+        font-weight: var(--text-w-medium);
+        font-size: var(--normal-size);
+        line-height: var(--normal-lh);
+      }
+      .visual-ph.hero {
+        min-height: 380px;
+        border-radius: var(--r-l);
+        margin-top: 48px;
+      }
+      .visual-ph.shotph {
+        min-height: 320px;
+        border-radius: var(--r-l);
+      }
+      .shots-ph {
+        padding-top: 48px;
+      }
+
+      /* ---------- результат: цифры ---------- */
+      .numbers {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 32px;
+        max-width: 64ch;
+      }
+      .numbers .stat__cap {
+        max-width: 26ch;
+      }
+      .stat-note {
+        margin-top: 32px;
+        color: var(--gray);
+        font-size: var(--small-size);
+        line-height: var(--small-lh);
+        font-weight: var(--text-w);
+        letter-spacing: 0;
+        max-width: 64ch;
+      }
+      h3.sub {
+        margin: 0 0 8px;
+        color: var(--black);
+      }
+      .sub-block + .sub-block {
+        margin-top: 32px;
+      }
+      .sub-block p {
+        color: var(--text);
+        max-width: 62ch;
+        margin: 0;
+      }
+      @media (max-width: 900px) {
+        .numbers {
+          grid-template-columns: 1fr;
+        }
+      }
+    
+      /* ---------- решение: тёмный блок с четырьмя карточками (как в референсе) ---------- */
+      .solution {
+        margin-top: 104px;
+        padding: 64px 0 72px;
+        background: var(--row-bg);
+        color: var(--black);
+      }
+      .solution__title {
+        font-size: var(--h1-size);
+        line-height: var(--h1-lh);
+        font-weight: var(--h1-w);
+        letter-spacing: var(--h1-ls);
+        color: var(--black);
+      }
+      .solution__grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 64px 32px;
+        margin-top: 48px;
+      }
+      .solution__item {
+        margin: 0;
+      }
+      .solution__media {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        aspect-ratio: 16 / 9;
+        padding: 28px;
+        text-align: center;
+        border-radius: var(--r-m);
+        background: var(--placeholder);
+        color: #9a9a9a;
+        font-size: var(--small-size);
+        line-height: var(--small-lh);
+        font-weight: var(--text-w);
+        letter-spacing: 0;
+      }
+      .solution__media b {
+        color: #7a7a7a;
+        font-weight: var(--text-w-medium);
+        font-size: var(--normal-size);
+        line-height: var(--normal-lh);
+      }
+      .solution__name {
+        margin: 20px 0 0;
+        font-size: var(--h4-size);
+        line-height: var(--h4-lh);
+        font-weight: var(--h4-w);
+        letter-spacing: var(--h4-ls);
+        color: var(--black);
+      }
+      .solution__desc {
+        margin: 8px 0 0;
+        max-width: 52ch;
+        color: var(--gray);
+        font-size: var(--small-size);
+        line-height: var(--small-lh);
+        font-weight: var(--text-w);
+        letter-spacing: 0;
+      }
+      @media (max-width: 900px) {
+        .solution {
+          padding: 48px 0 56px;
+        }
+        .solution__grid {
+          grid-template-columns: 1fr;
+          gap: 40px;
+        }
+      }
+</style>
+  </head>
+  <body>
+    <header class="case-topbar wrap">
+      <a class="case-topbar__back t-normal" href="index.html">← портфолио</a>
+      <a class="case-topbar__name t-normal" href="index.html#contacts"
+        >эльвира галиева</a
+      >
+    </header>
+
+    <main>
+      <!-- ============ HERO ============ -->
+      <section class="case-hero wrap">
+        <h1 class="t-h1 case-hero__title">MyOlimp: дизайн-система</h1>
+        <p class="case-hero__intro">
+          Стартап запускал мобильное приложение для подготовки к олимпиадам, и ему нужна была своя дизайн-система. Я разработала её с нуля: от токенов до библиотеки компонентов и документации.
+        </p>
+        <div class="case-meta">
+          <div class="case-meta__item">
+            <p class="label">Тип</p>
+            <p class="value">Мобильное приложение</p>
+          </div>
+          <div class="case-meta__item">
+            <p class="label">Роль</p>
+            <p class="value">Дизайнер дизайн-системы</p>
+          </div>
+          <div class="case-meta__item">
+            <p class="label">Срок</p>
+            <p class="value">1,5–2 месяца</p>
+          </div>
+        </div>
+        <div class="visual-ph hero">
+          <b>Hero-визуал</b>
+          Библиотека компонентов или страница токенов из Figma
+        </div>
+      </section>
+
+      <!-- ============ КОНТЕКСТ ============ -->
+      <section class="section-grid wrap">
+        <div class="side">
+          <p class="label">Контекст</p>
+          <h2 class="t-h2">Новый продукт и команда без дизайнера</h2>
+        </div>
+        <div class="body">
+          <p>
+            Стартап запускал новый продукт — приложение для олимпиад.
+            Дизайн-система была нужна, чтобы сократить время работы: до этого
+            в команде в основном были разработчики, дизайнеров не было, поэтому
+            в команду потребовался дизайнер. Приложение создавалось с нуля,
+            так что система тоже строилась с нуля, а не на основе устаревшего
+            базового набора компонентов.
+          </p>
+          <p>
+            В работе участвовали я как дизайнер дизайн-системы и несколько
+            фронтенд-разработчиков, с которыми я сотрудничала очень тесно.
+            Главным ограничением была скорость: систему нужно было сделать
+            максимально простой и быстрой, не уходя глубоко в документацию, но заложить масштабирование продукта.
+          </p>
+        </div>
+      </section>
+
+      <!-- ============ ЦЕЛИ ============ -->
+      <section class="section-grid wrap">
+        <div class="side"><h2 class="t-h2">Цели</h2></div>
+        <div class="body">
+          <ul class="goals">
+            <li>
+              <strong>Масштабируемая система токенов</strong>, которая
+              поддерживает светлую и тёмную темы без дублирования работы
+            </li>
+            <li>
+              <strong>Подробно проработанная мобильная версия</strong> — она основная для приложения
+            </li>
+            <li>
+              <strong>Структурированные токены и документация компонентов</strong> — подробная, но не перегруженная
+            </li>
+            <li>
+              <strong>Основа для роста</strong>: по документации следующие
+              дизайнеры, а при необходимости и сами разработчики, могут
+              создавать новые компоненты
+            </li>
+          </ul>
+        </div>
+      </section>
+      <div class="shots-ph wrap">
+        <div class="visual-ph shotph">
+          <b>Обзор системы</b>
+          Страница с обзором дизайн-системы в Figma
+        </div>
+      </div>
+
+      <!-- ============ ПРОЦЕСС ============ -->
+      <section class="section-grid wrap">
+        <div class="side"><h2 class="t-h2">Процесс</h2></div>
+        <div class="body">
+          <ol class="steps">
+            <li>
+              <strong>Атомарная структура.</strong> Построила систему по атомарному дизайну со всеми его уровнями — от атомов и молекул до организмов, шаблонов и страниц. Этот путь выбрали разработчики:
+              прошлую версию приложения они уже делали на атомарном подходе.
+            </li>
+            <li>
+              <strong>Mobile First.</strong> Сначала проработала мобильную
+              версию, а затем масштабировала её под десктоп.
+            </li>
+            <li>
+              <strong>Адаптация через переменные.</strong> Настроила мгновенную
+              адаптацию макетов на переменных, чтобы не пересобирать их под каждый размер.
+            </li>
+            <li>
+              <strong>Параллельно с разработкой.</strong> Разработчики сразу
+              брали токены и компоненты и кодили их вместе со мной. Так мы находили ограничения и неудобные для реализации компоненты на раннем этапе, и я могла сразу их переделать.
+            </li>
+            <li>
+              <strong>Документация.</strong> Подробное руководство в Figma с примерами состояний каждого компонента и отдельная страница
+              описания для каждого компонента — для дизайнеров и для разработчиков.
+            </li>
+          </ol>
+        </div>
+      </section>
+
+
+      <!-- ============ РЕШЕНИЕ ============ -->
+      <section class="solution">
+        <div class="wrap">
+          <h2 class="solution__title">Решение</h2>
+          <div class="solution__grid">
+            <figure class="solution__item">
+              <div class="solution__media">
+                <b>Атомарные уровни</b>
+                От токенов к атомам, молекулам и организмам
+              </div>
+              <h3 class="solution__name">Многослойная атомарная система</h3>
+              <p class="solution__desc">
+                Систему я выстроила по атомарному дизайну: из токенов собраны
+                атомы, из атомов — молекулы, из молекул — организмы, а затем
+                шаблоны и страницы. Каждый уровень опирается на предыдущий,
+                поэтому компоненты собираются из уже готовых частей, а новые
+                элементы можно добавлять по тому же принципу.
+              </p>
+            </figure>
+            <figure class="solution__item">
+              <div class="solution__media">
+                <b>Две темы</b>
+                Один экран в светлой и тёмной теме
+              </div>
+              <h3 class="solution__name">Светлая и тёмная тема</h3>
+              <p class="solution__desc">
+                Семантические цветовые токены несут две темы — светлую и тёмную — и переключаются без изменения самих компонентов.
+              </p>
+            </figure>
+            <figure class="solution__item">
+              <div class="solution__media">
+                <b>Документация</b>
+                Страница компонента в Figma
+              </div>
+              <h3 class="solution__name">Документация</h3>
+              <p class="solution__desc">
+                Руководство в Figma с визуальными примерами каждого состояния
+                компонента (по умолчанию, при наведении, отключён, ошибка и другие) и письменная спецификация для разработчиков.
+              </p>
+            </figure>
+            <figure class="solution__item">
+              <div class="solution__media">
+                <b>Адаптация</b>
+                Мобильный и десктопный макет
+              </div>
+              <h3 class="solution__name">Быстрая адаптация макета</h3>
+              <p class="solution__desc">
+                Один параметр переключает макет с мобильной версии на десктопную.
+              </p>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ РЕЗУЛЬТАТ ============ -->
+      <section class="section-grid wrap">
+        <div class="side"><h2 class="t-h2">Результат</h2></div>
+        <div class="body">
+          <div class="numbers">
+            <div class="stat">
+              <div class="stat__num t-h2">1,5–2 месяца</div>
+              <div class="stat__cap">ушло на создание всей дизайн-системы</div>
+            </div>
+            <div class="stat">
+              <div class="stat__num t-h2">−30%</div>
+              <div class="stat__cap">
+                запросов от разработчиков после появления подробной системы
+              </div>
+            </div>
+          </div>
+          <p class="stat-note">
+            Структура системы легко переиспользуется на других экранах и в других проектах, в том числе в небольших сторонних проектах
+            команды.
+          </p>
+        </div>
+      </section>
+
+      <section class="case-next wrap">
+    <a class="case-next__link" href="case-protsessy-komandy.html" style="--next-accent: #245bf3">
+      <p class="case-next__label label">следующий проект</p>
+      <p class="case-next__title"><span>Процессы команды</span><span class="case-next__arrow" aria-hidden="true">→</span></p>
+    </a>
+  </section>
+
+  <footer class="footer wrap">
+        <span>MyOlimp · дизайн-система</span>
+        <a class="t-small" href="index.html">← на главную</a>
+      </footer>
+    </main>
+  </body>
+</html>

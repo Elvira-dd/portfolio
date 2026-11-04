@@ -4,17 +4,15 @@
 
 /* 1. Ссылки. Замени "#" на свои адреса. */
 const LINKS = {
-  cv:        "#",   // ссылка на CV (PDF в репозитории, например "cv.pdf", или Google Drive)
-  telegram:  "#",   // например "https://t.me/username"
-  email:     "#",   // например "mailto:name@example.com"
-  behance:   "#",   // ссылка на Behance
-  linkedin:  "#",   // ссылка на LinkedIn
+  cv:        "cv/Elvira-Galieva-CV.pdf",   // PDF лежит в репозитории, открывается в новой вкладке
+  telegram:  "https://t.me/el_desdiva",
+  email:     "elvira.des.dev@yandex.ru",   // копируется в буфер обмена по клику
 
   // кнопки «кейс →» — страницы или ссылки на подробные кейсы
   "case-process": "case-protsessy-komandy.html",
   "case-sites":   "case-sajty-dlya-zastrojshhikov.html",
   "case-xploration": "case-xploration.html",
-  "case-myolimp": "#",
+  "case-myolimp": "case-myolimp.html",
 };
 
 /* 2. Картинки. Положи файл в папку images/ с таким именем.
@@ -25,7 +23,7 @@ const IMAGES = {
   "case-process":    "images/case-process",    // обложка кейса «Процессы команды» (от 1100×930)
   "case-sites":      "images/case-sites",      // обложка «Сайты для застройщиков»
   "case-xploration": "images/case-xploration", // обложка «XPLORATION»
-  "case-myolimp":    "images/case-myolimp",    // обложка «MyOlimp: дизайн с нуля»
+  "case-myolimp":    "images/case-myolimp",    // обложка «MyOlimp: дизайн-система»
   "logo-idalite":    "images/logo-idalite",    // логотипы в «Опыте работы» (квадрат, от 180×180)
   "logo-xploration": "images/logo-xploration",
   "logo-myolimp":    "images/logo-myolimp",
@@ -34,26 +32,40 @@ const IMAGES = {
 const EXTENSIONS = ["jpg", "jpeg", "png", "webp"];
 
 /* 3. Навыки. case — id кейса, превью которого всплывает при наведении.
+      list — список программ, который всплывает при наведении вместо превью кейса.
       Если превью не нужно, поставь case: null. */
 const SKILLS = [
   { name: "Design Leadership",              case: "case-process" },
   { name: "Design Ops",                     case: "case-process" },
   { name: "Mentorship",                     case: "case-process" },
   { name: "Дизайн-ревью",                   case: null },
+  { name: "Дизайн-стандарты",               case: null },
   { name: "Cross-functional Collaboration", case: null },
+  { name: "Работа с C-level",               case: null },
   { name: "Brand Identity & Strategy",      case: "case-sites" },
   { name: "Visual Design",                  case: "case-sites" },
   { name: "Web & App UI",                   case: "case-sites" },
+  { name: "Прототипирование",               case: null },
+  { name: "Гайдлайны iOS и Android",        case: null },
   { name: "Design Systems",                 case: "case-myolimp" },
+  { name: "UserFlow",                       case: null },
   { name: "UX-исследования",                case: null },
+  { name: "Usability-тесты",                case: null },
   { name: "A/B-тестирование",               case: null },
+  { name: "Бизнес-метрики",                 case: null },
   { name: "AI-ассистированный дизайн",      case: null },
+  { name: "ИИ в аналитике",                 case: null },
+  { name: "Генерация фото и видео",         case: null },
   { name: "Figma",                          case: null },
-  { name: "Adobe Creative Suite",           case: null },
+  { name: "Adobe Creative Suite",           case: null, list: ["Photoshop", "Illustrator", "After Effects", "Premiere Pro"] },
+  { name: "Spline",                         case: null },
   { name: "Frontend Development",           case: null },
+  { name: "React",                          case: null },
+  { name: "Swift",                          case: null },
   { name: "Tilda",                          case: null },
   { name: "Miro",                           case: null },
   { name: "Notion",                         case: null },
+  { name: "AmoCRM",                         case: null },
 ];
 
 /* =========================================================
@@ -64,6 +76,36 @@ const SKILLS = [
 document.querySelectorAll("[data-link]").forEach((a) => {
   const url = LINKS[a.dataset.link];
   if (url && url !== "#") a.href = url;
+});
+
+// --- копирование почты в буфер обмена по клику
+document.querySelectorAll("[data-copy]").forEach((btn) => {
+  const wrap = btn.closest(".copy-mail");
+  const label = wrap && wrap.querySelector(".copy-pill__text");
+  let timer = null;
+  btn.addEventListener("click", async () => {
+    const text = LINKS[btn.dataset.copy];
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch (err) {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); } catch (e) {}
+      ta.remove();
+    }
+    if (!wrap || !label) return;
+    label.textContent = "скопировано";
+    wrap.classList.add("is-copied");
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      wrap.classList.remove("is-copied");
+      label.textContent = "скопировать";
+    }, 1800);
+  });
 });
 
 // --- поиск картинки: перебираем расширения, пока какое-нибудь не загрузится
@@ -118,10 +160,14 @@ document.querySelectorAll("[data-slot]").forEach((el) => {
 const skillsEl = document.getElementById("skills");
 SKILLS.forEach((s, i) => {
   const span = document.createElement("span");
-  span.className = "skill" + (s.case ? " skill--case" : "");
+  span.className = "skill" + (s.case ? " skill--case" : "") + (s.list ? " skill--list" : "");
   span.textContent = s.name;
   if (s.case) {
     span.dataset.case = s.case;
+    span.tabIndex = 0;
+  }
+  if (s.list) {
+    span.dataset.list = s.list.join("|");
     span.tabIndex = 0;
   }
   skillsEl.appendChild(span);
@@ -133,11 +179,29 @@ const tip = document.getElementById("skill-tip");
 const tipImg = document.getElementById("skill-tip-img");
 const tipTitle = document.getElementById("skill-tip-title");
 
+const tipList = document.getElementById("skill-tip-list");
+
 function showTip(span) {
-  const caseId = span.dataset.case;
-  const caseEl = document.getElementById(caseId);
-  tipTitle.textContent = caseEl ? caseEl.querySelector(".case__title").textContent : "";
-  fillSlot(tipImg, caseId, tipTitle.textContent);
+  if (span.dataset.list) {
+    // плашка со списком программ вместо обложки кейса
+    tipImg.hidden = true;
+    tipTitle.hidden = true;
+    tipList.hidden = false;
+    tipList.innerHTML = "";
+    span.dataset.list.split("|").forEach((name) => {
+      const li = document.createElement("li");
+      li.textContent = name;
+      tipList.appendChild(li);
+    });
+  } else {
+    tipImg.hidden = false;
+    tipTitle.hidden = false;
+    tipList.hidden = true;
+    const caseId = span.dataset.case;
+    const caseEl = document.getElementById(caseId);
+    tipTitle.textContent = caseEl ? caseEl.querySelector(".case__title").textContent : "";
+    fillSlot(tipImg, caseId, tipTitle.textContent);
+  }
 
   const r = span.getBoundingClientRect();
   const tipW = 306;
@@ -150,14 +214,14 @@ function showTip(span) {
 function hideTip() { tip.classList.remove("is-visible"); }
 
 skillsEl.addEventListener("mouseover", (e) => {
-  const s = e.target.closest(".skill--case");
+  const s = e.target.closest(".skill--case, .skill--list");
   if (s) showTip(s);
 });
 skillsEl.addEventListener("mouseout", (e) => {
-  if (e.target.closest(".skill--case")) hideTip();
+  if (e.target.closest(".skill--case, .skill--list")) hideTip();
 });
 skillsEl.addEventListener("focusin", (e) => {
-  const s = e.target.closest(".skill--case");
+  const s = e.target.closest(".skill--case, .skill--list");
   if (s) showTip(s);
 });
 skillsEl.addEventListener("focusout", hideTip);
@@ -213,12 +277,18 @@ window.addEventListener("load", fitHeroTitle);
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let done = false;
 
+  const bar = document.getElementById("site-bar");
+  function reveal() {
+    hero.classList.add("is-revealed");
+    if (bar) bar.classList.add("is-revealed");
+  }
+
   function finish() {
     if (done) return;
     done = true;
     preloader.remove();
     document.body.classList.remove("intro-locked");
-    hero.classList.add("is-revealed");
+    reveal();
   }
 
   if (reduced) { finish(); return; }
@@ -236,7 +306,7 @@ window.addEventListener("load", fitHeroTitle);
   // 3) открывается первый экран: штора снизу вверх + фото проявляется
   setTimeout(() => {
     document.body.classList.remove("intro-locked");
-    hero.classList.add("is-revealed");
+    reveal();
   }, 1650);
 
   // 4) прелоадер убирается из DOM
@@ -299,12 +369,13 @@ window.addEventListener("load", fitHeroTitle);
 
   function splitLines(p) {
     p.innerHTML = originals.get(p);
+    // (неразрывные пробелы не режем — висячие предлоги остаются с соседним словом)
     // каждое слово — в свой span с тем же цветом, что и у родителя;
     // слова через дефис режем после дефиса, чтобы перенос остался как в обычном тексте
     const pieces = []; // { el, space } — space: был ли пробел перед кусочком
     p.querySelectorAll("span").forEach((part) => {
       const cls = part.className;
-      part.textContent.trim().split(/\s+/).forEach((word) => {
+      part.textContent.replace(/^[ \t\n\r]+|[ \t\n\r]+$/g, "").split(/[ \t\n\r]+/).filter(Boolean).forEach((word) => {
         word.split(/(?<=-)(?=.)/).forEach((chunk, i) => {
           const el = document.createElement("span");
           el.className = cls;
@@ -362,18 +433,30 @@ window.addEventListener("load", fitHeroTitle);
     aboutTexts.forEach((p) => io.observe(p));
   });
 
-  // при смене ширины строки пересобираются заново (уже показанный текст остаётся видимым)
-  let w = window.innerWidth, timer;
-  window.addEventListener("resize", () => {
-    if (window.innerWidth === w) return;
-    w = window.innerWidth;
+  // строки пересобираются заново при любом изменении ширины абзаца (в т.ч. из-за полосы прокрутки)
+  // и при догрузке шрифтов; уже показанный текст остаётся видимым
+  let timer;
+  const widths = new Map();
+  function resplit(force) {
     clearTimeout(timer);
     timer = setTimeout(() => {
       aboutTexts.forEach((p) => {
+        const cw = Math.round(p.getBoundingClientRect().width);
+        if (!force && widths.get(p) === cw) return;
+        widths.set(p, cw);
         const shown = p.classList.contains("is-in");
         splitLines(p);
         if (shown) p.querySelectorAll(".about__line-in").forEach((l) => (l.style.transitionDelay = "0ms"));
       });
-    }, 150);
-  });
+    }, 120);
+  }
+  aboutTexts.forEach((p) => widths.set(p, Math.round(p.getBoundingClientRect().width)));
+  if (window.ResizeObserver) {
+    const ro = new ResizeObserver(() => resplit(false));
+    aboutTexts.forEach((p) => ro.observe(p));
+  } else {
+    window.addEventListener("resize", () => resplit(false));
+  }
+  if (document.fonts) document.fonts.addEventListener("loadingdone", () => resplit(true));
+  window.addEventListener("load", () => resplit(true));
 })();

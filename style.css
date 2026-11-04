@@ -118,11 +118,11 @@ body, .t-big, .case__desc {
 }
 .btn, .tag { font-weight: var(--text-w-medium); }
 /* Small text — подписи под цифрами, детали опыта, годы, футер */
-.t-small, .stat__cap, .job__sub, .edu__sub--sm, .footer, .media__hint, .skill-tip__title {
+.t-small, .stat__cap, .job__sub, .edu__sub--sm, .footer, .media__hint, .skill-tip__title, .skill-tip__list {
   font-size: var(--small-size); line-height: var(--small-lh);
   font-weight: var(--text-w); letter-spacing: 0;
 }
-.skill-tip__title, .media__hint b { font-weight: var(--text-w-medium); }
+.skill-tip__title, .skill-tip__list, .media__hint b { font-weight: var(--text-w-medium); }
 /* Label — Small строчными: «Кратко», «Итоги», «Опыт работы»… */
 .t-label, .label {
   font-size: var(--label-size); line-height: var(--label-lh);
@@ -156,6 +156,7 @@ body, .t-big, .case__desc {
   white-space: nowrap;
   transition: opacity .15s, background .15s, color .15s;
 }
+button.btn { font-family: inherit; font-size: inherit; letter-spacing: inherit; cursor: pointer; }
 .btn--dark { background: var(--black); color: var(--white); border: 1px solid var(--black); }
 .btn--dark:hover { opacity: .8; }
 .btn--outline { background: var(--white); color: var(--black); border: 1px solid var(--black); }
@@ -246,33 +247,33 @@ body, .t-big, .case__desc {
   transition-delay: .2s;
 }
 .hero-full.is-revealed .hero-full__overlay { opacity: 1; }
-.hero-full__top {
-  position: absolute;
+/* ---------- Фиксированная шапка ---------- */
+.site-bar {
+  position: fixed;
   top: 0; left: 0; right: 0;
-  z-index: 2;
+  z-index: 40;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-top: 33px;
+  padding-bottom: 12px;
+  color: #fff;
+  mix-blend-mode: difference; /* белый текст инвертируется от цвета фона под ним */
+  pointer-events: none;
   opacity: 0;
   transform: translateY(-10px);
   transition: opacity .6s ease, transform .6s ease;
-  transition-delay: .45s;
 }
-.hero-full.is-revealed .hero-full__top {
-  opacity: 1;
-  transform: translateY(0);
-}
-.hero-full__name,
-.hero-full__cv {
-  color: var(--black);
+.site-bar.is-revealed { opacity: 1; transform: translateY(0); }
+.site-bar__link {
+  pointer-events: auto;
+  color: inherit;
   font-size: var(--normal-size);
   font-weight: var(--text-w-medium);
   text-transform: lowercase;
   transition: opacity .15s;
 }
-.hero-full__name:hover,
-.hero-full__cv:hover { opacity: .55; }
+.site-bar__link:hover { opacity: .55; }
 .hero-full__title-wrap {
   position: absolute;
   left: 0; right: 0; bottom: 40px;
@@ -338,7 +339,7 @@ body.intro-locked { overflow: hidden; }
   .hero-full,
   .hero-full__media img,
   .hero-full__overlay,
-  .hero-full__top,
+  .site-bar,
   .hero-full__title-wrap {
     clip-path: none !important;
     opacity: 1 !important;
@@ -372,7 +373,7 @@ body.intro-locked { overflow: hidden; }
 }
 .about__line:first-child { margin-top: -.1em; }
 .about__line:last-child { margin-bottom: -.1em; }
-.about__line-in { display: block; }
+.about__line-in { display: block; white-space: nowrap; }
 .js .about__text.is-split .about__line-in {
   opacity: 0;
   transform: translateY(120%);
@@ -469,7 +470,10 @@ body.intro-locked { overflow: hidden; }
 .skills { color: var(--black); }
 .skill { transition: color .15s; white-space: nowrap; }
 .skill--case { cursor: pointer; }
+.skill--list { cursor: default; }
 .skill--case:hover,
+.skill--list:hover,
+.skill--list:focus-visible,
 .skill--case:focus-visible { color: var(--accent); outline: none; text-decoration: underline; text-underline-offset: 3px; }
 
 .edu {
@@ -483,10 +487,33 @@ body.intro-locked { overflow: hidden; }
   background: var(--row-bg);
   border-radius: var(--r-m);
 }
-.edu > div:last-child { padding-left: 5px; }
+.edu > div:nth-child(2) { padding-left: 5px; }
 .edu__name, .edu__main { color: var(--black); }
 .edu__sub { color: var(--gray); margin-top: 2px; }
 .edu__sub--sm { margin-top: 8px; }
+
+/* плашка-достижение: появляется при наведении на строку образования */
+.edu--tip { position: relative; outline: none; }
+.edu__tip {
+  position: absolute;
+  z-index: 20;
+  right: 30px;
+  top: calc(100% - 8px);
+  width: 306px;
+  padding: 12px;
+  background: var(--white);
+  border: 1px solid #E2E2E2;
+  border-radius: var(--r-m);
+  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+  opacity: 0;
+  transform: translateY(4px);
+  pointer-events: none;
+  transition: opacity .15s, transform .15s;
+}
+.edu--tip:hover .edu__tip,
+.edu--tip:focus-visible .edu__tip { opacity: 1; transform: none; }
+.edu__tip-label { color: var(--gray-label); font-size: var(--small-size); line-height: var(--small-lh); font-weight: var(--text-w-medium); }
+.edu__tip-text { margin-top: 4px; color: var(--black); font-size: var(--small-size); line-height: var(--small-lh); font-weight: var(--text-w-medium); }
 
 /* ---------- Контакты ---------- */
 .contacts { padding-top: 180px; }
@@ -496,13 +523,17 @@ body.intro-locked { overflow: hidden; }
   gap: 60px;
 }
 .contacts__text { color: #1A1A1A; max-width: 440px; }
-.contacts__btns {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  max-width: 380px;
-  padding-top: 6px;
+.contacts__links { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+.contacts__link {
+  display: inline-flex; align-items: center; gap: 14px;
+  padding: 0; border: 0; background: none; cursor: pointer;
+  font: inherit; color: var(--black); text-align: left;
+  font-size: var(--h2-size); line-height: var(--h2-lh);
+  font-weight: var(--h2-w); letter-spacing: var(--h2-ls);
+  transition: opacity .15s;
 }
+.contacts__link:hover { opacity: .6; }
+.contacts__link svg { width: .8em; height: .8em; flex: none; }
 
 /* ---------- Футер ---------- */
 .footer {
@@ -517,6 +548,7 @@ body.intro-locked { overflow: hidden; }
 /* ---------- Превью кейса у навыка ---------- */
 .skill-tip {
   position: absolute;
+  top: 0; left: 0; /* до первого наведения не растягивает страницу вниз */
   z-index: 50;
   width: 306px;
   padding: 12px;
@@ -532,6 +564,8 @@ body.intro-locked { overflow: hidden; }
 .skill-tip.is-visible { opacity: 1; transform: none; }
 .skill-tip__img { height: 140px; border-radius: var(--r-s); }
 .skill-tip__title { margin-top: 10px; color: var(--black); }
+.skill-tip__list { list-style: none; margin: 0; padding: 4px; display: flex; flex-direction: column; gap: 6px; color: var(--black); }
+.skill-tip__list[hidden], .skill-tip__img[hidden], .skill-tip__title[hidden] { display: none; }
 
 /* =========================================================
    Адаптив (шрифты меняются только через переменные шкалы)
@@ -556,7 +590,8 @@ body.intro-locked { overflow: hidden; }
   .job__company { padding-top: 14px; }
   .job__col:last-child { padding-bottom: 14px; }
   .edu { grid-template-columns: 1fr; gap: 12px; margin-left: 0; padding: 18px 20px; }
-  .edu > div:last-child { padding-left: 0; }
+  .edu > div:nth-child(2) { padding-left: 0; }
+  .edu__tip { position: static; width: auto; opacity: 1; transform: none; box-shadow: none; margin-top: 4px; }
   .footer { padding-top: 120px; }
 }
 
@@ -576,7 +611,84 @@ body.intro-locked { overflow: hidden; }
   .hero__photo { width: 160px; height: 160px; }
   .stats { grid-template-columns: 1fr 1fr; gap: 16px; }
   .case__foot { flex-wrap: wrap; }
-  .contacts__btns { gap: 12px; }
+  .contacts__link { font-size: var(--h3-size); line-height: var(--h3-lh); letter-spacing: var(--h3-ls); }
   .footer { flex-direction: column; gap: 6px; }
   .skill-tip { display: none; }
+}
+
+/* ---------- Футер кейса: ссылка на следующий проект ---------- */
+.case-next {
+  padding-top: 136px;
+}
+.case-next__link {
+  display: block;
+  padding: 32px 0 40px;
+  border-top: 1px solid #e2e2e2;
+  color: var(--black);
+}
+.case-next__label {
+  color: var(--gray-label);
+  margin-bottom: 16px;
+}
+.case-next__title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  font-size: var(--h1-size);
+  line-height: var(--h1-lh);
+  font-weight: var(--h1-w);
+  letter-spacing: var(--h1-ls);
+  transition: color .15s;
+}
+.case-next__arrow {
+  flex: none;
+  color: var(--next-accent, var(--case-accent, var(--black)));
+  transition: transform .3s cubic-bezier(.22,1,.36,1);
+}
+.case-next__link:hover .case-next__title { color: var(--next-accent, var(--case-accent, var(--black))); }
+.case-next__link:hover .case-next__arrow { transform: translateX(8px); }
+@media (max-width: 900px) {
+  .case-next { padding-top: 96px; }
+  .case-next__link { padding: 24px 0 32px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .case-next__arrow { transition: none; }
+}
+
+/* ---------- Копирование почты: плашка у кнопки ---------- */
+.copy-mail { position: relative; display: inline-flex; }
+.copy-pill {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 10px);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--black);
+  border: 1px solid #E2E2E2;
+  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+  font-size: var(--normal-size);
+  line-height: 1;
+  font-weight: var(--text-w-medium);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(-50%, 4px);
+  pointer-events: none;
+  transition: opacity .15s, transform .15s;
+}
+.copy-mail:hover .copy-pill,
+.copy-mail:focus-within .copy-pill,
+.copy-mail.is-copied .copy-pill { opacity: 1; transform: translate(-50%, 0); }
+@media (hover: none) {
+  .copy-mail:hover .copy-pill { opacity: 0; }
+  .copy-mail.is-copied .copy-pill { opacity: 1; }
+}
+@media (max-width: 720px) {
+  .contacts__links .copy-pill { bottom: auto; top: calc(100% + 10px); left: 0; transform: translate(0, -4px); }
+  .contacts__links .copy-mail.is-copied .copy-pill,
+  .contacts__links .copy-mail:hover .copy-pill { transform: translate(0, 0); }
 }
