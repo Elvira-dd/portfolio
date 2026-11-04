@@ -565,6 +565,8 @@ body.intro-locked { overflow: hidden; }
 .skill-tip__img { height: 140px; border-radius: var(--r-s); }
 .skill-tip__title { margin-top: 10px; color: var(--black); }
 .skill-tip__list { list-style: none; margin: 0; padding: 4px; display: flex; flex-direction: column; gap: 6px; color: var(--black); }
+.skill-tip--text { width: max-content; max-width: calc(100vw - 32px); padding: 10px 16px; }
+.skill-tip--text .skill-tip__list { padding: 0; white-space: nowrap; }
 .skill-tip__list[hidden], .skill-tip__img[hidden], .skill-tip__title[hidden] { display: none; }
 
 /* =========================================================

@@ -35,37 +35,33 @@ const EXTENSIONS = ["jpg", "jpeg", "png", "webp"];
       list — список программ, который всплывает при наведении вместо превью кейса.
       Если превью не нужно, поставь case: null. */
 const SKILLS = [
-  { name: "Design Leadership",              case: "case-process" },
-  { name: "Design Ops",                     case: "case-process" },
-  { name: "Mentorship",                     case: "case-process" },
-  { name: "Дизайн-ревью",                   case: null },
-  { name: "Дизайн-стандарты",               case: null },
-  { name: "Cross-functional Collaboration", case: null },
-  { name: "Работа с C-level",               case: null },
-  { name: "Brand Identity & Strategy",      case: "case-sites" },
-  { name: "Visual Design",                  case: "case-sites" },
-  { name: "Web & App UI",                   case: "case-sites" },
-  { name: "Прототипирование",               case: null },
-  { name: "Гайдлайны iOS и Android",        case: null },
-  { name: "Design Systems",                 case: "case-myolimp" },
-  { name: "UserFlow",                       case: null },
-  { name: "UX-исследования",                case: null },
-  { name: "Usability-тесты",                case: null },
-  { name: "A/B-тестирование",               case: null },
-  { name: "Бизнес-метрики",                 case: null },
-  { name: "AI-ассистированный дизайн",      case: null },
-  { name: "ИИ в аналитике",                 case: null },
-  { name: "Генерация фото и видео",         case: null },
-  { name: "Figma",                          case: null },
-  { name: "Adobe Creative Suite",           case: null, list: ["Photoshop", "Illustrator", "After Effects", "Premiere Pro"] },
-  { name: "Spline",                         case: null },
-  { name: "Frontend Development",           case: null },
-  { name: "React",                          case: null },
-  { name: "Swift",                          case: null },
-  { name: "Tilda",                          case: null },
-  { name: "Miro",                           case: null },
-  { name: "Notion",                         case: null },
-  { name: "AmoCRM",                         case: null },
+  { name: "Design Leadership",               case: "case-process" },
+  { name: "Design Ops",                      case: "case-process" },
+  { name: "Дизайн-ревью",                    case: "case-process" },
+  { name: "Cross-functional Collaboration",  case: "case-process" },
+  { name: "Brand Identity & Strategy",       case: "case-sites" },
+  { name: "Visual Design",                   case: "case-sites" },
+  { name: "Web & App UI",                    case: "case-xploration" },
+  { name: "Прототипирование",                case: "case-xploration" },
+  { name: "Гайдлайны iOS и Android",         case: "case-myolimp" },
+  { name: "Design Systems",                  case: "case-myolimp" },
+  { name: "UserFlow",                        case: "case-xploration" },
+  { name: "UX-исследования",                 case: "case-sites" },
+  { name: "Usability-тесты",                 case: "case-sites" },
+  { name: "A/B-тестирование",                case: "case-sites" },
+  { name: "Бизнес-метрики",                  case: "case-process" },
+  { name: "AI-ассистированный дизайн",       case: null },
+  { name: "ИИ в аналитике",                  case: null },
+  { name: "Генерация фото и видео",          case: null },
+  { name: "Figma",                           case: null },
+  { name: "Adobe Creative Suite",            case: null, text: "Photoshop, Illustrator, After Effects, Premiere Pro" },
+  { name: "Spline",                          case: null, text: "Фриланс" },
+  { name: "Frontend Development",            case: null, text: "Фриланс" },
+  { name: "React",                           case: null },
+  { name: "Swift",                           case: null },
+  { name: "Tilda",                           case: null, text: "Фриланс" },
+  { name: "Miro",                            case: null },
+  { name: "Notion",                          case: null },
 ];
 
 /* =========================================================
@@ -160,14 +156,14 @@ document.querySelectorAll("[data-slot]").forEach((el) => {
 const skillsEl = document.getElementById("skills");
 SKILLS.forEach((s, i) => {
   const span = document.createElement("span");
-  span.className = "skill" + (s.case ? " skill--case" : "") + (s.list ? " skill--list" : "");
+  span.className = "skill" + (s.case ? " skill--case" : "") + (s.text ? " skill--list" : "");
   span.textContent = s.name;
   if (s.case) {
     span.dataset.case = s.case;
     span.tabIndex = 0;
   }
-  if (s.list) {
-    span.dataset.list = s.list.join("|");
+  if (s.text) {
+    span.dataset.text = s.text;
     span.tabIndex = 0;
   }
   skillsEl.appendChild(span);
@@ -182,18 +178,18 @@ const tipTitle = document.getElementById("skill-tip-title");
 const tipList = document.getElementById("skill-tip-list");
 
 function showTip(span) {
-  if (span.dataset.list) {
-    // плашка со списком программ вместо обложки кейса
+  if (span.dataset.text) {
+    // текстовая плашка в одну строку (программы, место работы)
+    tip.classList.add("skill-tip--text");
     tipImg.hidden = true;
     tipTitle.hidden = true;
     tipList.hidden = false;
     tipList.innerHTML = "";
-    span.dataset.list.split("|").forEach((name) => {
-      const li = document.createElement("li");
-      li.textContent = name;
-      tipList.appendChild(li);
-    });
+    const li = document.createElement("li");
+    li.textContent = span.dataset.text;
+    tipList.appendChild(li);
   } else {
+    tip.classList.remove("skill-tip--text");
     tipImg.hidden = false;
     tipTitle.hidden = false;
     tipList.hidden = true;
@@ -204,7 +200,7 @@ function showTip(span) {
   }
 
   const r = span.getBoundingClientRect();
-  const tipW = 306;
+  const tipW = tip.offsetWidth || 306;
   let left = r.left + window.scrollX + r.width / 2 - tipW / 2;
   left = Math.max(16, Math.min(left, document.documentElement.clientWidth - tipW - 16));
   tip.style.left = `${left}px`;

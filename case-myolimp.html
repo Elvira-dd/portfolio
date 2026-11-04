@@ -24,7 +24,7 @@
        Новое: широкий кадр (.shot) — картинка на всю сетку.
        ========================================================= */
       :root {
-        --case-accent: #3579f8;
+        --case-accent: #4849F8;
       }
 
       .case-topbar {
@@ -302,7 +302,7 @@
       .solution {
         margin-top: 104px;
         padding: 64px 0 72px;
-        background: var(--row-bg);
+        background: var(--white);
         color: var(--black);
       }
       .solution__title {
@@ -337,6 +337,25 @@
         line-height: var(--small-lh);
         font-weight: var(--text-w);
         letter-spacing: 0;
+      }
+      .hero-img {
+        display: block;
+        width: 100%;
+        height: auto;
+        margin-top: 48px;
+        border-radius: var(--r-l);
+      }
+      .solution__media--filled {
+        padding: 0;
+        overflow: hidden;
+        background: var(--row-bg);
+      }
+      .solution__media--filled img,
+      .solution__media--filled video {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
       }
       .solution__media b {
         color: #7a7a7a;
@@ -385,7 +404,7 @@
       <section class="case-hero wrap">
         <h1 class="t-h1 case-hero__title">MyOlimp: дизайн-система</h1>
         <p class="case-hero__intro">
-          Стартап запускал мобильное приложение для подготовки к олимпиадам, и ему нужна была своя дизайн-система. Я разработала её с нуля: от токенов до библиотеки компонентов и документации.
+          Стартап запускал мобильное приложение для подготовки к олимпиадам. Я проектировала его с нуля и разработала для него дизайн-систему. Материалы по самому приложению показать не могу, поэтому этот кейс — про дизайн-систему: от токенов до библиотеки компонентов и документации.
         </p>
         <div class="case-meta">
           <div class="case-meta__item">
@@ -394,17 +413,14 @@
           </div>
           <div class="case-meta__item">
             <p class="label">Роль</p>
-            <p class="value">Дизайнер дизайн-системы</p>
+            <p class="value">UX/UI дизайнер: приложение и дизайн-система</p>
           </div>
           <div class="case-meta__item">
             <p class="label">Срок</p>
             <p class="value">1,5–2 месяца</p>
           </div>
         </div>
-        <div class="visual-ph hero">
-          <b>Hero-визуал</b>
-          Библиотека компонентов или страница токенов из Figma
-        </div>
+        <img class="hero-img" src="images/case-olimp/hero.png" width="2720" height="760" alt="Библиотека компонентов дизайн-системы OLIMP в Figma" />
       </section>
 
       <!-- ============ КОНТЕКСТ ============ -->
@@ -454,12 +470,6 @@
           </ul>
         </div>
       </section>
-      <div class="shots-ph wrap">
-        <div class="visual-ph shotph">
-          <b>Обзор системы</b>
-          Страница с обзором дизайн-системы в Figma
-        </div>
-      </div>
 
       <!-- ============ ПРОЦЕСС ============ -->
       <section class="section-grid wrap">
@@ -497,9 +507,8 @@
           <h2 class="solution__title">Решение</h2>
           <div class="solution__grid">
             <figure class="solution__item">
-              <div class="solution__media">
-                <b>Атомарные уровни</b>
-                От токенов к атомам, молекулам и организмам
+              <div class="solution__media solution__media--filled">
+                <img src="images/case-olimp/atomic.png" width="2656" height="1496" loading="lazy" alt="Токены, атомы, молекулы и организмы дизайн-системы" />
               </div>
               <h3 class="solution__name">Многослойная атомарная система</h3>
               <p class="solution__desc">
@@ -511,9 +520,8 @@
               </p>
             </figure>
             <figure class="solution__item">
-              <div class="solution__media">
-                <b>Две темы</b>
-                Один экран в светлой и тёмной теме
+              <div class="solution__media solution__media--filled">
+                <video src="images/case-olimp/video-olimp.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Экран приложения в тёмной теме"></video>
               </div>
               <h3 class="solution__name">Светлая и тёмная тема</h3>
               <p class="solution__desc">
@@ -521,9 +529,8 @@
               </p>
             </figure>
             <figure class="solution__item">
-              <div class="solution__media">
-                <b>Документация</b>
-                Страница компонента в Figma
+              <div class="solution__media solution__media--filled">
+                <img src="images/case-olimp/docs.png" width="2647" height="1491" loading="lazy" alt="Настройки компонента и страница документации в Figma" />
               </div>
               <h3 class="solution__name">Документация</h3>
               <p class="solution__desc">
@@ -532,9 +539,8 @@
               </p>
             </figure>
             <figure class="solution__item">
-              <div class="solution__media">
-                <b>Адаптация</b>
-                Мобильный и десктопный макет
+              <div class="solution__media solution__media--filled">
+                <video src="images/case-olimp/video-1104.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Адаптация экрана между десктопом и мобильной версией"></video>
               </div>
               <h3 class="solution__name">Быстрая адаптация макета</h3>
               <p class="solution__desc">
