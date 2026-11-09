@@ -171,9 +171,9 @@
       /* ширина как у списка goals выше (у обоих 64ch от шрифта тела) */
       .numbers {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 32px;
-        max-width: 64ch;
+        max-width: 88ch;
       }
       .numbers .stat__cap {
         max-width: 22ch;
@@ -251,6 +251,61 @@
         margin-top: 16px;
         color: var(--text);
       }
+      /* значок ⓘ рядом со значением: подсказка всплывает при наведении/фокусе */
+      .hint {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 10px;
+        height: 10px;
+        margin-left: 2px;
+        vertical-align: baseline;
+        top: -9px; /* как сноска — над концом слова */
+        border: 1px solid var(--gray-label);
+        border-radius: 50%;
+        color: var(--gray-label);
+        font-size: 7px;
+        line-height: 1;
+        font-weight: var(--text-w-medium);
+        font-style: normal;
+        cursor: help;
+        transition: color 0.15s, border-color 0.15s;
+      }
+      .hint:hover,
+      .hint:focus-visible {
+        color: var(--black);
+        border-color: var(--black);
+        outline: none;
+      }
+      .hint__text {
+        position: absolute;
+        right: -8px;
+        bottom: calc(100% + 10px);
+        z-index: 5;
+        width: 260px;
+        padding: 10px 12px;
+        background: var(--white);
+        border: 1px solid #e2e2e2;
+        border-radius: var(--r-m);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        color: var(--text);
+        text-align: left;
+        font-size: var(--small-size);
+        line-height: var(--small-lh);
+        font-weight: var(--text-w);
+        letter-spacing: 0;
+        opacity: 0;
+        transform: translateY(4px);
+        pointer-events: none;
+        transition: opacity 0.15s, transform 0.15s;
+      }
+      .hint:hover .hint__text,
+      .hint:focus-visible .hint__text,
+      .hint:focus .hint__text {
+        opacity: 1;
+        transform: none;
+      }
       .site__meta {
         margin: 28px 0 0;
         padding: 0;
@@ -289,7 +344,8 @@
         border-radius: var(--r-l);
       }
       /* лёгкая серая обводка у экранов кейсов — белые шапки сайтов не сливаются с фоном */
-      .site .screen__media {
+      .site .screen__media,
+      .more__card .screen__media {
         border: 1px solid #e2e2e2;
       }
       button.screen__media {
@@ -311,6 +367,15 @@
       .screen__cap {
         margin-top: 16px;
         color: var(--black);
+      }
+      /* вариант А: под экраном заголовок-достижение и короткий рассказ */
+      .screen__title {
+        display: block;
+      }
+      .screen__text {
+        margin: 8px 0 0;
+        max-width: 64ch;
+        color: var(--gray);
       }
       .screen__tag {
         display: inline-block;
@@ -600,9 +665,13 @@
       /* ---------- финал ---------- */
       .final-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 32px;
         padding-top: 24px;
+      }
+      .final-card {
+        min-width: 0;
+        overflow-wrap: break-word;
       }
       .final-card h3 {
         margin: 0 0 12px;
@@ -745,13 +814,23 @@
         </div>
         <div class="body">
           <ul class="goals">
-            <li><strong>Клиент доволен</strong> результатом</li>
             <li>
-              <strong>Показатели сайта</strong> через 2–3 месяца после запуска
+              <strong>Вёрстка укладывается в 10 рабочих дней</strong> и не
+              сопровождается глобальными правками
             </li>
             <li>
-              <strong>Клиент забирает мои решения в свой бренд</strong> —
-              переносит стилистику сайта в рекламу и другие носители на постоянной основе, хотя мы для него только подрядчик
+              <strong>Получается расположить к себе клиента</strong> за одну–две
+              встречи: он идёт на контакт и развёрнуто отвечает на мои вопросы
+            </li>
+            <li>
+              <strong>Показатели сайта меняются</strong> через 2–3 месяца после
+              запуска. Я смотрю не на конкретные цифры, а на сам факт: значит,
+              изменения были достаточно глобальными
+            </li>
+            <li>
+              <strong>Клиент забирает мои решения в свой бренд</strong> —
+              переносит стилистику сайта в рекламу и другие носители на
+              постоянной основе, хотя мы для него только подрядчик
             </li>
           </ul>
         </div>
@@ -763,16 +842,20 @@
         <div class="body">
           <div class="numbers">
             <div class="stat">
-              <div class="stat__num t-h2">60</div>
-              <div class="stat__cap">сайтов запустила как UX/UI-дизайнер</div>
+              <div class="stat__num t-h2">45</div>
+              <div class="stat__cap">сайтов запустила как UX/UI-дизайнер</div>
             </div>
             <div class="stat">
-              <div class="stat__num t-h2">1/60</div>
-              <div class="stat__cap">клиентов ушли за этот период</div>
+              <div class="stat__num t-h2">35</div>
+              <div class="stat__cap">сайтов запустила уже как дизайн-лид</div>
             </div>
             <div class="stat">
-              <div class="stat__num t-h2">40</div>
-              <div class="stat__cap">сайтов запустила уже как дизайн-лид</div>
+              <div class="stat__num t-h2">1,25%</div>
+              <div class="stat__cap">отток клиентов за весь период</div>
+            </div>
+            <div class="stat">
+              <div class="stat__num t-h2">~20</div>
+              <div class="stat__cap">ребрендингов, в том числе для крупных застройщиков</div>
             </div>
           </div>
         </div>
@@ -797,8 +880,27 @@
                 loading="lazy"
               />
             </a>
-            <figcaption class="screen__cap t-h4">
-              ?? Подпись-достижение: что я сделала на этом сайте
+            <figcaption class="screen__cap">
+              <span class="screen__title t-h4">Придумала концепцию вместе с дизайнером клиента</span>
+              <p class="screen__text t-normal">Брендбука не было — только рендеры и наработки с красными, неоновыми и зелёными элементами. Я пришла к дизайнеру клиента со своими наработками и предложила сначала договориться о концепции. За неделю мы вдвоём придумали её: яркие неоновые цвета, зигзаг из буквы «М», «закорючки» по сайту и брендовый голос — «ВЕСЬМА нескромно».</p>
+            </figcaption>
+          </figure>
+          <figure class="screen">
+            <div class="screen__media visual-ph">
+              <b>Гайдбук клиента</b>Развороты гайдбука, который вырос из концепции сайта → images/case-sites/prbereg-guide.webp
+            </div>
+            <figcaption class="screen__cap">
+              <span class="screen__title t-h4">Концепция сайта ушла во весь бренд</span>
+              <p class="screen__text t-normal">Дизайнер клиента сделала под сайт кастомный шрифт, а концепцию клиент забрал во всю рекламу. Из неё вырос полноценный гайдбук — хотя мы были для клиента подрядчиком.</p>
+            </figcaption>
+          </figure>
+          <figure class="screen">
+            <div class="screen__media visual-ph">
+              <b>Внутренние страницы</b>Паркинг, кладовые, коммерческие помещения → images/case-sites/prbereg-pages.webp
+            </div>
+            <figcaption class="screen__cap">
+              <span class="screen__title t-h4">Собрала сайт, где у каждого продукта своя страница</span>
+              <p class="screen__text t-normal">Сначала проработали структуру и тексты, потом дизайн. Кроме обязательных разделов сайта ЖК — отдельные страницы паркинга, кладовых и коммерческих помещений. Решения проверяли A/B-тестами до запуска и после.</p>
             </figcaption>
           </figure>
         </div>
@@ -811,20 +913,20 @@
             >«Правый берег» <span aria-hidden="true">↗</span></a
           >
           <p class="site__desc t-big">
-            ?? Короткое описание: кто клиент и что за сайт.
+            ЖК «Правый берег Макс» в Рязани. Своего сайта у ЖК не было — делали с нуля, в плотной работе с клиентом.
           </p>
           <dl class="site__meta t-small">
             <div>
-              <dt>Годы</dt>
-              <dd>??</dd>
+              <dt>Срок</dt>
+              <dd>15 рабочих дней</dd>
             </div>
             <div>
               <dt>Формат</dt>
-              <dd>Сайт с нуля</dd>
+              <dd>Сайт с нуля</dd>
             </div>
             <div>
               <dt>Задачи</dt>
-              <dd>??</dd>
+              <dd>Концепция, структура, дизайн</dd>
             </div>
           </dl>
         </aside>
@@ -834,7 +936,7 @@
       <article class="site wrap" id="site-sever">
         <div class="site__screens">
           <figure class="screen">
-            <p class="screen__tag label">ЖК «Литературный»</p>
+            <p class="screen__tag label">ЖК «Литературный» · Екатеринбург</p>
             <a
               class="screen__media"
               data-href="https://literaturny.ru/"
@@ -848,12 +950,13 @@
                 loading="lazy"
               />
             </a>
-            <figcaption class="screen__cap t-h4">
-              ?? Подпись-достижение
+            <figcaption class="screen__cap">
+              <span class="screen__title t-h4">Продавала ощущение, а не квадратные метры</span>
+              <p class="screen__text t-normal">Премиальный клубный дом в центре Екатеринбурга. Формат клубного дома для города непривычный — сначала нужно было объяснить, что это, и показать преимущества своей аудитории. Поэтому больше атмосферы и истории места, чем технических деталей: чисто, коротко, спокойно.</p>
             </figcaption>
           </figure>
           <figure class="screen">
-            <p class="screen__tag label">МФК «Диус»</p>
+            <p class="screen__tag label">МФК «Диус» · Москва</p>
             <a
               class="screen__media"
               data-href="https://dius-mfk.ru/"
@@ -867,8 +970,9 @@
                 loading="lazy"
               />
             </a>
-            <figcaption class="screen__cap t-h4">
-              ?? Подпись-достижение
+            <figcaption class="screen__cap">
+              <span class="screen__title t-h4">Показала новый класс офисов без лишнего</span>
+              <p class="screen__text t-normal">Офисы и ритейл — один из первых московских проектов «Севера». Нужно было выглядеть премиально, но не строго, и отстроиться от московских конкурентов: яркий неоновый голубой в классической чистой структуре. Больше всего времени ушло на структуру — её переделывали по итогам A/B-тестов.</p>
             </figcaption>
           </figure>
         </div>
@@ -881,21 +985,22 @@
             >«Север» <span aria-hidden="true">↗</span></a
           >
           <p class="site__desc t-big">
-            ?? Короткое описание застройщика и двух проектов: ЖК «Литературный»
-            и МФК «Диус».
+            Крупный застройщик из Тюмени и Екатеринбурга. Я делала сайт застройщика, а для двух проектов с большим рекламным трафиком — отдельные посадочные сайты. Оба — выход «Севера» за пределы эконом-класса.
           </p>
           <dl class="site__meta t-small">
             <div>
-              <dt>Годы</dt>
-              <dd>??</dd>
+              <dt>Срок</dt>
+              <dd>
+                45 рабочих дней<span class="hint" tabindex="0" aria-label="Что входит в срок">i<span class="hint__text" role="tooltip">Срок — за сайт застройщика вместе со всеми отдельными сайтами проектов: «Литературный», «Диус» и другие.</span></span>
+              </dd>
             </div>
             <div>
               <dt>Формат</dt>
-              <dd>??</dd>
+              <dd>Застройщик с 4 проектами + 3 посадочные страницы</dd>
             </div>
             <div>
               <dt>Задачи</dt>
-              <dd>??</dd>
+              <dd>Структура, дизайн, A/B-тесты</dd>
             </div>
           </dl>
         </aside>
@@ -966,7 +1071,7 @@
           </p>
           <dl class="site__meta t-small">
             <div>
-              <dt>Годы</dt>
+              <dt>Срок</dt>
               <dd>??</dd>
             </div>
             <div>
@@ -1014,7 +1119,7 @@
           <p class="site__desc t-big">?? Короткое описание.</p>
           <dl class="site__meta t-small">
             <div>
-              <dt>Годы</dt>
+              <dt>Срок</dt>
               <dd>??</dd>
             </div>
             <div>
@@ -1037,27 +1142,6 @@
         <!-- карточки собираются из списка PROJECTS в конце файла -->
         <div class="marquee" id="marquee">
           <div class="marquee__row" id="marquee-row"></div>
-        </div>
-      </section>
-
-      <!-- ============ ФИНАЛ ============ -->
-      <section class="section-grid wrap">
-        <div class="side"><h2 class="t-h2">Итог</h2></div>
-        <div class="body">
-          <div class="final-grid">
-            <div class="final-card">
-              <h3 class="t-h3">Что объединяет все сайты</h3>
-              <p class="t-big">??</p>
-            </div>
-            <div class="final-card">
-              <h3 class="t-h3">Что сделала бы иначе</h3>
-              <p class="t-big">??</p>
-            </div>
-            <div class="final-card">
-              <h3 class="t-h3">Чем горжусь больше всего</h3>
-              <p class="t-big">??</p>
-            </div>
-          </div>
         </div>
       </section>
     </main>
@@ -1113,12 +1197,13 @@
        в images/case-sites/more/ (пока нет — серый плейсхолдер).
        ========================================================= */
       var PROJECTS = [
-        { name: '?? Проект 1', url: '', img: '' },
-        { name: '?? Проект 2', url: '', img: '' },
-        { name: '?? Проект 3', url: '', img: '' },
-        { name: '?? Проект 4', url: '', img: '' },
-        { name: '?? Проект 5', url: '', img: '' },
-        { name: '?? Проект 6', url: '', img: '' }
+        { name: 'Кронфорт', url: 'https://kronfort.ru/', img: 'images/case-sites/more/kronfort.webp' },
+        { name: 'Променад', url: 'https://жк-променад.рф/', img: 'images/case-sites/more/promenad.webp' },
+        { name: 'Заря', url: 'https://домзаря.рф/', img: 'images/case-sites/more/zarya.webp' },
+        { name: 'Сигнал', url: 'https://akvilon-signal.ru/', img: 'images/case-sites/more/signal.webp' },
+        { name: 'Можно Парковый', url: 'https://можнопарковый.рф/', img: 'images/case-sites/more/mozhno-parkovy.webp' },
+        { name: 'Творчество', url: 'https://творчество.рф/', img: 'images/case-sites/more/tvorchestvo.webp' },
+        { name: 'Яблоневый сад', url: 'https://yablonevysad.ru/', img: 'images/case-sites/more/yablonevy-sad.webp' }
       ]
 
       // pages — картинки по порядку; video — видео-скринкаст (тогда pages не нужны)

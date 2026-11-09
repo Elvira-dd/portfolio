@@ -658,6 +658,24 @@ body.intro-locked { overflow: hidden; }
   .case-next__arrow { transition: none; }
 }
 
+/* ---------- Мобильная адаптация: общие правила ---------- */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+img, video, iframe { max-width: 100%; }
+.case-next__title > span:first-child { min-width: 0; overflow-wrap: anywhere; }
+@media (max-width: 560px) {
+  .case-next { padding-top: 72px; }
+  .case-next__title { gap: 12px; }
+  .contacts__grid { gap: 32px; }
+  .contacts__links { gap: 20px; }
+  .contacts__link { gap: 10px; max-width: 100%; }
+  .contacts__link span { min-width: 0; overflow-wrap: anywhere; }
+  .site-bar { padding-top: 16px; }
+}
+@media (hover: none) {
+  a, button { -webkit-tap-highlight-color: transparent; }
+  .btn { min-height: 40px; }
+}
+
 /* ---------- Копирование почты: плашка у кнопки ---------- */
 .copy-mail { position: relative; display: inline-flex; }
 .copy-pill {

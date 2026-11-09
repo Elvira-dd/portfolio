@@ -189,7 +189,8 @@
     .next-link:hover { opacity: .55; }
 
     /* ---------- финал ---------- */
-    .final-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; padding-top: 24px; }
+    .final-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; padding-top: 24px; }
+    .final-card { min-width: 0; overflow-wrap: break-word; }
     .final-card h3 { margin: 0 0 12px; color: var(--black); }
     .final-card p { color: var(--text); margin: 0; }
 

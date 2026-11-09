@@ -345,6 +345,14 @@
         margin-top: 48px;
         border-radius: var(--r-l);
       }
+      @media (max-width: 900px) {
+        .hero-img {
+          aspect-ratio: 4 / 3;
+          object-fit: cover;
+          object-position: left top;
+          margin-top: 32px;
+        }
+      }
       .solution__media--filled {
         padding: 0;
         overflow: hidden;
@@ -402,7 +410,7 @@
     <main>
       <!-- ============ HERO ============ -->
       <section class="case-hero wrap">
-        <h1 class="t-h1 case-hero__title">MyOlimp: дизайн-система</h1>
+        <h1 class="t-h1 case-hero__title">MyOlimp: <span style="white-space: nowrap">дизайн-система</span></h1>
         <p class="case-hero__intro">
           Стартап запускал мобильное приложение для подготовки к олимпиадам. Я проектировала его с нуля и разработала для него дизайн-систему. Материалы по самому приложению показать не могу, поэтому этот кейс — про дизайн-систему: от токенов до библиотеки компонентов и документации.
         </p>
