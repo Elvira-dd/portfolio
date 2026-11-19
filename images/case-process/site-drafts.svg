@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1510 822" fill="none">
+  <rect width="1510" height="822" rx="28" fill="#F7F7F7"/>
+  <g stroke="#D6D6D6" stroke-width="2">
+    <rect x="36" y="36" width="458" height="750" rx="14" fill="#FFF"/>
+    <rect x="526" y="36" width="458" height="750" rx="14" fill="#FFF"/>
+    <rect x="1016" y="36" width="458" height="750" rx="14" fill="#FFF"/>
+  </g>
+  <g fill="#A8A8A8">
+    <circle cx="62" cy="61" r="5"/><circle cx="80" cy="61" r="5"/><circle cx="98" cy="61" r="5"/>
+    <circle cx="552" cy="61" r="5"/><circle cx="570" cy="61" r="5"/><circle cx="588" cy="61" r="5"/>
+    <circle cx="1042" cy="61" r="5"/><circle cx="1060" cy="61" r="5"/><circle cx="1078" cy="61" r="5"/>
+  </g>
+  <g fill="#245BF3">
+    <rect x="66" y="98" width="54" height="8" rx="4"/><rect x="415" y="98" width="44" height="8" rx="4"/>
+    <rect x="556" y="98" width="54" height="8" rx="4"/><rect x="905" y="98" width="44" height="8" rx="4"/>
+    <rect x="1046" y="98" width="54" height="8" rx="4"/><rect x="1395" y="98" width="44" height="8" rx="4"/>
+  </g>
+  <g fill="#E5E5E5">
+    <rect x="136" y="98" width="42" height="8" rx="4"/><rect x="196" y="98" width="42" height="8" rx="4"/><rect x="256" y="98" width="42" height="8" rx="4"/>
+    <rect x="626" y="98" width="42" height="8" rx="4"/><rect x="686" y="98" width="42" height="8" rx="4"/><rect x="746" y="98" width="42" height="8" rx="4"/>
+    <rect x="1116" y="98" width="42" height="8" rx="4"/><rect x="1176" y="98" width="42" height="8" rx="4"/><rect x="1236" y="98" width="42" height="8" rx="4"/>
+  </g>
+
+  <!-- Вариант 1: текст слева, изображение справа -->
+  <g>
+    <rect x="60" y="132" width="410" height="290" rx="8" fill="#F0F0F0"/>
+    <rect x="82" y="158" width="126" height="7" rx="3.5" fill="#BDBDBD"/>
+    <rect x="82" y="194" width="174" height="16" rx="4" fill="#777"/><rect x="82" y="218" width="142" height="16" rx="4" fill="#777"/>
+    <rect x="82" y="256" width="146" height="7" rx="3.5" fill="#BDBDBD"/><rect x="82" y="271" width="124" height="7" rx="3.5" fill="#BDBDBD"/><rect x="82" y="286" width="135" height="7" rx="3.5" fill="#BDBDBD"/>
+    <rect x="82" y="326" width="112" height="34" rx="5" fill="#245BF3"/>
+    <rect x="272" y="156" width="176" height="242" rx="5" fill="#D9D9D9"/>
+    <rect x="60" y="446" width="410" height="88" rx="7" fill="#F7F7F7"/>
+    <rect x="82" y="467" width="100" height="9" rx="4" fill="#8A8A8A"/><rect x="82" y="489" width="154" height="7" rx="3" fill="#C4C4C4"/>
+    <rect x="270" y="467" width="100" height="9" rx="4" fill="#8A8A8A"/><rect x="270" y="489" width="154" height="7" rx="3" fill="#C4C4C4"/>
+    <rect x="60" y="558" width="410" height="148" rx="7" fill="#F0F0F0"/>
+    <rect x="82" y="581" width="168" height="12" rx="4" fill="#888"/><rect x="82" y="609" width="360" height="7" rx="3" fill="#C4C4C4"/><rect x="82" y="626" width="332" height="7" rx="3" fill="#C4C4C4"/>
+    <rect x="82" y="659" width="102" height="7" rx="3" fill="#A8A8A8"/>
+    <rect x="174" y="735" width="94" height="24" rx="12" fill="#F0F0F0"/><text x="221" y="752" text-anchor="middle" fill="#6B6B6B" font-family="Inter, sans-serif" font-size="12">Вариант 1</text>
+  </g>
+
+  <!-- Вариант 2: крупный визуал, текст поверх -->
+  <g>
+    <rect x="550" y="132" width="410" height="330" rx="8" fill="#D9D9D9"/>
+    <rect x="574" y="156" width="126" height="7" rx="3.5" fill="#BDBDBD"/>
+    <rect x="574" y="236" width="242" height="18" rx="4" fill="#666"/><rect x="574" y="262" width="208" height="18" rx="4" fill="#666"/>
+    <rect x="574" y="302" width="188" height="7" rx="3.5" fill="#888"/><rect x="574" y="318" width="164" height="7" rx="3.5" fill="#888"/>
+    <rect x="574" y="354" width="112" height="34" rx="5" fill="#245BF3"/>
+    <rect x="550" y="486" width="410" height="112" rx="7" fill="#F7F7F7"/>
+    <rect x="574" y="509" width="108" height="9" rx="4" fill="#8A8A8A"/><rect x="574" y="532" width="150" height="7" rx="3" fill="#C4C4C4"/>
+    <rect x="770" y="509" width="108" height="9" rx="4" fill="#8A8A8A"/><rect x="770" y="532" width="150" height="7" rx="3" fill="#C4C4C4"/>
+    <rect x="550" y="622" width="194" height="84" rx="7" fill="#F0F0F0"/><rect x="766" y="622" width="194" height="84" rx="7" fill="#F0F0F0"/>
+    <rect x="570" y="644" width="116" height="8" rx="4" fill="#999"/><rect x="570" y="662" width="148" height="6" rx="3" fill="#C4C4C4"/>
+    <rect x="786" y="644" width="116" height="8" rx="4" fill="#999"/><rect x="786" y="662" width="148" height="6" rx="3" fill="#C4C4C4"/>
+    <rect x="664" y="735" width="94" height="24" rx="12" fill="#F0F0F0"/><text x="711" y="752" text-anchor="middle" fill="#6B6B6B" font-family="Inter, sans-serif" font-size="12">Вариант 2</text>
+  </g>
+
+  <!-- Вариант 3: заголовок сверху, визуал и факты в сетке -->
+  <g>
+    <rect x="1040" y="132" width="410" height="290" rx="8" fill="#F0F0F0"/>
+    <rect x="1062" y="158" width="126" height="7" rx="3.5" fill="#BDBDBD"/>
+    <rect x="1062" y="194" width="226" height="16" rx="4" fill="#777"/><rect x="1062" y="218" width="178" height="16" rx="4" fill="#777"/>
+    <rect x="1062" y="256" width="244" height="7" rx="3.5" fill="#BDBDBD"/><rect x="1062" y="271" width="220" height="7" rx="3.5" fill="#BDBDBD"/>
+    <rect x="1062" y="308" width="112" height="34" rx="5" fill="#245BF3"/>
+    <rect x="1062" y="364" width="366" height="40" rx="5" fill="#D9D9D9"/>
+    <rect x="1040" y="446" width="194" height="112" rx="7" fill="#F7F7F7"/><rect x="1256" y="446" width="194" height="112" rx="7" fill="#F7F7F7"/>
+    <rect x="1060" y="469" width="82" height="9" rx="4" fill="#8A8A8A"/><rect x="1060" y="492" width="142" height="7" rx="3" fill="#C4C4C4"/><rect x="1060" y="508" width="120" height="7" rx="3" fill="#C4C4C4"/>
+    <rect x="1276" y="469" width="82" height="9" rx="4" fill="#8A8A8A"/><rect x="1276" y="492" width="142" height="7" rx="3" fill="#C4C4C4"/><rect x="1276" y="508" width="120" height="7" rx="3" fill="#C4C4C4"/>
+    <rect x="1040" y="582" width="410" height="124" rx="7" fill="#F0F0F0"/>
+    <rect x="1062" y="606" width="142" height="9" rx="4" fill="#8A8A8A"/><rect x="1062" y="629" width="360" height="7" rx="3" fill="#C4C4C4"/><rect x="1062" y="646" width="332" height="7" rx="3" fill="#C4C4C4"/>
+    <rect x="1154" y="735" width="94" height="24" rx="12" fill="#F0F0F0"/><text x="1201" y="752" text-anchor="middle" fill="#6B6B6B" font-family="Inter, sans-serif" font-size="12">Вариант 3</text>
+  </g>
+</svg>

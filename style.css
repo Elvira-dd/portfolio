@@ -179,7 +179,7 @@ button.btn { font-family: inherit; font-size: inherit; letter-spacing: inherit; 
   overflow: hidden;
   background: var(--placeholder);
 }
-.media img {
+.media img, .media video {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -188,6 +188,7 @@ button.btn { font-family: inherit; font-size: inherit; letter-spacing: inherit; 
   display: block;
 }
 .media.has-image { background: transparent; }
+.media.has-video { background: transparent; }
 /* подсказка с именем файла — видна, пока картинки нет */
 .media__hint {
   position: absolute;

@@ -168,6 +168,56 @@
     .visual-ph.key { background: var(--white); border: 1.5px dashed var(--case-accent); color: var(--gray); }
     .visual-ph.key b { color: var(--case-accent); }
     .visual-ph.hero { min-height: 380px; max-width: none; border-radius: var(--r-l); margin-top: 48px; }
+    .visual-ph.illustration { min-height: 0; padding: 0; overflow: hidden; background: var(--white); }
+    .image-expand { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
+    .visual-ph.illustration img { display: block; width: 100%; height: auto; }
+    .visual-ph.hero.illustration { height: 380px; min-height: 380px; }
+    .visual-ph.hero.illustration .image-expand,
+    .visual-ph.hero.illustration img { height: 100%; }
+    .visual-ph.hero.illustration img { object-fit: cover; }
+    .image-expand:focus-visible { outline: 2px solid var(--case-accent); outline-offset: 4px; }
+    .expand-cursor {
+      position: fixed; left: 0; top: 0; z-index: 40; width: 48px; height: 48px;
+      margin: -24px 0 0 -24px; display: flex; align-items: center; justify-content: center;
+      border-radius: 50%; background: var(--case-accent); color: var(--white);
+      pointer-events: none; opacity: 0; transform: scale(.4);
+      transition: opacity .2s ease, transform .3s cubic-bezier(.22, 1, .36, 1);
+    }
+    .expand-cursor.is-on { opacity: 1; transform: scale(1); }
+    .expand-cursor svg { display: block; width: 22px; height: 22px; }
+    @media (hover: hover) and (pointer: fine) {
+      .image-expand { cursor: none; }
+    }
+    @media (hover: none), (pointer: coarse) {
+      .expand-cursor { display: none; }
+    }
+    .image-modal {
+      position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column;
+      background: rgba(0, 0, 0, .72); opacity: 0; visibility: hidden;
+      transition: opacity .25s ease, visibility 0s linear .25s;
+    }
+    .image-modal.is-open { opacity: 1; visibility: visible; transition: opacity .25s ease; }
+    .image-modal__bar {
+      display: flex; justify-content: space-between; align-items: center; gap: 16px;
+      padding: 16px var(--gutter); background: var(--white); color: var(--black);
+    }
+    .image-modal__close {
+      border: 0; border-radius: var(--r-s); padding: 8px 16px; background: var(--tag-bg);
+      color: var(--black); font: inherit; cursor: pointer;
+    }
+    .image-modal__close:hover { background: var(--placeholder); }
+    .image-modal__stage {
+      flex: 1; min-height: 0; overflow: auto; overscroll-behavior: contain;
+      display: flex; justify-content: center; align-items: center; padding: 24px var(--gutter);
+    }
+    .image-modal__image {
+      display: block; width: auto; height: auto; max-width: 100%; max-height: calc(100svh - 112px);
+      object-fit: contain; border-radius: var(--r-s); background: var(--white);
+    }
+    body.is-locked { overflow: hidden; }
+    @media (prefers-reduced-motion: reduce) {
+      .image-modal, .expand-cursor { transition: none; }
+    }
 
     /* ---------- «Что получилось»: число → подпись → график, повтором ----------
        Заголовок (число) и подпись должны держаться близко друг к другу,
@@ -176,6 +226,22 @@
     .result-item__num { color: var(--black); margin-bottom: 2px; }
     .result-item__cap { color: var(--gray); max-width: 50ch; }
     .result-item .visual-ph { margin-top: 36px; }
+    .result-chart { margin-top: 36px; max-width: 720px; background: var(--white); color: var(--gray); }
+    .result-chart__svg { display: block; width: 100%; height: auto; font-family: 'CoFo Sans', Inter, sans-serif; }
+    .result-chart__grid { stroke: #E5E5E5; stroke-width: 1; }
+    .result-chart__axis { stroke: #6B6B6B; stroke-width: 1; }
+    .result-chart__line { fill: none; stroke: #245BF3; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+    .result-chart__point, .result-chart__bar { fill: #245BF3; }
+    .result-chart__bar { rx: 10px; }
+    .result-chart__band { fill: #EEF2FF; }
+    .result-chart__text { fill: #6B6B6B; font-size: 13px; }
+    .result-chart__value { fill: #111; font-size: 13px; font-weight: 500; }
+    .result-chart__title { fill: #111; font-size: 15px; font-weight: 500; }
+    .result-chart__footnote { margin: 4px 0 0; color: #6B6B6B; font-size: var(--small-size); line-height: var(--small-lh); }
+    @media (max-width: 600px) {
+      .result-chart { overflow-x: auto; }
+      .result-chart__svg { min-width: 560px; }
+    }
 
     .stat-note { margin-top: 24px; color: var(--gray); font-size: var(--small-size); line-height: var(--small-lh); font-weight: var(--text-w); letter-spacing: 0; max-width: 64ch; }
 
@@ -232,9 +298,10 @@
         <div class="case-meta__item"><p class="label">Сфера</p><p class="value">PropTech</p></div>
         <div class="case-meta__item"><p class="label">Роль</p><p class="value">Дизайн-лид</p></div>
       </div>
-      <div class="visual-ph hero">
-        <b>Hero-визуал</b>
-        Крупная обобщающая схема «путь клиента через три отдела»: продажи → дизайн → разработка → продажи (сопровождение)
+      <div class="visual-ph hero illustration">
+        <button class="image-expand" type="button" aria-label="Открыть изображение на весь экран">
+          <img src="images/case-process/case-process-page-cover.png" alt="Дизайнер за ноутбуком, вокруг — рабочие окна и задачи; визуал многозадачности" />
+        </button>
       </div>
     </section>
 
@@ -272,9 +339,10 @@
             <div class="text">
               <p>Когда я начала разбираться, как у нас ведётся клиент, процесса передачи, по сути, не нашла. Сделка закрывалась, создавался общий чат — и дальше всё держалось на памяти аккаунт-менеджера. Дизайнер получал обрывки вводных и неделю в тишине собирал сразу <strong>финальную версию сайта</strong>, без черновика и без согласования направления.</p>
               <p>Это било по всему: <strong>50–60% показов</strong> не попадали в ожидания клиента с первого раза, запуск растягивался на <strong>20–25 рабочих дней</strong>, а параллельно можно было вести не больше 2–3 клиентов — дизайнеры переделывали одни и те же сайты заново по два-три раза.</p>
-              <div class="visual-ph">
-              <b>Иллюстрация «было»</b>
-              Разрозненные стрелки: продажи → общий чат → дизайнер, без этапов — контраст с регламентом ниже
+              <div class="visual-ph illustration">
+                <button class="image-expand" type="button" aria-label="Открыть изображение на весь экран">
+                  <img src="images/case-process/before-department-gaps.png" alt="Схема проблем и разрывов процесса между отделами до изменений" />
+                </button>
               </div>
             </div>
           </div>
@@ -330,9 +398,10 @@
               <p>Готовые форматы брифа не работали ни в одном виде: обычную Google-форму клиенты игнорировали и присылали файлы в чат со словами «делайте что хотите», совместное заполнение на встрече съедало часы, а тяжёлые Figma-макеты заранее дизайнер готовил неделями — и упирался в то, что клиент не мог ответить на глубокие вопросы о дизайне.</p>
               <p>Предположила, что сработает то, что у клиента и так перед глазами каждый день, — привычный, не дизайнерский формат без лишних шагов и терминов.</p>
               <p>Собрала простую Google-таблицу со ссылками на материалы, добавила лёгкий визуальный бриф — «что вам откликается / что нет» по тону, цвету, композиции — и вкладку с правками, куда перенесла весь поток, раньше живший только в переписке.</p>
-              <div class="visual-ph">
-                <b>Мокап брифа</b>
-                Google-таблица: вкладки «Материалы», «Дизайн-бриф», «Правки», «Важные вопросы» — оригинал закрытый, нужно собрать заново
+              <div class="visual-ph illustration">
+                <button class="image-expand" type="button" aria-label="Открыть изображение на весь экран">
+                  <img src="images/case-process/client-design-brief.jpg" alt="Бриф клиента для сбора материалов и пожеланий к дизайну" />
+                </button>
               </div>
             </div>
           </div>
@@ -343,9 +412,10 @@
             <div class="side"><h3 class="t-h3">Дала клиенту выбор вместо одной попытки</h3></div>
             <div class="text">
               <p>Дизайнеры по инерции делали сразу готовый сайт — ресурс уходил в никуда, а показать клиенту выбор было нечем. Предложила обратное: к показу готовить не одну версию, а три коротких варианта по 3–5 экранов, вместе с продуманной структурой сайта. Это оказалось простым и при этом самым весомым решением из всех — именно оно сильнее всего сдвинуло процент непопаданий вниз.</p>
-              <div class="visual-ph">
-                <b>Три драфта</b>
-                3 коротких варианта главной страницы side-by-side — в противовес «было» (одна готовая версия)
+              <div class="visual-ph illustration">
+                <button class="image-expand" type="button" aria-label="Открыть изображение на весь экран">
+                  <img src="images/case-process/site-drafts.svg" alt="Три схематичных варфрейма сайта: первый — с текстом слева и изображением справа, второй — с большим визуалом и текстом поверх, третий — с заголовком сверху и блоками в сетке" />
+                </button>
               </div>
             </div>
           </div>
@@ -367,9 +437,10 @@
             <div class="side"><h3 class="t-h3">Прописала правила игры</h3></div>
             <div class="text">
               <p>Собрала полный регламент — от передачи клиента из продаж до публикации сайта, с ролями аккаунт-менеджера, дизайн-инженера и контент-менеджера на каждом шаге и сроком в 10 рабочих дней на сборку. Внутри того же регламента пересобрала и то, как клиенты распределяются между людьми команды: вместо «кто свободен» — по сильным сторонам каждого, с балансом загрузки и осознанной защитой от выгорания, где каждый пятый проект — намеренно другой.</p>
-              <div class="visual-ph key">
-                <b>Ключевой визуал кейса</b>
-                Схема регламента по шагам 1–7 с ролями-эмодзи: 💰 продажи, 🐸 аккаунт-менеджер, 🐰 дизайн-инженер, 🐥 контент-менеджер, 🏠 клиент
+              <div class="visual-ph illustration">
+                <button class="image-expand" type="button" aria-label="Открыть изображение на весь экран">
+                  <img src="images/case-process/website-assembly-regulation.png" alt="Регламент сборки сайта: этапы процесса, роли и сроки" />
+                </button>
               </div>
             </div>
           </div>
@@ -391,9 +462,10 @@
             <div class="side"><h3 class="t-h3">Сделала путь клиента видимым</h3></div>
             <div class="text">
               <p>Для каждого клиента теперь строится персональный календарь — наглядный таймлайн от даты создания чата: по неделям видно, что происходит на каждом этапе, когда ждём материалы, где заложен буфер на правки. Клиент видит не абстрактное «скоро», а конкретную картину своего проекта — и перестаёт переспрашивать, на каком мы сейчас этапе.</p>
-              <div class="visual-ph">
-                <b>Мокап таймлайна</b>
-                Персональный календарь клиента по неделям — оригинал закрытый, внутренний документ компании
+              <div class="visual-ph illustration">
+                <button class="image-expand" type="button" aria-label="Открыть изображение на весь экран">
+                  <img src="images/case-process/project-timeline-18-days.png" alt="Календарь проекта на 18 дней с этапами работ по неделям" />
+                </button>
               </div>
             </div>
           </div>
@@ -409,17 +481,51 @@
                 <div class="result-item">
                   <p class="stat__num result-item__num">24.5 → 13.7 дня</p>
                   <p class="stat__cap result-item__cap">Time-to-market за 4 месяца — продолжил снижаться до 12 дней уже после завершения акта</p>
-                  <div class="visual-ph"><b>График</b>Line-график динамики time-to-market по месяцам</div>
+                  <div class="result-chart">
+                    <svg class="result-chart__svg" viewBox="0 0 720 300" role="img" aria-labelledby="chart-time-title">
+                      <title id="chart-time-title">Time-to-market, дней</title><text class="result-chart__title" x="76" y="26">Time-to-market, дней</text>
+                      <rect class="result-chart__band" x="76" y="138" width="580" height="23"/>
+                      <text class="result-chart__text" x="82" y="155" text-anchor="start">цель 10–14 дней</text>
+                      <g class="result-chart__grid"><path d="M76 45H656 M76 103H656 M76 161H656 M76 220H656"/></g>
+                      <path class="result-chart__axis" d="M76 45V220H656" fill="none"/>
+                      <g class="result-chart__text" text-anchor="end"><text x="66" y="50">30</text><text x="66" y="108">20</text><text x="66" y="166">10</text><text x="66" y="225">0</text></g>
+                      <path class="result-chart__line" d="M76 77.1 L172.7 85.8 L269.3 91.7 L366 123.8 L462.7 140.1 L559.3 147 L656 150"/>
+                      <g class="result-chart__point"><circle cx="76" cy="77.1" r="4.5"/><circle cx="172.7" cy="85.8" r="4.5"/><circle cx="269.3" cy="91.7" r="4.5"/><circle cx="366" cy="123.8" r="4.5"/><circle cx="462.7" cy="140.1" r="4.5"/><circle cx="559.3" cy="147" r="4.5"/><circle cx="656" cy="150" r="4.5"/></g>
+                      <g class="result-chart__value" text-anchor="middle"><text x="76" y="63">24,5</text><text x="172.7" y="72">23</text><text x="269.3" y="78">22</text><text x="366" y="110">16,5</text><text x="462.7" y="126">13,7</text><text x="559.3" y="133">12,5</text><text x="656" y="136">12</text></g>
+                      <g class="result-chart__text" text-anchor="middle"><text x="76" y="250">ноя’25</text><text x="172.7" y="250">дек’25</text><text x="269.3" y="250">янв’26</text><text x="366" y="250">фев’26</text><text x="462.7" y="250">мар’26</text><text x="559.3" y="250">апр’26</text><text x="656" y="250">май’26</text></g>
+                    </svg>
+                  </div>
                 </div>
                 <div class="result-item">
                   <p class="stat__num result-item__num">6 → 15–19</p>
                   <p class="stat__cap result-item__cap">запусков в месяц, той же командой, без расширения штата</p>
-                  <div class="visual-ph"><b>График</b>Line-график динамики запусков в месяц</div>
+                  <div class="result-chart">
+                    <svg class="result-chart__svg" viewBox="0 0 720 300" role="img" aria-labelledby="chart-launches-title">
+                      <title id="chart-launches-title">Запусков в месяц</title><text class="result-chart__title" x="76" y="26">Запусков в месяц</text>
+                      <g class="result-chart__grid"><path d="M76 45H656 M76 89H656 M76 133H656 M76 176H656 M76 220H656"/></g><path class="result-chart__axis" d="M76 45V220H656" fill="none"/>
+                      <g class="result-chart__text" text-anchor="end"><text x="66" y="50">20</text><text x="66" y="94">15</text><text x="66" y="138">10</text><text x="66" y="181">5</text><text x="66" y="225">0</text></g>
+                      <path class="result-chart__line" d="M76 167.5 L172.7 132.5 L269.3 202.5 L366 141.3 L462.7 88.8 L559.3 53.8 L656 71.3"/>
+                      <g class="result-chart__point"><circle cx="76" cy="167.5" r="4.5"/><circle cx="172.7" cy="132.5" r="4.5"/><circle cx="269.3" cy="202.5" r="4.5"/><circle cx="366" cy="141.3" r="4.5"/><circle cx="462.7" cy="88.8" r="4.5"/><circle cx="559.3" cy="53.8" r="4.5"/><circle cx="656" cy="71.3" r="4.5"/></g>
+                      <g class="result-chart__value" text-anchor="middle"><text x="76" y="153">6</text><text x="172.7" y="118">10</text><text x="269.3" y="188">2¹</text><text x="366" y="127">9</text><text x="462.7" y="75">15</text><text x="559.3" y="40">19</text><text x="656" y="57">17</text></g>
+                      <g class="result-chart__text" text-anchor="middle"><text x="76" y="250">ноя’25</text><text x="172.7" y="250">дек’25</text><text x="269.3" y="250">янв’26</text><text x="366" y="250">фев’26</text><text x="462.7" y="250">мар’26</text><text x="559.3" y="250">апр’26</text><text x="656" y="250">май’26</text></g>
+                    </svg><p class="result-chart__footnote">¹ Новогодние праздники</p>
+                  </div>
                 </div>
                 <div class="result-item">
                   <p class="stat__num result-item__num">60% → 18%</p>
                   <p class="stat__cap result-item__cap">непопаданий с первого показа — почти точное попадание в цель 10–15%</p>
-                  <div class="visual-ph"><b>График</b>Line-график динамики непопаданий</div>
+                  <div class="result-chart">
+                    <svg class="result-chart__svg" viewBox="0 0 720 300" role="img" aria-labelledby="chart-misses-title">
+                      <title id="chart-misses-title">Не попали с первого показа, %</title><text class="result-chart__title" x="76" y="26">Не попали с первого показа, %</text>
+                      <rect class="result-chart__band" x="76" y="187" width="580" height="15"/><text class="result-chart__text" x="82" y="199" text-anchor="start">цель 10–15%</text>
+                      <g class="result-chart__grid"><path d="M76 45H656 M76 89H656 M76 132H656 M76 176H656 M76 220H656"/></g><path class="result-chart__axis" d="M76 45V220H656" fill="none"/>
+                      <g class="result-chart__text" text-anchor="end"><text x="66" y="50">80</text><text x="66" y="94">60</text><text x="66" y="137">40</text><text x="66" y="181">20</text><text x="66" y="225">0</text></g>
+                      <path class="result-chart__line" d="M76 89 L221 67 L366 111 L511 154 L656 181"/>
+                      <g class="result-chart__point"><circle cx="76" cy="89" r="4.5"/><circle cx="221" cy="67" r="4.5"/><circle cx="366" cy="111" r="4.5"/><circle cx="511" cy="154" r="4.5"/><circle cx="656" cy="181" r="4.5"/></g>
+                      <g class="result-chart__value" text-anchor="middle"><text x="76" y="75">60%</text><text x="221" y="53">70%¹</text><text x="366" y="97">50%</text><text x="511" y="140">30%</text><text x="656" y="167">18%</text></g>
+                      <g class="result-chart__text" text-anchor="middle"><text x="76" y="250">ноя’25</text><text x="221" y="250">дек’25</text><text x="366" y="250">янв’26</text><text x="511" y="250">фев’26</text><text x="656" y="250">мар’26</text></g>
+                    </svg><p class="result-chart__footnote">¹ Клиенты торопили перед концом года</p>
+                  </div>
                 </div>
               </div>
               <ul class="goals" style="margin-top:28px">
@@ -447,9 +553,10 @@
             <div class="text">
               <p>Запросы от клиентов на новый функционал раньше решались по одному сценарию: либо клиент сам ставил ультиматум — «не будет этого, уйду», — либо начальница Сексесс-отдела врывалась с «все бросаем всё, иначе потеряем клиента». Backlog разработки жил своей жизнью, приоритеты в нём решал продакт-менеджер, а клиентские запросы в него почти не попадали.</p>
               <p>Технически это выглядело так: в Яндекс.Трекере была очередь «запросы от клиентов», куда аккаунт-менеджеры после встреч просто писали в свободной форме — «клиент хочет что-то типа такого». Проджект-менеджер время от времени просматривал её и шёл уточнять, что это вообще за задача. Дальше постановки дело почти никогда не доходило: <strong>только 6–7% запросов реализовывались в тот же месяц</strong>, даже самые критичные.</p>
-              <div class="visual-ph">
-              <b>Иллюстрация «было»</b>
-              Хаотичная очередь задач в трекере без структуры — контраст с ботом-контуром ниже
+              <div class="visual-ph illustration">
+                <button class="image-expand" type="button" aria-label="Открыть изображение на весь экран">
+                  <img src="images/case-process/development-backlog-before.png" alt="Бэклог разработки до изменений: клиентские запросы в неструктурированной очереди" />
+                </button>
               </div>
             </div>
           </div>
@@ -511,22 +618,10 @@
             <div class="side"><h3 class="t-h3">Нашла формат заявки, который реально помогал разработке</h3></div>
             <div class="text">
               <p>Посмотрела, какие задачи обычно ставит продакт-менеджер, обсудила с проджект-менеджером, что ему важно знать на входе, и изучила прошлые случаи недопонимания с разработкой. Делала шаблон вместе с проджект-менеджером — его первая версия оказалась настолько большой, что я сразу поняла: «это никто никогда не заполнит». Нашли золотую середину, сверяясь с аккаунт-менеджерами, сколько времени они реально готовы на это тратить. В итоге шаблон свёлся к пяти полям — даже поверхностно заполненный, он уже ощутимо улучшал передачу задачи.</p>
-              <div class="visual-ph">
-                <b>Мокап заявки</b>
-                Карточка с 5 полями: проблема, зачем клиенту, решение клиента, решение аккаунт-менеджера, материалы/референсы
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="chapter">
-          <div class="chapter-grid">
-            <div class="side"><h3 class="t-h3">Разложила время разработки по полочкам</h3></div>
-            <div class="text">
-              <p>Чтобы понять, сколько разработка реально может взять на себя, оценила её текущую загрузку — и заложила процент на неизбежные форс-мажоры. Предложила делить время разработки так: 15% — срочные задачи, 30% — фичи от продакт-менеджера, 40% — запросы клиентов, 15% — менеджерская работа. В процентах это звучало красиво, но чтобы заработало на практике, перевела их в реальные часы — посчитала доступное время, вычла буфер на отвлечения, остаток распределила понедельно. Ввела еженедельный большой созвон с проджект-менеджером в начале недели и сама вела передачу задач в разработку.</p>
-              <div class="visual-ph">
-                <b>Диаграмма-пирог</b>
-                Распределение времени разработки: 15% срочные задачи / 30% фичи продакта / 40% запросы клиентов / 15% менеджерская работа
+              <div class="visual-ph illustration">
+                <button class="image-expand" type="button" aria-label="Открыть изображение на весь экран">
+                  <img src="images/case-process/yandex-tracker-request-template.png" alt="Шаблон запроса клиента в Яндекс.Трекере" />
+                </button>
               </div>
             </div>
           </div>
@@ -546,9 +641,10 @@
             <div class="side"><h3 class="t-h3">Собрала процесс в единый контур с ботом-будильником</h3></div>
             <div class="text">
               <p>Чтобы уложиться в сутки на ответ, завела Telegram-бота, который присылает алерт на любое изменение задачи в общий чат — аккаунт-менеджеры, разработчики, отвечающие за оценку, и проджект-менеджер. Как только появляется новая задача, проджект-менеджер смотрит её RICE-скор: если он ниже порога — к разработке за оценкой не идёт, просто фиксирует «ниже приоритета, в ближайший месяц вряд ли» и возвращается к ней на еженедельном разборе; если выше — идёт за оценкой сроков, уточняет критерии, и клиент уже получает не отписку, а реальный срок.</p>
-              <div class="visual-ph">
-                <b>Мокап Telegram-бота</b>
-                Чат с алертами об изменении задачи — вводная и статусные сообщения
+              <div class="visual-ph illustration">
+                <button class="image-expand" type="button" aria-label="Открыть изображение на весь экран">
+                  <img src="images/case-process/telegram-bot.png" alt="Telegram-бот с уведомлениями об изменении клиентской задачи" />
+                </button>
               </div>
             </div>
           </div>
@@ -564,12 +660,20 @@
                 <div class="result-item">
                   <p class="stat__num result-item__num">≤ 24 ч</p>
                   <p class="stat__cap result-item__cap">время ответа на запрос (было — дни)</p>
-                  <div class="visual-ph"><b>График</b>Before/after-бар: время ответа на запрос</div>
                 </div>
                 <div class="result-item">
                   <p class="stat__num result-item__num">6–7% → ~30–40%</p>
                   <p class="stat__cap result-item__cap">доля реализованных запросов в тот же месяц (до 30 рабочих часов трудозатрат)</p>
-                  <div class="visual-ph"><b>График</b>Before/after-бар: доля реализованных запросов</div>
+                  <div class="result-chart">
+                    <svg class="result-chart__svg" viewBox="0 0 720 300" role="img" aria-labelledby="chart-requests-title">
+                      <title id="chart-requests-title">Доля реализованных запросов</title><text class="result-chart__title" x="126" y="26">Доля реализованных запросов</text>
+                      <g class="result-chart__grid"><path d="M126 60H656 M126 140H656 M126 220H656"/></g><path class="result-chart__axis" d="M126 60V220H656" fill="none"/>
+                      <g class="result-chart__text" text-anchor="end"><text x="116" y="65">40%</text><text x="116" y="145">20%</text><text x="116" y="225">0</text></g>
+                      <rect class="result-chart__bar" x="245" y="194" width="112" height="26" rx="10"/><rect class="result-chart__bar" x="445" y="80" width="112" height="140" rx="10"/>
+                      <g class="result-chart__value" text-anchor="middle"><text x="301" y="180">6–7%</text><text x="501" y="66">30–40%</text></g>
+                      <g class="result-chart__text" text-anchor="middle"><text x="301" y="250">Было</text><text x="501" y="250">Стало</text></g>
+                    </svg>
+                  </div>
                 </div>
               </div>
               <ul class="goals" style="margin-top:28px">
@@ -596,9 +700,10 @@
             <div class="side"><h3 class="t-h3">Зачем переделывать</h3></div>
             <div class="text">
               <p>Эта история — прямое продолжение первого акта. При передаче клиента из продаж в Сексесс-отдел многое просто не проговаривалось: либо информация о клиенте расходилась между отделами, либо продажи обещали клиенту одно, а в Сексесс-отделе он встречался с другим. Добавляло проблем и то, что у многих входящих клиентов был низкий визуальный язык — и материалы, с которыми продажи выходили к клиенту на входе, не совпадали с тем, что он получал по факту. По сути, моей задачей здесь было состыковать два отдела, которые говорили на разных языках, — своей инициативой, не входившей в прямые обязанности.</p>
-              <div class="visual-ph">
-              <b>Иллюстрация «было»</b>
-              Два отдела с расходящимися контекстами о клиенте — два разных «пузыря» информации
+              <div class="visual-ph illustration">
+                <button class="image-expand" type="button" aria-label="Открыть изображение на весь экран">
+                  <img src="images/case-process/sales-success-before.png" alt="Схема прежней передачи клиента между отделом продаж и Сексесс-отделом" />
+                </button>
               </div>
             </div>
           </div>
@@ -662,9 +767,10 @@
             <div class="side"><h3 class="t-h3">Говорила с каждым типом клиента на его языке</h3></div>
             <div class="text">
               <p>Разделила целевую аудиторию на типажи и под каждый подготовила подборку референсов — сайты других наших клиентов, которые лучше всего резонируют именно с этим типом. Протестировали и более смелую гипотезу: готовить дизайнерам один экран заранее для клиента, который только начал общаться с нами, — выстрелило не всё, но полезные паттерны сохранили: для крупных клиентов продажи теперь могут «удивить» на второй встрече несколькими готовыми экранами. Отдельно вместе с продажами собрали демо-сайт — вымышленного клиента, в который поместили вообще весь функционал конструктора, и обновляли его каждый месяц вслед за платформой, чтобы показывать реальные возможности, а не рассказывать на словах.</p>
-              <div class="visual-ph">
-                <b>Скриншот демо-сайта</b>
-                Демо-сайт «полного фарша», вымышленный клиент — лучше всего подойдёт реальный скриншот, если его можно показать (внутренний проект, не клиентские данные)
+              <div class="visual-ph illustration">
+                <button class="image-expand" type="button" aria-label="Открыть изображение на весь экран">
+                  <img src="images/case-process/demo-site.png" alt="Первый экран демо-сайта: жилые башни, описание проекта, кнопка подбора квартиры и блок с характеристиками" />
+                </button>
               </div>
             </div>
           </div>
@@ -689,12 +795,20 @@
                 <div class="result-item">
                   <p class="stat__num result-item__num">32% → ~10%</p>
                   <p class="stat__cap result-item__cap">прозрачность для клиента — метрика тянется из Акта 1, добита здесь</p>
-                  <div class="visual-ph"><b>График</b>Before/after-бар: прозрачность для клиента</div>
+                  <div class="result-chart">
+                    <svg class="result-chart__svg" viewBox="0 0 720 300" role="img" aria-labelledby="chart-stages-title">
+                      <title id="chart-stages-title">Клиенты, которые спрашивают «на каком мы этапе»</title><text class="result-chart__title" x="126" y="26">Клиенты, которые спрашивают «на каком мы этапе»</text>
+                      <g class="result-chart__grid"><path d="M126 60H656 M126 140H656 M126 220H656"/></g><path class="result-chart__axis" d="M126 60V220H656" fill="none"/>
+                      <g class="result-chart__text" text-anchor="end"><text x="116" y="65">100%</text><text x="116" y="145">50%</text><text x="116" y="225">0</text></g>
+                      <rect class="result-chart__bar" x="165" y="100" width="104" height="120" rx="10"/><rect class="result-chart__bar" x="339" y="169" width="104" height="51" rx="10"/><rect class="result-chart__bar" x="513" y="204" width="104" height="16" rx="10"/>
+                      <g class="result-chart__value" text-anchor="middle"><text x="217" y="86">70–80%</text><text x="391" y="155">32%</text><text x="565" y="190">~10%</text></g>
+                      <g class="result-chart__text" text-anchor="middle"><text x="217" y="250">До</text><text x="391" y="250">После акта 1</text><text x="565" y="250">Итог</text></g>
+                    </svg>
+                  </div>
                 </div>
                 <div class="result-item">
                   <p class="stat__num result-item__num">1 из 60</p>
                   <p class="stat__cap result-item__cap">отток клиентов</p>
-                  <div class="visual-ph"><b>График</b>Before/after-бар: отток клиентов</div>
                 </div>
               </div>
               <ul class="goals" style="margin-top:28px">
@@ -746,6 +860,22 @@
   </footer>
 
   <div class="progress-ticks" id="progress-ticks" aria-hidden="true"></div>
+
+  <div class="expand-cursor" id="expand-cursor" aria-hidden="true">
+    <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+      <path d="M24 8v32M8 24h32" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+    </svg>
+  </div>
+
+  <div class="image-modal" id="image-modal" role="dialog" aria-modal="true" aria-label="Просмотр изображения на весь экран" aria-hidden="true">
+    <div class="image-modal__bar">
+      <span class="t-h4">Просмотр изображения</span>
+      <button class="image-modal__close" id="image-modal-close" type="button">Закрыть ✕</button>
+    </div>
+    <div class="image-modal__stage" id="image-modal-stage">
+      <img class="image-modal__image" id="image-modal-image" alt="" />
+    </div>
+  </div>
 
   <script>
     (function(){
@@ -801,6 +931,82 @@
       window.addEventListener('scroll', toggleTicks, { passive: true });
       window.addEventListener('resize', toggleTicks);
       toggleTicks();
+    })();
+  </script>
+  <script>
+    (function () {
+      var modal = document.getElementById('image-modal');
+      var stage = document.getElementById('image-modal-stage');
+      var modalImage = document.getElementById('image-modal-image');
+      var closeButton = document.getElementById('image-modal-close');
+      var cursor = document.getElementById('expand-cursor');
+      var lastFocus = null;
+      var x = 0, y = 0, cx = 0, cy = 0, raf = null;
+
+      function moveCursor() {
+        cx += (x - cx) * 0.25;
+        cy += (y - cy) * 0.25;
+        cursor.style.left = cx + 'px';
+        cursor.style.top = cy + 'px';
+        raf = Math.abs(x - cx) + Math.abs(y - cy) > 0.5
+          ? requestAnimationFrame(moveCursor)
+          : null;
+      }
+
+      function hideCursor() { cursor.classList.remove('is-on'); }
+
+      function openImage(button) {
+        var image = button.querySelector('img');
+        if (!image) return;
+        hideCursor();
+        lastFocus = button;
+        modalImage.src = image.currentSrc || image.src;
+        modalImage.alt = image.alt;
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('is-locked');
+        closeButton.focus();
+      }
+
+      function closeImage() {
+        if (!modal.classList.contains('is-open')) return;
+        hideCursor();
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('is-locked');
+        if (lastFocus) lastFocus.focus();
+      }
+
+      document.querySelectorAll('.image-expand').forEach(function (button) {
+        button.addEventListener('click', function () { openImage(button); });
+        button.addEventListener('mouseenter', function (event) {
+          if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+          x = cx = event.clientX;
+          y = cy = event.clientY;
+          moveCursor();
+          cursor.classList.add('is-on');
+        });
+        button.addEventListener('mousemove', function (event) {
+          x = event.clientX;
+          y = event.clientY;
+          if (!raf) raf = requestAnimationFrame(moveCursor);
+        });
+        button.addEventListener('mouseleave', hideCursor);
+      });
+      closeButton.addEventListener('click', closeImage);
+      modal.addEventListener('click', function (event) {
+        if (event.target === modal || event.target === stage) closeImage();
+      });
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && modal.classList.contains('is-open')) closeImage();
+      });
+      document.addEventListener('scroll', function () {
+        if (!cursor.classList.contains('is-on')) return;
+        requestAnimationFrame(function () {
+          var underPointer = document.elementFromPoint(x, y);
+          if (!underPointer || !underPointer.closest('.image-expand')) hideCursor();
+        });
+      }, { passive: true });
     })();
   </script>
 </body>

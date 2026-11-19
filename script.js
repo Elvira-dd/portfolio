@@ -20,7 +20,7 @@ const LINKS = {
       Пока файла нет, на его месте остаётся серый плейсхолдер. */
 const IMAGES = {
   "hero":            "images/hero",            // фото на первом экране (горизонтальное, широкое)
-  "case-process":    "images/case-process",    // обложка кейса «Процессы команды» (от 1100×930)
+  "case-process":    "images/case-process/hero-multitasking", // обложка из Hero кейса «Процессы команды»
   "case-sites":      "images/case-sites",      // обложка «Сайты для застройщиков»
   "case-xploration": "images/case-xploration", // обложка «XPLORATION»
   "case-myolimp":    "images/case-myolimp",    // обложка «MyOlimp: дизайн-система»
@@ -127,8 +127,24 @@ function findImage(base) {
 function fillSlot(el, slot, alt) {
   const base = IMAGES[slot];
   if (!base) return;
-  el.querySelectorAll("img, .media__hint").forEach((n) => n.remove());
+  el.querySelectorAll("img, video, .media__hint").forEach((n) => n.remove());
   el.classList.remove("has-image");
+
+  if (el.dataset.video) {
+    const video = document.createElement("video");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    video.className = "media__video";
+    video.src = el.dataset.video;
+    video.autoplay = !reducedMotion;
+    video.loop = true;
+    video.muted = true;
+    video.playsInline = true;
+    video.preload = reducedMotion ? "auto" : "metadata";
+    video.setAttribute("aria-hidden", "true");
+    el.appendChild(video);
+    el.classList.add("has-video");
+    return;
+  }
 
   findImage(base).then((src) => {
     if (src) {
