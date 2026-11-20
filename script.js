@@ -16,12 +16,12 @@ const LINKS = {
 };
 
 /* 2. Картинки. Положи файл в папку images/ с таким именем.
-      Подойдёт любое расширение: .jpg, .jpeg, .png, .webp
+      Подойдёт любое расширение: .jpg, .jpeg, .png, .webp, .svg
       Пока файла нет, на его месте остаётся серый плейсхолдер. */
 const IMAGES = {
   "hero":            "images/hero",            // фото на первом экране (горизонтальное, широкое)
   "case-process":    "images/case-process/hero-multitasking", // обложка из Hero кейса «Процессы команды»
-  "case-sites":      "images/case-sites",      // обложка «Сайты для застройщиков»
+  "case-sites":      "images/case-sites/developers-sites-skills-preview", // статичное превью для кейса и всплывающих карточек навыков
   "case-xploration": "images/case-xploration", // обложка «XPLORATION»
   "case-myolimp":    "images/case-myolimp",    // обложка «MyOlimp: дизайн-система»
   "logo-idalite":    "images/logo-idalite",    // логотипы в «Опыте работы» (квадрат, от 180×180)
@@ -29,7 +29,7 @@ const IMAGES = {
   "logo-myolimp":    "images/logo-myolimp",
   "logo-freelance":  "images/logo-freelance",
 };
-const EXTENSIONS = ["jpg", "jpeg", "png", "webp"];
+const EXTENSIONS = ["jpg", "jpeg", "png", "webp", "svg"];
 
 /* 3. Навыки. case — id кейса, превью которого всплывает при наведении.
       list — список программ, который всплывает при наведении вместо превью кейса.
@@ -50,9 +50,9 @@ const SKILLS = [
   { name: "Usability-тесты",                 case: "case-sites" },
   { name: "A/B-тестирование",                case: "case-sites" },
   { name: "Бизнес-метрики",                  case: "case-process" },
-  { name: "AI-ассистированный дизайн",       case: null },
-  { name: "ИИ в аналитике",                  case: null },
-  { name: "Генерация фото и видео",          case: null },
+  { name: "AI-ассистированный дизайн",       case: "case-sites" },
+  { name: "ИИ в аналитике",                  case: "case-sites" },
+  { name: "Генерация фото и видео",          case: "case-sites" },
   { name: "Figma",                           case: null },
   { name: "Adobe Creative Suite",            case: null, text: "Photoshop, Illustrator, After Effects, Premiere Pro" },
   { name: "Spline",                          case: null, text: "Фриланс" },
