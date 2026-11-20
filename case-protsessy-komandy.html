@@ -505,6 +505,7 @@
         color: var(--case-accent);
       }
       .visual-ph.hero {
+        width: 100%;
         min-height: 380px;
         max-width: none;
         border-radius: var(--r-l);
@@ -867,6 +868,8 @@
         }
       }
     </style>
+      <link rel="stylesheet" href="page-transition.css" />
+    <script src="page-transition.js" defer></script>
   </head>
   <body>
     <header class="case-topbar wrap">
@@ -900,16 +903,10 @@
           </div>
         </div>
         <div class="visual-ph hero illustration">
-          <button
-            class="image-expand"
-            type="button"
-            aria-label="Открыть изображение на весь экран"
-          >
-            <img
-              src="images/case-process/case-process-page-cover.png"
-              alt="Дизайнер за ноутбуком, вокруг — рабочие окна и задачи; визуал многозадачности"
-            />
-          </button>
+          <img
+            src="images/case-process/case-process-page-cover.png"
+            alt="Дизайнер за ноутбуком, вокруг — рабочие окна и задачи; визуал многозадачности"
+          />
         </div>
       </section>
 

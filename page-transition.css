@@ -1,0 +1,55 @@
+html::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #fff;
+  transform: scaleY(0);
+  transform-origin: bottom;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+html.page-leaving::before {
+  visibility: visible;
+  pointer-events: auto;
+  animation: page-cover 700ms cubic-bezier(.76, 0, .24, 1) forwards;
+}
+
+html.page-entering::before {
+  visibility: visible;
+  transform: scaleY(1);
+  transform-origin: top;
+  animation: page-reveal 700ms cubic-bezier(.76, 0, .24, 1) forwards;
+}
+
+html.page-entering .case-hero__title,
+html.page-entering .case-hero__intro {
+  opacity: 0;
+  animation: case-copy-appear 420ms ease 560ms forwards;
+}
+
+@keyframes page-cover {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+
+@keyframes page-reveal {
+  from { transform: scaleY(1); }
+  to { transform: scaleY(0); }
+}
+
+@keyframes case-copy-appear {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.page-leaving::before,
+  html.page-entering::before,
+  html.page-entering .case-hero__title,
+  html.page-entering .case-hero__intro {
+    animation-duration: 1ms;
+    animation-delay: 0ms;
+  }
+}
