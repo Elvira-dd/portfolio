@@ -493,13 +493,17 @@ body.intro-locked { overflow: hidden; }
 .edu__sub { color: var(--gray); margin-top: 2px; }
 .edu__sub--sm { margin-top: 8px; }
 
-/* плашка-достижение: появляется при наведении на строку образования */
-.edu--tip { position: relative; outline: none; }
+/* достижение открывается только с иконки */
+.edu__details { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.edu__award { position: relative; display: inline-flex; flex: 0 0 24px; width: 24px; height: 24px; }
+.edu__award-button { display: block; width: 24px; height: 24px; padding: 0; border: 0; background: transparent; cursor: help; }
+.edu__award-button img { display: block; width: 24px; height: 24px; }
+.edu__award-button:focus-visible { outline: 2px solid var(--black); outline-offset: 3px; border-radius: 50%; }
 .edu__tip {
   position: absolute;
   z-index: 20;
-  right: 30px;
-  top: calc(100% - 8px);
+  right: 0;
+  top: calc(100% + 8px);
   width: 306px;
   padding: 12px;
   background: var(--white);
@@ -511,8 +515,8 @@ body.intro-locked { overflow: hidden; }
   pointer-events: none;
   transition: opacity .15s, transform .15s;
 }
-.edu--tip:hover .edu__tip,
-.edu--tip:focus-visible .edu__tip { opacity: 1; transform: none; }
+.edu__award:hover .edu__tip,
+.edu__award:focus-within .edu__tip { opacity: 1; transform: none; }
 .edu__tip-label { color: var(--gray-label); font-size: var(--small-size); line-height: var(--small-lh); font-weight: var(--text-w-medium); }
 .edu__tip-text { margin-top: 4px; color: var(--black); font-size: var(--small-size); line-height: var(--small-lh); font-weight: var(--text-w-medium); }
 
@@ -594,7 +598,7 @@ body.intro-locked { overflow: hidden; }
   .job__col:last-child { padding-bottom: 14px; }
   .edu { grid-template-columns: 1fr; gap: 12px; margin-left: 0; padding: 18px 20px; }
   .edu > div:nth-child(2) { padding-left: 0; }
-  .edu__tip { position: static; width: auto; opacity: 1; transform: none; box-shadow: none; margin-top: 4px; }
+  .edu__tip { width: min(306px, calc(100vw - 48px)); }
   .footer { padding-top: 120px; }
 }
 
